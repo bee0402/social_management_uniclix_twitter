@@ -32,9 +32,13 @@
     outline: none !important;
 }
 
+html {
+    font-size: 62.5%;
+}
+
 body {
-    font-family: open-sans, sans-serif, Arial, Helvetica;
-    background: white;
+    font-family: Lato, sans-serif, Arial, Helvetica;
+    background: #F5F7FB;
 }
 
 button, button:focus, button:active{
@@ -51,7 +55,7 @@ a, a:hover, a:visited, a:active, a:link {
 }
 
 input {
-    font-family: open-sans, sans-serif, FontAwesome;
+    // font-family: Lato, sans-serif, FontAwesome;
 }
 
 .hide{
@@ -111,7 +115,7 @@ input {
 
 .middleware h2 {
     text-align:center;
-    font-family: open-sansSemiBold, arial, sans-serif;
+    font-weight: bold;
     font-size: 4rem;
     letter-spacing: 1px;
     color: black;
@@ -120,7 +124,7 @@ input {
 }
 
 .middleware h5 {
-    font-family: open-sansSemiBold, arial sans-serif;
+    font-weight: bold;
     font-size: 2rem;
     margin-bottom: 30px;
     text-align:left;
@@ -145,7 +149,6 @@ input {
     text-align: left;
     border-radius: 5px;
     font-size: 2rem;
-    font-family: open-sans;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -197,7 +200,7 @@ input {
 }
 
 .middleware .channel-profile-box .channel-profile-type {
-    font-family: open-sansLight, arial, sans-serif;
+    font-weight: light;
     color: #aaa;
 }
 
@@ -207,7 +210,6 @@ input {
 
 .middleware .channel-profile-box p {
     margin: 0;
-    font-family: open-sans, arial, sans-serif;
     color: #485576;
 }
 
@@ -246,7 +248,7 @@ input {
 }
 
 .ReactModal__Content.ReactModal__Content--after-open.info-modal-container h3 {
-    font-family: open-sansBold, sans-serif, arial;
+    font-weight: bold;
 }
 
 .billing.channels-box{
@@ -277,7 +279,7 @@ input {
 }
 
 .login-container .box-container label {
-    font-family: open-sansLight, sans-serif, arial;
+    font-weight: light;
     line-height: 1;
 }
 
@@ -290,7 +292,7 @@ input {
 }
 
 .login-form h4 {
-    font-family: open-sansSemiBold, arial, sans-serif;
+    font-weight: bold;
     margin: 0 0 30px 0;
 }
 
@@ -299,7 +301,7 @@ input {
     padding: 10px 0 0;
     text-align: left;
     color: #485576;
-    font-family: open-sansSemiBold, sans-serif, arial;
+    font-weight: bold;
 }
 
 .login-form p.inline-txt a {
@@ -357,7 +359,7 @@ input {
     border-radius: 5px;
     color: #fff;
     text-align: center;
-    font-family: open-sansSemiBold;
+    font-weight: bold;
     margin-top:10px;
 }
 
@@ -414,7 +416,7 @@ input {
     line-height: 1.3;
     cursor: pointer;
     font-size: 14px;
-    font-family: open-sansBold, arial, sans-serif;
+    font-weight: bold;
     color: #485576;
   }
   
@@ -630,7 +632,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: open-sansSemiBold, arial, sans-serif;
+    font-weight: bold;
     letter-spacing: .5px;
 }
 
@@ -640,7 +642,7 @@ input {
     color: #485576 !important;
     background: #858EA4 !important;
     font-size: 1rem !important;
-    font-family: open-sansBold, arial, sans-serif !important;
+    font-weight: bold;
     width: 10px !important;
     right: 10px !important;
 }
@@ -673,7 +675,7 @@ input {
 
 .rdTabAddButton{
     text-shadow: none !important;
-    font-family: open-sansLight, arial, sans-serif !important;
+    font-weight: light;
     color: white !important;
     border: 1px solid #858EA4 !important;
     border-radius: 100%;
@@ -727,11 +729,12 @@ input {
     top: 0;
     float: left;
     height: 100%;
-    width: 210px;
+    width: 235px;
     overflow: hidden;
-    box-shadow: 1px 0px 2px #ccc;
+    background: white;
     margin-top: 70px;
     z-index: 999;
+    border-top-right-radius: 50px;
 }
 
 .red-border{
@@ -747,6 +750,11 @@ input {
     height: calc(100% - 300px);
     overflow-y: auto;
     overflow-x: hidden;
+    background: #f5f7fb;
+}
+
+.v-menu-links li{
+    background: white;
 }
 
 .nav-buttons {
@@ -783,7 +791,7 @@ input {
 
 .profile-info p {
     margin: 0;
-    font-family: open-sansSemiBold, sans-serif;
+    font-weight: bold;
     max-width: 111px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -791,13 +799,13 @@ input {
 }
 
 .profile-name {
-    font-family: open-sansBold, sans-serif !important;
+    font-weight: bold;
     text-transform: uppercase;
     font-weight: bold;
 }
 
 .profile-username {
-    font-family: open-sans, sans-serif;
+    font-weight: bold;
     font-size: 12px;
 }
 
@@ -812,7 +820,7 @@ input {
     width: 100%;
     background: #fff;
     height: 70px;
-    box-shadow: 1px 1px 1px 1px #e8edf5;
+    // box-shadow: 1px 1px 1px 1px #e8edf5;
     overflow: hidden;
 }
 
@@ -820,7 +828,8 @@ input {
     position: absolute;
     bottom: 70px;
     width: 100%;
-    background: linear-gradient(to right, #48BBB8, #438AF1);
+    // background: linear-gradient(to right, #48BBB8, #438AF1);
+    background: white;
     border-top: 1px solid rgba(255, 255, 255, .3);
 }
 
@@ -828,7 +837,7 @@ input {
     border: 1px solid #46b9e6;
     color: #46b9e6;
     text-decoration: none;
-    font-family: open-sansBold, sans-serif;
+    font-weight: bold;
     border-radius: 20px;
     padding: 5px 20px;
     outline: none;
@@ -894,7 +903,6 @@ input {
     font-size: 0.2em;
     text-transform: uppercase;
     font-weight: bold;
-    font-family: open-sansBold;
 }
 
 .stream-feed, .stream-maker.stream-size .stream-feed{
@@ -982,7 +990,7 @@ input {
 
 .stream-feed-container .username {
     color: #485576;
-    font-family: open-sansLight, sans-serif, arial;
+    font-weight: light;
     letter-spacing: 0.5px;
 }
 
@@ -1026,7 +1034,6 @@ input {
 
 .stream-user{
     color: #c5c5c5;
-    font-family: open-sans, sans-serif, arial;
 }
 
 .stream-title{
@@ -1036,7 +1043,7 @@ input {
     margin: 0;
     font-size: 1.6rem;
     color: #485576;
-    font-family: open-sansSemiBold, sans-serif, arial;
+    font-weight: bold;
     padding: 10px;
 }
 
@@ -1057,7 +1064,7 @@ input {
 .stream-title input{
     width: auto;
     outline: none;
-    font-family: open-sansSemiBold, sans-serif, arial;
+    font-weight: bold;
 }
 
 .stream-initiator{
@@ -1104,7 +1111,7 @@ input {
     max-width: 300px;
 }
 .stream-intro h3, .stream-intro h5 {
-    font-family: open-sansBold, arial, sans-serif;
+    font-weight: bold;
 }
 
 .blur{
@@ -1129,7 +1136,6 @@ input {
     width: 280px;
     height: 30px;
     padding: 10px 20px !important;
-    font-family: Helvetica, sans-serif;
     font-weight: 300;
     font-size: 16px;
     border: 1px solid #aaa;
@@ -1162,7 +1168,6 @@ input {
     margin-right: auto;
     border: 1px solid #aaa;
     background-color: #fff;
-    font-family: Helvetica, sans-serif;
     font-weight: 300;
     font-size: 16px;
     border-bottom-left-radius: 4px;
@@ -1208,7 +1213,7 @@ input {
     background: white;
     width: 100%;
     height: 100%;
-    font-family: open-sansSemiBold;
+    font-weight: bold;
     font-size: 2em;
     color: #999;
 }
@@ -1223,9 +1228,8 @@ input {
     color: #ffffff!important;
     background: #B358B3;
     padding: 10px 62px;
-    font-family: open-sans, arial, sans-serif;
     letter-spacing: .5px;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 1em;
     max-width: 262px;
     margin: 0 auto;
@@ -1307,7 +1311,6 @@ input {
     height: 70vh;
     font-size: 25px;
     text-align: center;
-    font-family: open-sans;
     color: #777;
     width: 60%;
     margin: 0 auto;
@@ -1340,7 +1343,7 @@ button.streammaker-btn {
     border-radius: 3px;
     color: white;
     font-size: 4.3rem;
-    font-family: open-sansLight, arial, sans-serif;
+    font-weight: light;
     padding: 5px 15px;
 }
 
@@ -1357,7 +1360,7 @@ button.streammaker-btn:hover {
     color: #485576;
     border: 1px solid #CCCCCC;
     border-radius: 20px;
-    font-family: open-sansSemiBold, arial, sans-serif, helvetica;
+    font-weight: bold;
     font-size: 1.3rem;
     background: white;
     outline: none;
@@ -1507,7 +1510,7 @@ button.streammaker-btn:hover {
 
 .blend-title{
     font-size: 18px;
-    font-family: open-sansSemiBold, Arial, sans-serif;
+    font-weight: bold;
     color: #999;
 }
 
@@ -1653,7 +1656,7 @@ button.streammaker-btn:hover {
 .social-body-text{
     padding: 5px 12px;
     font-size: 12px;
-    font-family: open-sans, arial, sans-serif;
+    font-weight: bold;
     overflow: hidden;
     height: 40px;
     word-break: break-word;
@@ -1714,9 +1717,8 @@ button.streammaker-btn:hover {
 
 .tailoredPost__previewCardWrapper__link__title {
     color: #000;
-    font-weight: 500;
+    font-weight: bold;
     word-break: break-word;
-    font-family: open-sansBold;
     font-size: 14px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -1797,7 +1799,7 @@ button.streammaker-btn:hover {
     text-align: center;
     border-radius: 20px;
     margin: 31px auto;
-    font-family: open-sansSemiBold, sans-serif;
+    font-weight: bold;
 }
 
 .logout-btn a{
@@ -1810,16 +1812,23 @@ button.streammaker-btn:hover {
 }
 
 .vertical-menu .links {
-    color: #d4e6ec;
-    height: 30px;
-    display: block;
-    margin: 5px 0 0 30px;
+    color: #363636;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 .5rem;
     width: 100%;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 1.6rem;
+    font-weight: normal;
     vertical-align: middle;
     line-height: 30px;
-    text-transform: uppercase;
+    padding: 1rem 3rem;
+}
+
+.vertical-menu .links i {
+    margin-right: 10px;
+    display: block;
+    width: 25px;
 }
 
 .scrollable-400{
@@ -1833,7 +1842,6 @@ button.streammaker-btn:hover {
     margin-left: 90px;
     line-height: 36px;
     font-size: 35px;
-    font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
     color: #E97D4C !important;
     padding: 7px 10px;
@@ -1848,21 +1856,31 @@ button.streammaker-btn:hover {
 
 .top-menu {
     margin-left: 230px;
+    margin-bottom: 15px;
 }
 
 .top-menu li a {
     float: left;
-    font-family: open-sansBold, sans-serif;
-    margin: 25px 0 0 15px;
-    font-size: 12px;
-    font-weight: bold;
+    margin: 2.5rem 0 0 5.5rem;
+    font-size: 1.6rem;
+    font-weight: normal;
     padding-bottom: 32px;
-    color: #46a5d1;
+    color: #363636;
     text-decoration: none;
+    text-transform: capitalize;
 }
 
-.top-menu li a:hover {
+.top-menu li a.first-nav-item{
+    margin-left: 0;
+}
+
+.top-menu li a:hover, .top-menu li a.active {
     text-decoration: none;
+    color: #2D86DA;
+}
+
+.top-menu li a.active{
+    font-weight: bold;
 }
 
 .reply-box{
@@ -1938,8 +1956,7 @@ button.streammaker-btn:hover {
 
 .profile-form label{
     color: #ccc;
-    font-weight: 500;
-    font-family: open-sansSemiBold, sans-serif, arial;
+    font-weight: bold;
 }
 
 .profile-form .form-field{
@@ -1947,30 +1964,18 @@ button.streammaker-btn:hover {
 }
 
 .top-menu li a:hover::after, .top-menu .active::after, .nav-buttons li .top-icons:hover::after ,.nav-buttons li .top-icons.active::after {
-    width: 100%;
-    transition: width .3s;
-}
-
-.vertical-menu li a:after {
-    content: '';
-    display: block;
-    width: 4px;
-    float: left;
-    margin-right: 26px;
-    height: 0;
-    background: white;
-    transition: width .3s;
+    // width: 100%;
+    color: #2D86DA;
+    transition: all .3s;
 }
 
 .vertical-menu li a:hover, .vertical-menu .active {
     text-decoration: none;
-    margin-left: 0 !important;
-    color: white;
-}
-
-.vertical-menu li a:hover:after, .vertical-menu .active:after {
-    height: 30px;
-    transition: height .2s;
+    color: #2d86e0;
+    background: #f5f7fb;
+    border-radius: 100px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .compose-btn, .compose-btn:link, .compose-btn:hover, .compose-btn:active, .compose-btn:visited {
@@ -1981,7 +1986,7 @@ button.streammaker-btn:hover {
     text-decoration: none;
     outline: none !important;
     cursor:pointer;
-    font-family: open-sansSemiBold, sans-serif;
+    font-weight: bold;
     border:none;
 }
 
@@ -2004,19 +2009,19 @@ button.streammaker-btn:hover {
 }
 
 .main-section h2 {
-    font-family: open-sans, sans-serif;
+    font-weight: bold;
     font-size: 20px;
     color: #666;
 }
 
 .shadow-box {
     box-shadow: 0px 0px 1px 0px #ececec;
-    font-family: open-sans, sans-serif;
     overflow: hidden;
     padding: 20px;
     margin-top: 25px;
     margin-bottom: 25px;
     border: 1px solid #eee;
+    background: white;
 }
 
 .dashboard-info li {
@@ -2046,7 +2051,7 @@ button.streammaker-btn:hover {
 }
 
 .sort-options label {
-    font-family: open-sansLight, sans-serif;
+    font-weight: light;
     color: #999;
 }
 
@@ -2069,7 +2074,7 @@ button.streammaker-btn:hover {
 }
 
 .schedule-header h4{
-    font-family: open-sansSemiBold;
+    font-weight: bold;
     color: #777;
 }
 
@@ -2099,7 +2104,7 @@ button.streammaker-btn:hover {
 }
 
 .item-row .profile-name {
-    font-family: open-sansLight, sans-serif !important;
+    font-weight: light;
     text-transform: capitalize;
     font-size: 20px;
     color: #717171;
@@ -2121,12 +2126,11 @@ button.streammaker-btn:hover {
 
 .item-row .profile-username {
     color: #b1b1b1;
-    font-family: open-sansLight, sans-serif !important;
+    font-weight: light;
 }
 
 .item-row .profile-info p {
     max-width: inherit;
-    font-family: open-sans, sans-serif;
 }
 
 .schedule-row .profile-info p{
@@ -4336,7 +4340,38 @@ table.compare-plans-table {
     border-radius: 5px;
 }
 
+.current-profile {
+    float: right;
+    display: flex;
+    align-items: center;
+    padding: 0 3.5rem;
+    cursor: pointer;
+}
 
+.current-profile-avatar img {
+    width: 35px;
+    border-radius: 100px;
+}
+
+.current-profile-info p {
+    margin: 0;
+}
+
+.current-profile-avatar {
+    margin-left: 15px;
+}
+
+.current-profile-name {
+    font-weight: bold;
+    font-size: 1.6rem;
+    color: #363636;
+}
+
+.current-profile-email{
+    font-weight: light;
+    font-size: 1.3rem;
+    color: #909090;
+}
 
 @keyframes lds-ripple {
     0% {

@@ -2,7 +2,8 @@ const MenuItems = [
     {   
         id: "twitter-booster_dashboard",
         displayName: "Dashboard",
-        uri: "/twitter-booster/dashboard" 
+        uri: "/twitter-booster/dashboard",
+        icon: "home" 
     },
     // {   
     //     id: "twitter-booster_account_targets",
@@ -11,39 +12,43 @@ const MenuItems = [
     // },
     {   
         id: "twitter-booster_keyword_targets",
-        displayName: "Keyword Targets",
-        uri: "/twitter-booster/keyword-targets" 
+        displayName: "Target Audience",
+        uri: "/twitter-booster/keyword-targets",
+        icon: "bullseye"  
     },
     {   
         id: "twitter-booster_fans",
-        displayName: "Fans",
-        uri: "/twitter-booster/fans" 
+        displayName: "Followers",
+        uri: "/twitter-booster/fans",
+        icon: "users"  
     },
     {   
         id: "twitter-booster_non_followers",
-        displayName: "Non Followers",
-        uri: "/twitter-booster/non-followers" 
+        displayName: "Clean up list",
+        uri: "/twitter-booster/non-followers",
+        icon: "broom" 
     },
     {   
         id: "twitter-booster_recent_unfollowers",
-        displayName: "Recent Unfollowers",
-        uri: "/twitter-booster/recent-unfollowers" 
-    },
-    {   
-        id: "twitter-booster_recent_followers",
-        displayName: "Recent Followers",
-        uri: "/twitter-booster/recent-followers" 
-    },
-    {   
-        id: "twitter-booster_inactive_following",
-        displayName: "Inactive Following",
-        uri: "/twitter-booster/inactive-following" 
-    },
-    {   
-        id: "twitter-booster_following",
-        displayName: "Following",
-        uri: "/twitter-booster/following" 
-    },
+        displayName: "Manage Accounts",
+        uri: "/twitter-booster/recent-unfollowers",
+        icon: "list" 
+    }
+    // {   
+    //     id: "twitter-booster_recent_followers",
+    //     displayName: "Recent Followers",
+    //     uri: "/twitter-booster/recent-followers" 
+    // },
+    // {   
+    //     id: "twitter-booster_inactive_following",
+    //     displayName: "Inactive Following",
+    //     uri: "/twitter-booster/inactive-following" 
+    // },
+    // {   
+    //     id: "twitter-booster_following",
+    //     displayName: "Following",
+    //     uri: "/twitter-booster/following" 
+    // },
     // {   
     //     id: "twitter-booster_whitelist",
     //     displayName: "White List",

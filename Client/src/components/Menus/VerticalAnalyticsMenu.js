@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 const VerticalAnalyticsMenu = ({ menuItems }) => {
     return (
         <div>
-            <aside className="vertical-menu gradient-background-teal-blue">
+            <aside className="vertical-menu">
                 <MenuItems menuItems={ menuItems } />
                 <SupportSection />
             </aside>

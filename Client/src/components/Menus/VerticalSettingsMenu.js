@@ -6,7 +6,7 @@ import {startLogout} from "../../actions/auth";
 const VerticalSettingsMenu = ({ menuItems, logout }) => {
     return (
         <div>
-            <aside className="vertical-menu gradient-background-teal-blue">
+            <aside className="vertical-menu">
                 <MenuItems menuItems={ menuItems } />
                 <SupportSection logout={logout}/>
             </aside>

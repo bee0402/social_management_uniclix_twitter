@@ -93,25 +93,25 @@ class SelectChannelsModal extends React.Component{
 
                         <ul>
                             {!!twitterChannels.length &&
-                                <li onClick={this.toggleTwitterSelect} className={this.state.twitterSelect && 'selected'}>
+                                <li onClick={this.toggleTwitterSelect} className={this.state.twitterSelect ? 'selected' : ''}>
                                  <i className="fa fa-twitter twitter_color"> </i> <p>Twitter</p>
                                 </li>
                             }
 
                             {!!facebookChannels.length &&
-                                <li onClick={this.toggleFacebookSelect} className={this.state.facebookSelect && 'selected'}>
+                                <li onClick={this.toggleFacebookSelect} className={this.state.facebookSelect ? 'selected' : ''}>
                                 <i className="fa fa-facebook facebook_color"> </i> Facebook
                                 </li>
                             }
 
                             {!!linkedinChannels.length &&
-                                <li onClick={this.toggleLinkedinSelect} className={this.state.linkedinSelect && 'selected'}>
+                                <li onClick={this.toggleLinkedinSelect} className={this.state.linkedinSelect ? 'selected' : ''}>
                                 <i className="fa fa-linkedin linkedin_color"> </i> Linkedin
                                 </li>
                             }
 
                             {!!pinterestChannels.length &&
-                                <li onClick={this.togglePinterestSelect} className={this.state.pinterestSelect && 'selected'}>
+                                <li onClick={this.togglePinterestSelect} className={this.state.pinterestSelect ? 'selected' : ''}>
                                 <i className="fa fa-pinterest pinterest_color"> </i> Pinterest
                                 </li>
                             }
@@ -122,8 +122,8 @@ class SelectChannelsModal extends React.Component{
                         {!!twitterChannels.length && this.state.twitterSelect &&
                         
                             twitterChannels.map((channel) => (
-                                <div className={`channel-selection-container ${channel.selected && 'selected'}` }>
-                                    <label key={channel.id} className="channel-item selection-container">
+                                <div key={channel.id} className={`channel-selection-container ${channel.selected ? 'selected' : ''}` }>
+                                    <label  className="channel-item selection-container">
                                         <input type={twitterSelectType} onChange={() => onChange(channel)} defaultChecked={channel.selected ? "checked" : ""} name="twitter_channel" />
                                         <span className={`checkmark ${twitterSelectType == 'radio' ? 'round' : ''}`}></span>
                                         <img className="avatar-box" onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar} /> {channel.name}
@@ -135,8 +135,8 @@ class SelectChannelsModal extends React.Component{
                         {!!facebookChannels.length && this.state.facebookSelect &&
                         
                             facebookChannels.map((channel) => (
-                                <div className={`channel-selection-container ${channel.selected && 'selected'}` }>
-                                    <label key={channel.id} className="channel-item selection-container">
+                                <div key={channel.id} className={`channel-selection-container ${channel.selected && 'selected'}` }>
+                                    <label className="channel-item selection-container">
                                         <input type="checkbox" onChange={() => onChange(channel)} defaultChecked={channel.selected ? "checked" : ""} name="facebook_channel" />
                                         <span className="checkmark"></span>
                                         <img className="avatar-box" onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar} /> {channel.name}
@@ -148,8 +148,8 @@ class SelectChannelsModal extends React.Component{
                         {!!linkedinChannels.length && this.state.linkedinSelect &&
                         
                             linkedinChannels.map((channel) => (
-                                <div className={`channel-selection-container ${channel.selected && 'selected'}` }>
-                                    <label key={channel.id} className="channel-item selection-container">
+                                <div key={channel.id} className={`channel-selection-container ${channel.selected && 'selected'}` }>
+                                    <label className="channel-item selection-container">
                                         <input type="checkbox" onChange={() => onChange(channel)} defaultChecked={channel.selected ? "checked" : ""} name="linkedin_channel" />
                                         <span className="checkmark"></span>
                                         <img className="avatar-box" onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar} /> {channel.name}
@@ -161,8 +161,8 @@ class SelectChannelsModal extends React.Component{
                         {!!pinterestChannels.length &&                                                                                                                                                                          this.state.pinterestSelect &&
                             
                             pinterestChannels.map((channel) => (
-                                <div className={`channel-selection-container ${channel.selected && 'selected'}` }>
-                                    <label key={channel.id} className="channel-item selection-container">
+                                <div key={channel.id} className={`channel-selection-container ${channel.selected && 'selected'}` }>
+                                    <label className="channel-item selection-container">
                                         <input type="checkbox" onChange={() => onChange(channel)} defaultChecked={channel.selected ? "checked" : ""} name="pinterest_channel" />
                                         <span className="checkmark"></span>
                                         <img className="avatar-box" onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar} /> {channel.name}

@@ -4,7 +4,7 @@ import {NavLink, Link} from "react-router-dom";
 const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) => {
     return (
         <div>
-            <aside className="vertical-menu gradient-background-teal-blue scrollbar">
+            <aside className="vertical-menu scrollbar">
 
                 <div className="btn-group">
                     <ProfileInfo selectedChannel = {selectedChannel} />
@@ -66,13 +66,24 @@ const ProfileSelectionItem = ({ channel, selectChannel }) => (
     </div>
 );
 
-const MenuItems = ({ menuItems }) => (
-    <ul className="v-menu-links clear-both">
-        {menuItems.map((item) => (
-            <li key={item.id}><NavLink className="links" to={item.uri}>{item.displayName}</NavLink></li>
-        ))}
-    </ul>
-);
+class MenuItems extends React.Component{
+    
+    onItemHover = (e) => {
+        console.log(e);
+    };
+
+    render(){
+        const {menuItems} = this.props;
+
+        return (
+            <ul className="v-menu-links clear-both">
+                {menuItems.map((item) => (
+                    <li key={item.id} onMouseEnter={(e) => this.onItemHover(e)}><NavLink className="links" to={item.uri}><i className={`fa fa-${item.icon}`}></i> <span>{item.displayName}</span></NavLink></li>
+                ))}
+            </ul>            
+        );
+    }
+}
 
 const SupportSection = () => (
     <div className="support">

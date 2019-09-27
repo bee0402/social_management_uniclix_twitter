@@ -7,7 +7,7 @@ export const PublicRoute = ({
     component: Component, 
     ...rest}) => (
     <Route {...rest} component={(props) => {
-        let redirect = props.location.search.indexOf("twitter-booster") != -1 ? '/twitter-booster/keyword-targets' : '/accounts';
+        let redirect = '/twitter-booster/keyword-targets';
         return (
             !isAuthenticated ? 
             (   <div>

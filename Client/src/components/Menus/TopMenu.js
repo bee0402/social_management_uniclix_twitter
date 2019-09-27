@@ -9,21 +9,20 @@ const TopMenu = ({setComposerModal}) => (
         <a href={backendUrl} className="brand"><img src="/images/uniclix.png"/></a>
 
         <ul className="top-menu">
-            <li><NavLink to="/scheduled" activeClassName="active">PUBLISH</NavLink></li>
-            <li><NavLink to="/streams" activeClassName="active">STREAMS</NavLink></li> 
-            <li><NavLink to="/content-finder" activeClassName="active">CONTENT FINDER</NavLink></li> 
-            <li><NavLink to="/analytics" activeClassName="active">ANALYTICS</NavLink></li> 
-            <li><NavLink to="/twitter-booster" activeClassName="active">TWITTER BOOSTER</NavLink></li> 
-            <li><NavLink to="/accounts" activeClassName="active">ACCOUNTS</NavLink></li>
+            <li><NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink></li> 
+            <li><a href="#">Social media manager</a></li> 
         </ul>
 
-        <ul className="nav-buttons">
-            <li><NavLink to="/settings/billing" className="upgrade-btn">Upgrade for more features</NavLink></li> 
-            <li><NavLink to="/settings" activeClassName="active" className="top-icons"><i className="fa fa-gear"></i></NavLink></li>
-            <li>
-                <a onClick={() => setComposerModal(true)} className="compose-btn">Compose</a>
-            </li>  
-        </ul>
+
+        <div className="current-profile">
+            <div className="current-profile-info">
+                <p className="current-profile-name">Albert Feka</p>
+                <p className="current-profile-email">email@email.com</p>
+            </div>
+            <div className="current-profile-avatar">
+                <img src="/images/dummy_profile.png" />
+            </div>
+        </div>
     </div>
 );
 
