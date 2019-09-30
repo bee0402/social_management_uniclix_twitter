@@ -750,7 +750,7 @@ input {
     height: calc(100% - 300px);
     overflow-y: auto;
     overflow-x: hidden;
-    background: #f5f7fb;
+    background: white;
 }
 
 .v-menu-links li{
@@ -768,14 +768,16 @@ input {
 }
 
 .profile-info {
-    width: 100%;
-    color: white;
-    height: 100%;
+    display: flex;
+    width:100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #515151;
     cursor: pointer;
-    padding: 20px 10px;
-    margin: 30px 0 0 0;
-    border-top: 1px solid rgba(255, 255, 255, .3);
-    border-bottom: 1px solid rgba(255, 255, 255, .3);
+    padding: 35px 10px;
+    margin: 0;
+    border-bottom: 1px solid #dbdbdb;
 }
 
 .profile-info img {
@@ -783,6 +785,7 @@ input {
     height: 45px;
     object-fit: cover;
     border-radius: 100%;
+    border: 1px solid #ccc;
 }
 
 .profile-info > div {
@@ -790,8 +793,7 @@ input {
 }
 
 .profile-info p {
-    margin: 0;
-    font-weight: bold;
+    margin: 0;;
     max-width: 111px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -799,14 +801,13 @@ input {
 }
 
 .profile-name {
-    font-weight: bold;
+    font-weight: normal;
     text-transform: uppercase;
-    font-weight: bold;
 }
 
 .profile-username {
-    font-weight: bold;
-    font-size: 12px;
+    font-weight: normal;
+    font-size: 1.4rem;
 }
 
 .brand-img{
@@ -972,9 +973,9 @@ input {
     height: 15px;
     border-radius: 100%;
     position: absolute;
-    left: -5px;
-    top: 0px;
-    font-size: 10px;
+    right: -5px;
+    bottom: 0;
+    font-size: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1791,7 +1792,7 @@ button.streammaker-btn:hover {
 
 .support div > a {
     display: block;
-    color: #48b6be;
+    color: #363636;
     background: #ffffff;
     text-decoration: none;
     width: 120px;
@@ -1799,7 +1800,8 @@ button.streammaker-btn:hover {
     text-align: center;
     border-radius: 20px;
     margin: 31px auto;
-    font-weight: bold;
+    font-weight: normal;
+    font-size: 1.6rem;
 }
 
 .logout-btn a{
@@ -1969,9 +1971,15 @@ button.streammaker-btn:hover {
     transition: all .3s;
 }
 
-.vertical-menu li a:hover, .vertical-menu .active {
+.vertical-menu li a:hover{
     text-decoration: none;
     color: #2d86e0;
+}
+
+.vertical-menu .active {
+    text-decoration: none;
+    color: #2d86e0;
+    font-weight: bold;
     background: #f5f7fb;
     border-radius: 100px;
     border-top-right-radius: 0;

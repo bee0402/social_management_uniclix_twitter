@@ -6,10 +6,8 @@ const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) =
         <div>
             <aside className="vertical-menu scrollbar">
 
-                <div className="btn-group">
-                    <ProfileInfo selectedChannel = {selectedChannel} />
-                    <ProfileSelectionDropDown channels = {channels} selectChannel={selectChannel} />
-                </div>
+                <ProfileInfo selectedChannel = {selectedChannel} />
+                <ProfileSelectionDropDown channels = {channels} selectChannel={selectChannel} />
         
                 <MenuItems menuItems={ menuItems } />
                 <SupportSection />
@@ -19,19 +17,13 @@ const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) =
 };
 
 const ProfileInfo = ({ selectedChannel }) => (
-    <div className="user-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <div className="profile-info pull-right">
-            <span className="pull-left profile-img-container">
-                <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={selectedChannel.avatar} />
-                <i className={`fa fa-${selectedChannel.type} ${selectedChannel.type}_bg smallIcon`}></i>
-            </span>
-            <div className="pull-left">
-                <p className="profile-name">{selectedChannel.name}</p>
-                <p className="profile-username">{!!selectedChannel.username && `@${selectedChannel.username}`}</p>
-            </div>
-            <div className="pull-right down-arrow">
-                <i className="fa fa-angle-down"></i>
-            </div>
+    <div className="profile-info">
+        <span className="pull-left profile-img-container">
+            <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={selectedChannel.avatar} />
+            <i className={`fab fa-${selectedChannel.type} ${selectedChannel.type}_bg smallIcon`}></i>
+        </span>
+        <div>
+            <p className="profile-username">{!!selectedChannel.username && `@${selectedChannel.username}`}</p>
         </div>
     </div>
 );
@@ -52,12 +44,12 @@ const ProfileSelectionDropDown = ({ channels, selectChannel }) => (
 const ProfileSelectionItem = ({ channel, selectChannel }) => (
     <div className="channel-container">
         <a href="#" className="block-urls" onClick={(e) => { selectChannel(channel.id) }}>
-            <div className="profile-info pull-right">
-                <span className="pull-left profile-img-container">
+            <div className="profile-info ">
+                <span className="profile-img-container">
                     <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar} />
                     <i className={`fa fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
                 </span>
-                <div className="pull-left">
+                <div>
                     <p className="profile-name" title={channel.name}>{channel.name}</p>
                     <p className="profile-username">{!!channel.username && `@${channel.username}`}</p>
                 </div>
@@ -67,10 +59,6 @@ const ProfileSelectionItem = ({ channel, selectChannel }) => (
 );
 
 class MenuItems extends React.Component{
-    
-    onItemHover = (e) => {
-        console.log(e);
-    };
 
     render(){
         const {menuItems} = this.props;
@@ -78,7 +66,7 @@ class MenuItems extends React.Component{
         return (
             <ul className="v-menu-links clear-both">
                 {menuItems.map((item) => (
-                    <li key={item.id} onMouseEnter={(e) => this.onItemHover(e)}><NavLink className="links" to={item.uri}><i className={`fa fa-${item.icon}`}></i> <span>{item.displayName}</span></NavLink></li>
+                    <li key={item.id} ><NavLink className="links" to={item.uri}><i className={`fa fa-${item.icon}`}></i> <span>{item.displayName}</span></NavLink></li>
                 ))}
             </ul>            
         );
@@ -88,7 +76,7 @@ class MenuItems extends React.Component{
 const SupportSection = () => (
     <div className="support">
         <div>
-            <a href="mailto:info@uniclixapp.com?Subject=The%20sky%20is%20falling!"><i className="fa fa-comment"></i> SUPPORT</a>
+            <a href="mailto:info@uniclixapp.com?Subject=The%20sky%20is%20falling!"><i className="fa fa-comment"></i> Support</a>
         </div>
     </div>
 );
