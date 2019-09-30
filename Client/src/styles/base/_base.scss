@@ -2258,6 +2258,38 @@ button.streammaker-btn:hover {
     margin: 0;
 }
 
+.item-row .profile-info .item-actions{
+    display: none;
+}
+
+.far.fa-user-plus{
+    background: url(/images/user-plus-regular.svg);
+}
+
+.item-row:hover .profile-info .stats-info{
+    display: none;
+}
+
+.item-row:hover .profile-info .item-actions{
+    display: block;
+}
+
+.item-row .user-action {
+    width: 30px;
+    height: 30px;
+    box-sizing: content-box;
+    padding: 6px 6px;
+    border: none;
+    border-radius: 100px;
+    margin-right:25px;
+    object-fit: scale-down;
+    object-position: center;
+}
+
+.item-row .user-action:hover {
+    background: rgba(#2D86DA, 0.2);
+}
+
 .schedule-row .profile-info p{
     width:inherit;
 }

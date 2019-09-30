@@ -365,6 +365,17 @@ class UserItem extends React.Component{
                                 <li><p className="stat-count">{ abbrNum(userItem.followers_count, 1) }</p><p className="stat-name">followers</p></li>
                                 <li><p className="stat-count">{ abbrNum(userItem.friends_count, 1) }</p><p className="stat-name">following</p></li>
                             </ul>
+
+                            <UserActionButtons 
+                                actionButton={ buttonState } 
+                                perform={this.perform} 
+                                userItem={userItem} 
+                                replyState={replyState} 
+                                setReplyState={this.setReplyState}
+                                DMState={DMState}
+                                setDMState={this.setDMState}
+                                page={page}
+                            />
                         </div>
         
                     </div>
@@ -413,7 +424,7 @@ class UserItem extends React.Component{
 
 const UserActionButtons = ({actionButton, perform, replyState, setReplyState, setDMState, DMState, userItem, page }) => (
         <div className="item-actions pull-right">
-            <ul className="v-center-align">
+
 
                 {!replyState.disabled &&
                     <li className="text-links">
@@ -427,29 +438,16 @@ const UserActionButtons = ({actionButton, perform, replyState, setReplyState, se
                     </li>
                 }
 
-                <li className="btn-links">
 
-                <Popup
-                    trigger={<i className="fa fa-ellipsis-v"></i>}
-                    on="click"
-                    position="left center"
-                    arrow={true}
-                    closeOnDocumentClick
-                >
-                {
-                close => ( 
-                    <div className="t-action-menu">
-                        {!!actionButton && <button  onClick={() => {perform(); close();}} className={`${actionButton.disabled ? 'disabled-btn' : ''}`}>
-                        {actionButton.action == "add" ? "Follow" : "Unfollow"}
-                        </button>}
-                        {(actionButton.action == "add" || page == "following") && <button onClick={() => {setDMState({disabled: !DMState.disabled, content: ``}); close();}}>DM</button>}
-                        {(actionButton.action == "add" || page == "following") && <button onClick={() => {setReplyState({disabled: !replyState.disabled, content: `@${userItem.screen_name} `}); close();}}>Reply</button>}
-                    </div>
-                )}
-                </Popup>
-                    
-                </li>
-            </ul>
+                   
+                {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/reply-regular.svg`} onClick={() => {setReplyState({disabled: !replyState.disabled, content: `@${userItem.screen_name} `}); close();}}/>}
+                {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/envelope-regular.svg`} onClick={() => {setDMState({disabled: !DMState.disabled, content: ``}); close();}} />}
+                {!!actionButton && 
+                    actionButton.action == "add" ?
+                    <img onClick={() => {perform(); close();}} src={`/images/user-plus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
+                    :
+                    <img onClick={() => {perform(); close();}} src={`/images/user-minus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
+                }    
         </div>
 ); 
 
