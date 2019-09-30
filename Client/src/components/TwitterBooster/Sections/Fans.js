@@ -148,7 +148,25 @@ class Fans extends React.Component{
                     />
                     :
                     <div>
-                    <h2>FANS</h2>
+                    <div className="section-header">
+                        <div className="section-header__first-row">
+                           <h2>Followers</h2> 
+                           <button className="btn-text-blue">Set up auto DM</button>
+                        </div>
+
+                        <div className="section-header__second-row">
+                            <p>This is a list of your active and recent followers</p> 
+                            <div className="section-header__select-menu">
+                                <label htmlFor="sortBy">Sort by</label>
+                                <select id="sortBy">
+                                    <option value="1">Date</option>
+                                </select>
+                                <i className="fas fa-arrow-up"></i>
+                                <i className="fas fa-arrow-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
                         <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
 
                         <UserList 

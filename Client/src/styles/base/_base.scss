@@ -728,7 +728,7 @@ a, a:hover, a:visited, a:active, a:link {
     width: 235px;
     overflow: hidden;
     background: white;
-    margin-top: 70px;
+    margin-top: 120px;
     z-index: 999;
     border-top-right-radius: 50px;
 }
@@ -763,6 +763,36 @@ a, a:hover, a:visited, a:active, a:link {
     margin-right: 30px;
 }
 
+.btn-text-pink {
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #D83E7F;
+}
+
+button.btn-text-blue {
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #2D86DA;
+    font-size: 1.4rem;
+}
+
+.top-alert {
+    position: fixed;
+    top: 70px;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.4rem;
+    background: #E0E2E9;
+    width: 100%;
+    z-index: 1000;
+}
+
+.top-alert span {
+    font-weight: bold;
+}
+
 .profile-info {
     display: flex;
     width:100%;
@@ -773,7 +803,7 @@ a, a:hover, a:visited, a:active, a:link {
     cursor: pointer;
     padding: 35px 10px;
     margin: 0;
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 2px solid #f5f7fb;
 }
 
 .profile-info img {
@@ -823,7 +853,7 @@ a, a:hover, a:visited, a:active, a:link {
 
 .support {
     position: absolute;
-    bottom: 70px;
+    bottom: 120px;
     width: 100%;
     // background: linear-gradient(to right, #48BBB8, #438AF1);
     background: white;
@@ -1795,7 +1825,7 @@ button.streammaker-btn:hover {
     padding: 10px 0px;
     text-align: center;
     border-radius: 20px;
-    margin: 31px auto;
+    margin: 15px auto;
     font-weight: normal;
     font-size: 1.6rem;
 }
@@ -2009,23 +2039,71 @@ button.streammaker-btn:hover {
 }
 
 .main-section {
-    margin-top: 130px;
+    margin-top: 180px;
 }
 
-.main-section h2 {
+.section-header{
+    color: #363636;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.section-header__first-row, .section-header__second-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header__second-row {
+    margin: 20px 0 10px 0;
+}
+
+.section-header__first-row h2{
+    font-size: 2.4rem;
     font-weight: bold;
-    font-size: 20px;
-    color: #666;
+    margin:0;
+}
+
+.section-header__second-row p{
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.section-header__select-menu label {
+    font-weight: normal;
+}
+
+.section-header__select-menu select {
+    width: 171px;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    background: url(/images/down-arrow-blue.svg) 96% / 7% no-repeat #fff;
+}
+
+.section-header__select-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 270px;
+}
+
+.section-header__select-menu i{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.section-header__select-menu i:hover{
+    opacity: 1;
+    color: #2D86DA;
 }
 
 .shadow-box {
-    box-shadow: 0px 0px 1px 0px #ececec;
     overflow: hidden;
-    padding: 20px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    border: 1px solid #eee;
-    background: white;
+    margin-top: 20px;
 }
 
 .dashboard-info li {
@@ -2070,7 +2148,6 @@ button.streammaker-btn:hover {
 .item-header {
     overflow: hidden;
     padding-bottom: 20px;
-    border-bottom: 1px solid #e2e2e2;
 }
 
 .schedule-header{
@@ -2096,31 +2173,55 @@ button.streammaker-btn:hover {
 }
 
 .item-row .profile-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     width: inherit;
-    color: #999 !important;
-    margin: 0 !important;
+    color: #363636;
     text-transform: capitalize;
+    padding: 10px;
+}
+
+.item-row .profile-info .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.item-row .profile-info .user-info img {
+    width: 45px;
+    height: 45px;
+    margin-right: 15px;
 }
 
 .item-row {
     overflow: hidden;
-    border-bottom: 1px solid #e2e2e2;
+    background: white;
+    margin-bottom: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+    border-radius: 6px;
+}
+
+.item-row:hover {
+    background: #EAF3FB;
+    box-shadow: unset;
 }
 
 .item-row .profile-name {
-    font-weight: light;
+    font-weight: bold;
     text-transform: capitalize;
-    font-size: 20px;
-    color: #717171;
+    font-size: 1.6rem;
+    color: #363636;
     max-width: inherit;
 }
 
 .item-row .profile-title {
-    font-size: 12px;
+    font-size: 1.4rem;
     max-width: 300px !important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-top: 5px;
 }
 
 .item-row img {
@@ -2129,12 +2230,32 @@ button.streammaker-btn:hover {
 }
 
 .item-row .profile-username {
-    color: #b1b1b1;
-    font-weight: light;
+    color: #909090;
+    font-weight: normal;
+    font-size: 1.4rem;
 }
 
 .item-row .profile-info p {
     max-width: inherit;
+}
+
+.item-row .profile-info .stats-info .stat-name {
+    font-size: 1.2rem;
+    color: #909090;
+}
+
+.item-row .profile-info .stats-info .stat-count {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.item-row .profile-info .stats-info li {
+    margin-right: 25px;
+    text-align: center;
+}
+
+.item-row .profile-info .stats-info {
+    display: flex;
+    margin: 0;
 }
 
 .schedule-row .profile-info p{

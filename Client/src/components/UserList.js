@@ -164,14 +164,9 @@ class UserList extends React.Component{
                             targetSearchView
                         :
                         <div>
-                            <ListActions actionType={ actionType } actions={ actions } />
                             <div className="row">
                                 <div className="col-xs-12">
                                     <div className="item-list shadow-box">
-                                        <div className="item-header">
-                                            { showTargetLink &&  <TargetsLink targetType={ targetType } showSearchView={showSearchView} /> }
-                                            { showSortOption && <SortOption sortBy={fetchData} /> }
-                                        </div>
     
                                         {userItems.map((item, index) => (
                                             <UserItem key={item.id} 
@@ -355,29 +350,23 @@ class UserItem extends React.Component{
                 <div className={`item-row ${buttonState.disabled && 'disabled-btn'}`}>
         
                     <div>
-                        <div className="profile-info pull-left">
-                            <img className="pull-left" src={userItem.profile_image_url} />
-                            <div className="pull-left">
-                                <p className="profile-name">{ userItem.name } <span className="profile-username">{ userItem.screen_name }</span> <span className="profile-state"></span></p>
-                                <p className="profile-title">{ userItem.description }</p>
-                                <ul className="bottom-info">
-                                    <li><p>{ abbrNum(userItem.statuses_count, 1) } tweets</p></li>
-                                    <li><p>{ abbrNum(userItem.followers_count, 1) } followers</p></li>
-                                    <li><p>{ abbrNum(userItem.friends_count, 1) } following</p></li>
-                                </ul>
+                        <div className="profile-info">
+                            <div className="user-info">
+                                <img src={userItem.profile_image_url} />
+                                <div>
+                                    <p className="profile-name">{ userItem.name }  <span className="profile-state"></span></p>
+                                    <p className="profile-username">@{ userItem.screen_name }</p>
+                                    <p className="profile-title" title={userItem.description}>{ userItem.description }</p>
+                                </div>
                             </div>
+
+                            <ul className="stats-info">
+                                <li><p className="stat-count">{ abbrNum(userItem.statuses_count, 1) }</p> <p className="stat-name">tweets</p></li>
+                                <li><p className="stat-count">{ abbrNum(userItem.followers_count, 1) }</p><p className="stat-name">followers</p></li>
+                                <li><p className="stat-count">{ abbrNum(userItem.friends_count, 1) }</p><p className="stat-name">following</p></li>
+                            </ul>
                         </div>
         
-                        <UserActionButtons 
-                        actionButton={ buttonState } 
-                        perform={this.perform} 
-                        userItem={userItem} 
-                        replyState={replyState} 
-                        setReplyState={this.setReplyState}
-                        DMState={DMState}
-                        setDMState={this.setDMState}
-                        page={page}
-                        />
                     </div>
                     
                     { !this.state.replyState.disabled && 

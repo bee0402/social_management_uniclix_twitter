@@ -5,25 +5,30 @@ import {backendUrl} from "../../config/api";
 import {setComposerModal} from "../../actions/composer";
 
 const TopMenu = ({setComposerModal}) => (
-    <div className="navbar-uniclix">
-        <a href={backendUrl} className="brand"><img src="/images/uniclix.png"/></a>
+    <div>
+        <div className="navbar-uniclix">
+            <a href={backendUrl} className="brand"><img src="/images/uniclix.png"/></a>
 
-        <ul className="top-menu">
-            <li><NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink></li> 
-            <li><a href="#">Social media manager</a></li> 
-        </ul>
+            <ul className="top-menu">
+                <li><NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink></li> 
+                <li><a href="#">Social media manager</a></li> 
+            </ul>
 
 
-        <div className="current-profile">
-            <div className="current-profile-info">
-                <p className="current-profile-name">Albert Feka</p>
-                <p className="current-profile-email">email@email.com</p>
-            </div>
-            <div className="current-profile-avatar">
-                <img src="/images/dummy_profile.png" />
+            <div className="current-profile">
+                <div className="current-profile-info">
+                    <p className="current-profile-name">Albert Feka</p>
+                    <p className="current-profile-email">email@email.com</p>
+                </div>
+                <div className="current-profile-avatar">
+                    <img src="/images/dummy_profile.png" />
+                </div>
             </div>
         </div>
+
+        <div className="top-alert"><span>You have 3 days remaining on your Twitter Booster trial.</span> Add your billing information now to start your subscription. <button className="btn-text-pink">Start subscription</button></div>
     </div>
+
 );
 
 const mapDispatchToProps = (dispatch) => ({
