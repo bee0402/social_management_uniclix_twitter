@@ -2195,7 +2195,6 @@ button.streammaker-btn:hover {
 }
 
 .item-row {
-    overflow: hidden;
     background: white;
     margin-bottom: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
@@ -2224,9 +2223,20 @@ button.streammaker-btn:hover {
     margin-top: 5px;
 }
 
-.item-row img {
+.item-row .user-info > img {
     width: 70px;
     height: 70px;
+}
+
+.item-row .draftJsEmojiPlugin__emojiSelectPopover__1J1s0{
+    position: absolute;
+    right: 30px;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
 }
 
 .item-row .profile-username {
@@ -2260,6 +2270,45 @@ button.streammaker-btn:hover {
 
 .item-row .profile-info .item-actions{
     display: none;
+}
+
+.item-row .draft_editor_container{
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 150px;
+}
+
+.item-row.editor-container{
+    padding:30px;
+}
+
+.item-row.editor-container:hover{
+    background: white;
+}
+
+.item-row .modal-body{
+    position: relative;
+    padding: 15px;
+    height: 110px;
+}
+
+.item-row .DraftEditor-root {
+    height: 90px;
+    overflow-y: auto;
+}
+
+.item-row .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu{
+    background: transparent;
+}
+
+.item-row .draftJsEmojiPlugin__emojiSelectButton__3sPol:hover, .item-row .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu:hover{
+    background: transparent;
+}
+
+.item-row #draft_form{
+    height: 105px;
+    overflow: auto;
 }
 
 .far.fa-user-plus{

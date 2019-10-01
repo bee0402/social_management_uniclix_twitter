@@ -8,6 +8,7 @@ import KeywordTargetSearchList from './TwitterBooster/KeywordTargetSearchList';
 import {abbrNum} from "../utils/numberFormatter";
 import {tweet, dm} from "../requests/twitter/channels";
 import SocialAccountsPrompt from "./SocialAccountsPrompt";
+import DraftEditor from "./DraftEditor";
 
 let toastContainer;
 
@@ -340,6 +341,14 @@ class UserItem extends React.Component{
         }));
     };
 
+    updateDMState = (content = "") => {
+        this.setDMState({letterCount: 10000 - content.length, content})
+    };
+
+    updateReplyState = (content = "") => {
+        this.setReplyState({letterCount: 280 - content.length, content})
+    };
+
     render(){
         const { userItem, page } = this.props;
         const { buttonState, replyState, DMState } = this.state;
@@ -347,7 +356,7 @@ class UserItem extends React.Component{
         return (
             
             <div>    
-                <div className={`item-row ${buttonState.disabled && 'disabled-btn'}`}>
+                <div className={`item-row ${buttonState.disabled && 'disabled-btn'} clearfix`}>
         
                     <div>
                         <div className="profile-info">
@@ -379,11 +388,17 @@ class UserItem extends React.Component{
                         </div>
         
                     </div>
-                    
-                    { !this.state.replyState.disabled && 
+                </div>
+
+                { !this.state.replyState.disabled && 
+                    <div className={`item-row editor-container ${buttonState.disabled && 'disabled-btn'} clearfix`}>
                         <div className="reply-box">
                             <span className="reply__arrow"></span>
-                            <textarea spellCheck="false" value={this.state.replyState.content} onChange={(e) => this.setReplyState({letterCount: 280 - e.target.value.length, content: e.target.value})}></textarea>
+                            <DraftEditor 
+                                onChange={this.updateReplyState}
+                                content={this.state.replyState.content}
+                                pictures={[]}
+                            />
                             <span className="grey-txt">{this.state.replyState.letterCount}</span>
                             {   
                                 this.state.replyState.letterCount >= 0 && this.state.replyState.letterCount < 280 ?
@@ -396,12 +411,19 @@ class UserItem extends React.Component{
                                 Tweet</button>
                             }
                         </div>
-                    }
+                    </div>
+                }
 
-                    { !this.state.DMState.disabled && 
+                { !this.state.DMState.disabled && 
+                    <div className={`item-row editor-container ${buttonState.disabled && 'disabled-btn'} clearfix`}>
                         <div className="reply-box">
                             <span className="reply__arrow"></span>
-                            <textarea spellCheck="false" value={this.state.DMState.content} onChange={(e) => this.setDMState({letterCount: 10000 - e.target.value.length, content: e.target.value})}></textarea>
+                            <DraftEditor 
+                                onChange={this.updateDMState}
+                                content={this.state.DMState.content}
+                                pictures={[]}
+                            />
+                            
                             <span className="grey-txt">{this.state.DMState.letterCount}</span>
                             {   
                                 this.state.DMState.letterCount >= 0 && this.state.DMState.letterCount < 10000 ?
@@ -414,8 +436,8 @@ class UserItem extends React.Component{
                                 DM</button>
                             }
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         
         );
@@ -424,21 +446,6 @@ class UserItem extends React.Component{
 
 const UserActionButtons = ({actionButton, perform, replyState, setReplyState, setDMState, DMState, userItem, page }) => (
         <div className="item-actions pull-right">
-
-
-                {!replyState.disabled &&
-                    <li className="text-links">
-                        <a onClick={() => setReplyState({disabled: !replyState.disabled, content: `@${userItem.screen_name} `})} className="link-cursor">Reply</a>
-                    </li>
-                }
-
-                {!DMState.disabled &&
-                    <li className="text-links">
-                        <a onClick={() => setDMState({disabled: !DMState.disabled, content: `@${userItem.screen_name} `})} className="link-cursor">Direct Message</a>
-                    </li>
-                }
-
-
                    
                 {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/reply-regular.svg`} onClick={() => {setReplyState({disabled: !replyState.disabled, content: `@${userItem.screen_name} `}); close();}}/>}
                 {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/envelope-regular.svg`} onClick={() => {setDMState({disabled: !DMState.disabled, content: ``}); close();}} />}
