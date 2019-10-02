@@ -42,6 +42,7 @@ class DraftEditor extends React.Component{
         showEmojiIcon: typeof(this.props.showEmojiIcon) !== "undefined" ? this.props.showEmojiIcon : true,
         showImagesIcon: typeof(this.props.showImagesIcon) !== "undefined" ? this.props.showImagesIcon : true,
         showHashtagsIcon: typeof(this.props.showHashtagsIcon) !== "undefined" ? this.props.showHashtagsIcon : true,
+        showSendIcon: typeof(this.props.sendAction) !== "undefined" ? this.props.sendAction : false,
         placeholderText: typeof(this.props.placeholderText) !== "undefined" ? this.props.placeholderText : "What's on your mind?",
         singleImage: typeof(this.props.singleImage) !== "undefined" ? this.props.singleImage : true,
         imageLimit:  typeof(this.props.imageLimit) !== "undefined" ? this.props.imageLimit : 4
@@ -136,7 +137,7 @@ class DraftEditor extends React.Component{
         const { EmojiSuggestions, EmojiSelect} = emojiPlugin;
         const { MentionSuggestions: HashtagSuggestions } = hashtagMentionPlugin;
         const plugins = [emojiPlugin, hashtagMentionPlugin];
-        const {scheduledLabel, inclusive, toggle, network} = this.props;
+        const {scheduledLabel, inclusive, toggle, network, sendAction, letterLimit = 280} = this.props;
 
         return(
             <div className="draft_editor_container">
@@ -200,14 +201,20 @@ class DraftEditor extends React.Component{
                     {/* <i className="fa fa-map-marker add-location"></i> */}
                     {this.state.showEmojiIcon && <EmojiSelect />}
                     {this.state.showHashtagsIcon && <i onClick={this.onHashIconClick} className="fa fa-hashtag add-hashtag"></i>}
+
+                    {this.state.showSendIcon && 
+                        this.state.letterCount > letterLimit || this.state.letterCount < 1 ?
+                        <img className={`disabled-btn`} src={`/images/paper-plane.svg`} /> :
+                        <img onClick={sendAction} src={`/images/paper-plane.svg`} />
+                    }
                 </div>
 
                 {inclusive && 
                     <div className="modal-footer" style={{position:"relative"}}>
                     
-                        <p className={`letter-count pull-left ${this.state.letterCount > 280 && network == 'twitter' ? 'red-txt' : ''}`}>{this.state.letterCount}</p>
+                        <p className={`letter-count pull-left ${this.state.letterCount > letterLimit && network == 'twitter' ? 'red-txt' : ''}`}>{this.state.letterCount}</p>
 
-                        {(this.state.letterCount > 280 && network == "twitter") || (this.state.pictures.length < 1 && network == "pinterest") || (this.state.letterCount < 1 && this.state.pictures.length < 1) ?
+                        {(this.state.letterCount > letterLimit && network == "twitter") || (this.state.pictures.length < 1 && network == "pinterest") || (this.state.letterCount < 1 && this.state.pictures.length < 1) ?
                             <button disabled onClick={this.onDone} className={`upgrade-btn pull-right disabled-btn`}>Done</button>
                         :
                             <button onClick={this.onDone} className={`upgrade-btn pull-right`}>Done</button>

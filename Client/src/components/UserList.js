@@ -393,23 +393,16 @@ class UserItem extends React.Component{
                 { !this.state.replyState.disabled && 
                     <div className={`item-row editor-container ${buttonState.disabled && 'disabled-btn'} clearfix`}>
                         <div className="reply-box">
-                            <span className="reply__arrow"></span>
+                            <h2>Send a reply to @{ userItem.screen_name }</h2>
                             <DraftEditor 
                                 onChange={this.updateReplyState}
                                 content={this.state.replyState.content}
                                 pictures={[]}
+                                showImagesIcon={false}
+                                showHashtagsIcon={false}
+                                inclisive={true}
+                                sendAction={this.reply}
                             />
-                            <span className="grey-txt">{this.state.replyState.letterCount}</span>
-                            {   
-                                this.state.replyState.letterCount >= 0 && this.state.replyState.letterCount < 280 ?
-                                <button onClick={this.reply} className="btn compose-btn pull-right mg10"> 
-                                { this.state.replyState.loading && <i className="fa fa-circle-o-notch fa-spin"></i> }   
-                                Tweet</button>
-                                :
-                                <button className="btn compose-btn pull-right mg10 disabled" disabled>
-                                { this.state.replyState.loading && <i className="fa fa-circle-o-notch fa-spin"></i> }
-                                Tweet</button>
-                            }
                         </div>
                     </div>
                 }
@@ -417,24 +410,16 @@ class UserItem extends React.Component{
                 { !this.state.DMState.disabled && 
                     <div className={`item-row editor-container ${buttonState.disabled && 'disabled-btn'} clearfix`}>
                         <div className="reply-box">
-                            <span className="reply__arrow"></span>
+                        <h2>Send a direct message to @{ userItem.screen_name }</h2>
                             <DraftEditor 
                                 onChange={this.updateDMState}
                                 content={this.state.DMState.content}
                                 pictures={[]}
+                                showImagesIcon={false}
+                                showHashtagsIcon={false}
+                                inclisive={true}
+                                sendAction={ () => this.dm(userItem.screen_name)}
                             />
-                            
-                            <span className="grey-txt">{this.state.DMState.letterCount}</span>
-                            {   
-                                this.state.DMState.letterCount >= 0 && this.state.DMState.letterCount < 10000 ?
-                                <button onClick={() => this.dm(userItem.id_str)} className="btn compose-btn pull-right mg10"> 
-                                { this.state.DMState.loading && <i className="fa fa-circle-o-notch fa-spin"></i> }   
-                                DM</button>
-                                :
-                                <button className="btn compose-btn pull-right mg10 disabled" disabled>
-                                { this.state.DMState.loading && <i className="fa fa-circle-o-notch fa-spin"></i> }
-                                DM</button>
-                            }
                         </div>
                     </div>
                 }

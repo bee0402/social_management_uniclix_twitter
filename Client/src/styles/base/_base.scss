@@ -2300,10 +2300,12 @@ button.streammaker-btn:hover {
 
 .item-row .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu{
     background: transparent;
+    color: #2D86DA;
 }
 
 .item-row .draftJsEmojiPlugin__emojiSelectButton__3sPol:hover, .item-row .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu:hover{
     background: transparent;
+    color: #2D86DA;
 }
 
 .item-row #draft_form{
@@ -4266,6 +4268,23 @@ vertical-align: middle;
     font-size: 1.3rem;
     font-family: open-sansLight, sans-serif;
     color: #485576;
+}
+
+.reply-box h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0 0 20px 0;
+    padding: 0 0 20px 0;
+    border-bottom: 1px solid #dbdbdb;
+    color: #363636;
+}
+
+.editor-icons img {
+    cursor: pointer;
+    display: inline-block;
+    width: 20px;
+    margin-bottom: 4px;
+    margin-left: 10px;
 }
 
 .modal-results .channel-selection-container label > img {
