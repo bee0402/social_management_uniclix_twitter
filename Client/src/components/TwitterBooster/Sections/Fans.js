@@ -157,9 +157,11 @@ class Fans extends React.Component{
                         <div className="section-header__second-row">
                             <p>This is a list of your active and recent followers</p> 
                             <div className="section-header__select-menu">
-                                <label htmlFor="sortBy">Sort by</label>
+                                <label htmlFor="sortBy">Category</label>
                                 <select id="sortBy">
-                                    <option value="1">Date</option>
+                                    <option value="0">All</option>
+                                    <option value="1">Recent</option>
+                                    <option value="2">Fans</option>
                                 </select>
                                 <i className="fas fa-arrow-up"></i>
                                 <i className="fas fa-arrow-down"></i>
