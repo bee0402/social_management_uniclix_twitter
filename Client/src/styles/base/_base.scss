@@ -2072,6 +2072,13 @@ button.streammaker-btn:hover {
     font-weight: normal;
 }
 
+.section-header h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+    color: #363636;
+}
+
 .section-header__select-menu select {
     width: 171px;
     padding: 10px;
@@ -2665,6 +2672,16 @@ button.streammaker-btn:hover {
 
 .no-border{
     border: none !important;
+}
+
+
+
+.show-flex{
+    display: flex !important;
+}
+
+.no-hover:hover .show-flex{
+    display: flex !important;
 }
 
 .ReactModalPortal > div {
@@ -4172,6 +4189,10 @@ vertical-align: middle;
 
 .mb15 {
     margin-bottom: 15px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
 }
 
 .bolden{

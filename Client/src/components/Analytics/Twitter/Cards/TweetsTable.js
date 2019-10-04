@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner';
 import { pageInsightsByType } from "../../../../requests/twitter/channels";
 import AnalyticsTooltip from '../../AnalyticsTooltip';
 import ReadMore from '../../../ReadMore';
+import {abbrNum} from '../../../../utils/numberFormatter';
 
 class TweetsTable extends React.Component{
     state = {
@@ -45,50 +46,47 @@ class TweetsTable extends React.Component{
     };
 
     render(){
-        const {name} = this.props;
+        const {name, selectedChannel} = this.props;
         return (
-        <div className="overview-card">
-            <div className="card-header">
-                <img className="card-img" src="/images/twitter.png"></img> {name}
-                <AnalyticsTooltip tooltipDesc={this.props.tooltipDesc} />
+            <div>
+
+            <div className="section-header mb15">
+                <div className="section-header__first-row">
+                </div>
+
+                <div className="section-header__second-row">
+                    <h3>Tweets table</h3>
+                </div>
             </div>
-            <div className="card-table">
+
                 {this.state.tweets != null && !this.state.loading ?
-                <div className="table-wrapper-scroll-y table-scrollbar">
-                    <table className="table table-striped mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col" className="anl-posts-table-th-first">Date</th>
-                                <th scope="col" className="anl-posts-table-th-second">Message</th>
-                                <th scope="col">Retweets</th>
-                                <th scope="col">Replies</th>
-                                <th scope="col">Likes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.tweets.map((tweet, index)=> (
-                                <tr key={index}>
-                                    <td scope="row" className="anl-posts-table-th-first">
-                                        <div className="post-table-images">
-                                            <img className="pt-page-img" src={this.props.selectedChannel.avatar} />
-                                            <img className="pt-page-facebook" src="/images/twitter.png"></img>
+                    this.state.tweets.map((tweet, index)=> (
+                        <div key={index} className={`item-row clearfix no-hover`}>
+                    
+                            <div>
+                                <div className="profile-info">
+                                    <div className="user-info">
+                                        <img src={selectedChannel.avatar} />
+                                        <div>
+                                            <p className="profile-name">{ selectedChannel.name }  <span className="profile-state"></span></p>
+                                            <p className="profile-username">{ tweet.date }</p>
                                         </div>
-                                        <div className="post-table-page-date">
-                                            <p className="pt-page-name">{this.props.selectedChannel.name}</p>
-                                            <p className="pt-post-date">{tweet.date}</p>
-                                        </div>
-                                    </td>
-                                    <td className="anl-posts-table-th-second"><ReadMore characters={400}>{tweet.text ? tweet.text : ''}</ReadMore></td>
-                                    <td>{tweet.retweet_count}</td>
-                                    <td>0</td>
-                                    <td>{tweet.favorite_count}</td>                            
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div> : <div className="table-loader-style">{this.state.loading && <Loader type="Bars" color="#46a5d1" height={70} width={70} />}</div>}
+                                    </div>
+
+                                    <div className="main-info">
+                                        <ReadMore characters={400}>{tweet.text ? tweet.text : ''}</ReadMore>
+                                    </div>
+                                    
+                                    <ul className="stats-info show-flex">
+                                        <li><p className="stat-count">{ abbrNum(tweet.retweet_count, 1) }</p> <p className="stat-name">Retweets</p></li>
+                                        <li><p className="stat-count">{ 0 }</p><p className="stat-name">Replies</p></li>
+                                        <li><p className="stat-count">{ abbrNum(tweet.favorite_count, 1) }</p><p className="stat-name">Likes</p></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                )) : <div className="table-loader-style">{this.state.loading && <Loader type="Bars" color="#46a5d1" height={70} width={70} />}</div>}
             </div>
-        </div>
         );
     }
 }
