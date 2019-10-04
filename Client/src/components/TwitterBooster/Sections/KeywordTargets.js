@@ -83,6 +83,16 @@ class KeywordTargets extends React.Component{
         getKeywordTargets()
             .then((response) => {
                 if(typeof(response.items) === "undefined") return;
+
+                if(response.targets.length < 1){
+                    this.setState(() => ({
+                        searchView: true,
+                        loading: false
+                    }));
+
+                    return;
+                }
+
                 this.setState(() => ({
                     userItems: response.items,
                     actions: response.actions,

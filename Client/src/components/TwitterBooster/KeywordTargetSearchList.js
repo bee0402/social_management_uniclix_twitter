@@ -158,8 +158,9 @@ class KeywordTargetSearchList extends React.Component{
                                     ))}
                                 </div>
                             </div>
-
-                            {!!this.props.targets.length && 
+                            
+                            <div className="seperator mt20 mb20"></div>
+                            {!!this.props.targets.length ? 
                                 <div>   
                                 
                                 <div className={`section-header no-border mt20 mb20`}>
@@ -173,6 +174,12 @@ class KeywordTargetSearchList extends React.Component{
                                     <div className="added-items">
                                         {this.props.targets.map((target) => <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />)}
                                     </div>
+                                </div>
+                            :
+                                <div className="mt20 mb20 text-center no-hashtags">
+                                    <img src="/images/hashtag-girl.svg" />
+                                    <h3>Whoops!</h3>
+                                    <p>You don't have any configured hashtags yet.</p>
                                 </div>
                             }
 
