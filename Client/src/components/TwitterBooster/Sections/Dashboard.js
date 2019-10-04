@@ -45,42 +45,44 @@ class Dashboard extends React.Component {
 
         return (
             <div>
-                <h2>DASHBOARD</h2>
+                <div className="section-header no-border">
+                    <div className="section-header__first-row">
+                    <h2>Dashboard</h2> 
+                    </div>
+
+                    <div className="section-header__second-row">
+                    </div>
+                </div>
 
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
                 {!this.state.forbidden &&
                 <div>
                     <div className="row overview-cards-container mb20">
-                        <div className="col-md-3 col-xs-12">
+                        <div className="col-md-4 col-xs-12">
                             <TwitterOverviewCard
                                 name='Tweets'
                                 type="tweetsCount"
                                 description='tweets'
                                 tooltipDesc='The number of tweets published from your Twitter account'
+                                iconPath={`/images/twitter-blue-icon.svg`}
                                 {...propData} />
                         </div>
-                        <div className="col-md-3 col-xs-12">
+                        <div className="col-md-4 col-xs-12">
                             <TwitterOverviewCard
                                 name='Followers'
                                 type="followersCount"
                                 description='followers'
                                 tooltipDesc='The number of people who are following your Twitter account'
+                                iconPath={`/images/followers-blue-icon.svg`}
                                 {...propData} />
                         </div>
-                        <div className="col-md-3 col-xs-12">
+                        <div className="col-md-4 col-xs-12">
                             <TwitterOverviewCard
                                 name='Following'
                                 type="followingCount"
                                 description='following'
                                 tooltipDesc='Toatal number of people you are following on your Twitter accounts'
-                                {...propData} />
-                        </div>
-                        <div className="col-md-3 col-xs-12">
-                            <TwitterOverviewCard
-                                name='Likes'
-                                type="totalLikesCount"
-                                description='likes'
-                                tooltipDesc='Number of likes with your selected account'
+                                iconPath={`/images/user-check-blue-icon.svg`}
                                 {...propData} />
                         </div>
                     </div>
@@ -91,6 +93,7 @@ class Dashboard extends React.Component {
                                 name="Tweets Table"
                                 type='tweetsTableData'
                                 tooltipDesc='The list of tweets published by your Twitter account, with their engagement stats: retweets, replies and likes'
+                                iconPath={`/images/user-check-blue-icon.svg`}
                                 {...propData} />
                         </div>
                     </div>

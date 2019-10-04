@@ -2341,6 +2341,34 @@ button.streammaker-btn:hover {
     background: rgba(#2D86DA, 0.2);
 }
 
+.analytic-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.analytic-stat-count {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.analytic-stats{
+    display: flex;
+    align-items: center;
+}
+
+.analytic-column p span {
+    font-weight: bold;
+    color: #d83e7f;
+}
+
+.analytic-column p {
+    margin-top: 10px;
+    font-size: 1.4rem;
+    color: #909090;
+}
+
 .schedule-row .profile-info p{
     width:inherit;
 }
@@ -2633,6 +2661,10 @@ button.streammaker-btn:hover {
 
 .no-outline{
     outline:none !important;
+}
+
+.no-border{
+    border: none !important;
 }
 
 .ReactModalPortal > div {

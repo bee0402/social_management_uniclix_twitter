@@ -48,20 +48,33 @@ class TwitterOverviewCard extends React.Component{
     };
 
     render(){
-        const {name, description, tooltipDesc} = this.props;
+        const {name, description, iconPath} = this.props;
         return (
             <div className="overview-card analytics-card">
-                <div className="card-header">
-                    <img className="card-img" src="/images/twitter.png"></img> {name}
-                    <AnalyticsTooltip tooltipDesc={tooltipDesc} />
-                </div>
-                <div className="card-analytics-body">
-                    <div className="card-number">
-                        {this.state.loading ?  <Loader type="Bars" color="#46a5d1" height={60} width={60} /> : this.state.count !=null && this.state.count}
+                <div className="analytic-card-body">
+                    <div className="analytic-column col-md-6">
+                        <div className="analytic-stats">
+                            {
+                                iconPath ? <img src={iconPath} /> :
+                                <img className="card-img" src="/images/twitter.png" />
+                            }
+                            <div className="analytic-stat-count">
+                                {this.state.loading ?  <Loader type="Bars" color="#46a5d1" height={30} width={30} /> : this.state.count !=null && this.state.count}
+                            </div> 
+                        </div>  
+                        <p>{name}</p>
                     </div>
-                    <div className="card-description">{description}</div>
-                </div>
-                <div className="card-footer">
+
+                 
+                    <div className="analytic-column col-md-6">
+                        <div>
+                            <img src={`/images/stat-line.svg`} />
+                        </div>
+
+                        <p><span>+13</span> this week</p>
+                    </div>
+
+                    <div className="analytics-description clearfix"><span>48 new users</span> to follow</div>
                 </div>
             </div>
             );
