@@ -148,7 +148,25 @@ class InactiveFollowing extends React.Component{
                     buttonLink = "/settings/billing"
                 />:
                 <div>
-                    <h2>INACTIVE FOLLOWING</h2>
+                    <div className="section-header">
+                        <div className="section-header__first-row">
+                        <h2>Clean up list</h2>
+                        </div>
+
+                        <div className="section-header__second-row">                                
+                            <div></div>
+                            <div className="section-header__select-menu">
+                                <label htmlFor="sortBy">Category</label>
+                                <select id="sortBy">
+                                    <option value="0">All</option>
+                                    <option value="1">Inactive</option>
+                                    <option value="2">Non followers</option>
+                                </select>
+                                <i className="fas fa-arrow-up"></i>
+                                <i className="fas fa-arrow-down"></i>
+                            </div>
+                        </div>
+                    </div>
                     <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
                     <UserList 
                         userItems={ this.state.userItems }

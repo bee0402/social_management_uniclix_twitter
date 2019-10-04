@@ -161,7 +161,7 @@ class Fans extends React.Component{
                                 <select id="sortBy">
                                     <option value="0">All</option>
                                     <option value="1">Recent</option>
-                                    <option value="2">Fans</option>
+                                    <option value="2" selected>Fans</option>
                                 </select>
                                 <i className="fas fa-arrow-up"></i>
                                 <i className="fas fa-arrow-down"></i>
