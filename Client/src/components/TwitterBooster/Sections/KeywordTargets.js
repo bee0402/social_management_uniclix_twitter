@@ -165,8 +165,19 @@ class KeywordTargets extends React.Component{
                     buttonLink = "/settings/billing"
                 />:
                 <div>
-                    <h2>KEYWORD TARGETS</h2>
+           
+                    <div className={`section-header ${this.state.searchView || this.state.targets.length < 1 ? 'no-border' : ''}`}>
+                        <div className="section-header__first-row">
+                            <h2>{this.state.searchView || this.state.targets.length < 1? 'Configure Targets' : 'Target Audience'}</h2>
+                        </div>
 
+                        <div className="section-header__second-row">
+                            {this.state.searchView || this.state.targets.length < 1?  <p>Selecting at least 3 hasthtags and interests will help Uniclix to suggest relevant accounts to follow.</p>
+                                : <p>These are relevant accounts that you may want to follow based on your interests.</p>}
+                        </div>
+                    </div>
+
+                    {!this.state.searchView && <button className="btn-text-blue pull-right mt20" onClick={() => this.showSearchView(true)}>Configure hashtags</button>}
                     <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
                     <UserList 
                         userItems={ this.state.userItems }

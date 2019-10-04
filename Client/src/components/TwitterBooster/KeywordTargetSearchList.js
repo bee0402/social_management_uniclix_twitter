@@ -16,6 +16,16 @@ class KeywordTargetSearchList extends React.Component{
         target: "",
         location: "",
         loading: false,
+        suggestedTargets: [
+            {keyword: "news", location: ""},
+            {keyword: "love", location: ""},
+            {keyword: "music", location: ""},
+            {keyword: "sports", location: ""},
+            {keyword: "friends", location: ""},
+            {keyword: "anime", location: ""},
+            {keyword: "marvel", location: ""},
+            {keyword: "snow", location: ""},
+        ],
         infoModal: localStorage.getItem('twitterBoosterInfoModal') !== 'seen'
     };
 
@@ -38,10 +48,11 @@ class KeywordTargetSearchList extends React.Component{
         }
     };
 
-    onSubmit = (e) => {
+    onSubmit = (e, addedTarget = false) => {
         this.setLoading(true);
-        e.preventDefault();
-        const target = this.state.target;
+        if(e) e.preventDefault();
+
+        const target = addedTarget ? addedTarget : this.state.target;
         const location = this.state.location;
         if(target.length){
           addKeywordTarget(target, location)
@@ -60,6 +71,8 @@ class KeywordTargetSearchList extends React.Component{
 
                 return Promise.reject(error);
             });  
+        }else{
+            this.setLoading(false); 
         }
     };
 
@@ -105,60 +118,65 @@ class KeywordTargetSearchList extends React.Component{
                     action={this.rememberInfoModal}
                 />
 
-                <div className="target-info">                
-                    <h4>Find relevant users: track users who use your #hashtags of interest.</h4> 
-                    <p>Please add at least 4 #hashtags, this will help UniClix find enough results and suggestions.</p> 
-                </div>
-
                 <div className="col-xs-12">
                     <div className="item-list shadow-box">
-                        <div className="item-header">
-                            <button onClick={() => this.props.showSearchView(false)} className="gradient-background-teal-blue default-button">Done</button>
-                        </div>
                         <div className="search-bar mt20">
                             <form onSubmit={this.onSubmit}>
                                 <div className="form-row">
-                                    <div className="col-md-9 mb-3 p10-5">
-                                        <input type="text" className="form-control p20 left-radius" onChange={this.onChange} id="keyword" name="keyword" placeholder="Enter keywords" />
-                                    </div>
-                                    <div className="col-md-2 mb-3 p10-5 pstatic">
-                                        <div className="">
-                                            <Geosuggest 
-                                                inputClassName="form-control p20 right-radius location-search" 
-                                                autoComplete="off" 
-                                                id="location" 
-                                                placeholder="&#xf041; Worldwide"
-                                                onSuggestSelect={this.onLocationSelect}
-                                            />
+                                    <div className="relative-pos">
+                                        <input type="text" className="form-control p20 search-input" onChange={this.onChange} id="keyword" name="keyword" placeholder="Add Hashtag" />
+                                        <div className="btn-container">
+                                            {
+                                                this.state.target ?
+                                                <button className="gradient-background-teal-blue white-button add-target">+</button>
+                                                :
+                                                <button className="gradient-background-teal-blue white-button add-target disabled" disabled>+</button>
+                                            }
+                                            
                                         </div>
                                     </div>
-                                    <div className="col-md-1 mb-3 p10-5">
-                                        {
-                                            this.state.target ?
-                                            <button className="gradient-background-teal-blue white-button add-target">ADD</button>
-                                            :
-                                            <button className="gradient-background-teal-blue white-button add-target disabled" disabled>ADD</button>
-                                        }
-                                        
-                                    </div>
+
                                 </div> 
                             </form>
-                    </div>
+                        </div>
 
                         <div className="added">
-
-                            {!!this.props.targets.length && 
-                                <div>                                
-                                    <div className="list-header">
-                                        <div className="col-sm-4 col-md-5 col-5"> Keyword </div>
-                                        <div className="col-sm-4 col-md-5 col-5"> Location </div>
+                            <div>
+                                <div className={`section-header no-border mt20 mb20`}>
+                                    <div className="section-header__first-row">
                                     </div>
 
+                                    <div className="section-header__second-row">
+                                        <h3>Trending Hashtags</h3>
+                                    </div>
+                                </div>
+                                <div className="added-items">
+                                    {this.state.suggestedTargets.map((target, index) => (
+                                        <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
+                                            #{target.keyword}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {!!this.props.targets.length && 
+                                <div>   
+                                
+                                <div className={`section-header no-border mt20 mb20`}>
+                                    <div className="section-header__first-row">
+                                    </div>
+            
+                                    <div className="section-header__second-row">
+                                        <h3>Added by you</h3>
+                                    </div>
+                                </div>
                                     <div className="added-items">
                                         {this.props.targets.map((target) => <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />)}
                                     </div>
                                 </div>
                             }
+
+                            {this.props.targets.length >= 3 && <button onClick={() => this.props.showSearchView(false)} className="btn-blue">Show me accounts to follow</button>}
                             {this.state.loading && <Loader />}
  
                         </div>
@@ -170,13 +188,8 @@ class KeywordTargetSearchList extends React.Component{
 } 
 
 const KeywordItem = ({target, removeTarget}) => (
-    <div className="item-row ptb20 keyword-item">
-        <div className="col-sm-4 col-md-5 col-5"> #{target.keyword} </div>
-        <div className="col-sm-4 col-md-5 col-5"> {target.location ? JSON.parse(target.location).label : "Worldwide"} </div>
-
-        <div className="col-sm-1 col-md-1 col-1 pull-right txt-center">
-            <div onClick={() => removeTarget(target.id)} className="trash-btn"><i className="fa fa-trash"></i> <span className="delete-text"> Delete</span></div>
-        </div>
+    <div className="keyword-item added-keyword">
+        #{target.keyword} <i onClick={() => removeTarget(target.id)} className="fa fa-close"></i>
     </div>
 );
 
