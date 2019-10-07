@@ -4,7 +4,7 @@ import BottomScrollListener from 'react-bottom-scroll-listener';
 import UpgradeAlert from '../../UpgradeAlert';
 import UserList from "../../UserList";
 import {startSetChannels} from "../../../actions/channels";
-import { getFans, follow } from '../../../requests/twitter/channels';
+import { getFans, follow, getRecentFollowers } from '../../../requests/twitter/channels';
 import channelSelector from '../../../selectors/channels';
 import Loader from '../../Loader';
 import UpgradeIntro from '../../UpgradeIntro';
@@ -16,6 +16,7 @@ class Fans extends React.Component{
         page: 1,
         order: "desc",
         forbidden: false,
+        category: "getFans",
         loading: this.props.channelsLoading
     }
 
@@ -26,8 +27,8 @@ class Fans extends React.Component{
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if((this.props.selectedChannel !== prevProps.selectedChannel)){
+    componentDidUpdate(prevProps, prevState) {
+        if((this.props.selectedChannel !== prevProps.selectedChannel) || (this.state.category !== prevState.category)){
             this.fetchData();
         }
     }
@@ -37,6 +38,13 @@ class Fans extends React.Component{
             loading
         }));
     };
+
+    setCategory = (e) => {
+        const category = e.target.value;
+        this.setState(() => ({
+            category
+        }));
+    }
 
     setForbidden = (forbidden = false) => {
         this.setState(() => ({
@@ -69,7 +77,8 @@ class Fans extends React.Component{
 
     fetchData = (order = 'desc') => {
         this.setLoading(true);
-        getFans(order)
+        const categoryFunc = this.state.category === "getFans" ? getFans : getRecentFollowers;
+        categoryFunc(order)
             .then((response) => {
                 this.setState(() => ({
                     userItems: response.items,
@@ -101,7 +110,8 @@ class Fans extends React.Component{
         this.setLoading(true);
         let page = this.state.page + 1;
         const order = this.state.order;
-        getFans(order, page)
+        const categoryFunc = this.state.category === "getFans" ? getFans : getRecentFollowers;
+        categoryFunc(order, page)
             .then((response) => {
                 this.setState((prevState) => ({
                     userItems: prevState.userItems.concat(response.items),
@@ -148,7 +158,7 @@ class Fans extends React.Component{
                     />
                     :
                     <div>
-                    {this.state.userItems.length > 0 && 
+                    
                     <div className="section-header">
                         <div className="section-header__first-row">
                            <h2>Followers</h2> 
@@ -159,15 +169,22 @@ class Fans extends React.Component{
                             <p>This is a list of your active and recent followers</p> 
                             <div className="section-header__select-menu">
                                 <label htmlFor="sortBy">Category</label>
-                                <select id="sortBy" value="2">
-                                    <option value="1">Recent</option>
-                                    <option value="2">Fans</option>
+                                <select id="sortBy" onChange={(e) => this.setCategory(e)} value={this.state.category}>
+                                    <option value="getRecentFollowers">Recent</option>
+                                    <option value="getFans">Fans</option>
                                 </select>
-                                <i className="fas fa-arrow-up"></i>
-                                <i className="fas fa-arrow-down"></i>
+                                {   this.state.order === "asc" ?
+                                    <i className="fas fa-arrow-up" onClick={() => this.fetchData("desc")}></i> :
+                                    <i className="fas fa-arrow-up disabled-btn" disabled></i>
+                                }
+
+                                {   this.state.order === "desc" ?
+                                    <i className="fas fa-arrow-down" onClick={() => this.fetchData("asc")}></i> :
+                                    <i className="fas fa-arrow-down disabled-btn" disabled></i>
+                                }
                             </div>
                         </div>
-                    </div>}
+                    </div>
                     
                         <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
 
