@@ -6,8 +6,7 @@ const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) =
         <div>
             <aside className="vertical-menu scrollbar">
 
-                <ProfileInfo selectedChannel = {selectedChannel} />
-                <ProfileSelectionDropDown channels = {channels} selectChannel={selectChannel} />
+                <ProfileInfo selectedChannel = {selectedChannel} channels={channels} selectChannel={selectChannel}/>
         
                 <MenuItems menuItems={ menuItems } />
                 <SupportSection />
@@ -16,22 +15,46 @@ const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) =
     );
 };
 
-const ProfileInfo = ({ selectedChannel }) => (
-    <div className="profile-info">
-        <span className="pull-left profile-img-container">
-            <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={selectedChannel.avatar} />
-            <i className={`fab fa-${selectedChannel.type} ${selectedChannel.type}_bg smallIcon`}></i>
-        </span>
-        <div>
-            <p className="profile-username">{!!selectedChannel.username && `@${selectedChannel.username}`}</p>
-        </div>
-    </div>
-);
+class ProfileInfo extends React.Component{
+    state = {
+        channelMenu: false
+    }
 
-const ProfileSelectionDropDown = ({ channels, selectChannel }) => (
-    <div className="dropdown-menu select-channel">
-        <Link to="/accounts" className="add-channel-btn block-urls">Add new channel</Link>
-        <div className="channel-list">
+    toggleDropdown = () => {
+        this.setState(() => ({
+            channelMenu: !this.state.channelMenu
+        }));
+    }
+
+    render(){
+        const {selectedChannel, channels, selectChannel} = this.props;
+
+        return (
+            <div>
+                <div className="profile-info" onClick={this.toggleDropdown}>
+                    <span className="pull-left profile-img-container">
+                        <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={selectedChannel.avatar} />
+                        <i className={`fab fa-${selectedChannel.type} ${selectedChannel.type}_bg smallIcon`}></i>
+                    </span>
+                    <div>
+                        <p className="profile-username">{!!selectedChannel.username && `@${selectedChannel.username}`}</p>
+                    </div>
+                </div>
+
+                <ProfileSelectionDropDown 
+                    channels = {channels} 
+                    selectChannel={selectChannel} 
+                    isOpen={this.state.channelMenu}
+                />
+            </div>
+
+        );
+    }
+}
+
+const ProfileSelectionDropDown = ({ channels, selectChannel, isOpen }) => (
+    <div className={`channel-selection-menu select-channel ${isOpen ? 'is-open' : ''}`}>
+        <div>
             {!!channels.length && 
                 channels.map((channel) => (
                     <ProfileSelectionItem key={channel.id} channel={channel} selectChannel={selectChannel}/>
@@ -47,7 +70,7 @@ const ProfileSelectionItem = ({ channel, selectChannel }) => (
             <div className="profile-info ">
                 <span className="profile-img-container">
                     <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar} />
-                    <i className={`fa fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
+                    <i className={`fab fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
                 </span>
                 <div>
                     <p className="profile-name" title={channel.name}>{channel.name}</p>

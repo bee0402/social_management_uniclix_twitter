@@ -3559,6 +3559,32 @@ button.doneBtn {
     overflow-y: auto;
 }
 
+.channel-selection-menu{
+    display: none;
+}
+
+.channel-selection-menu.is-open{
+    display: block;
+    max-height: 157px;
+    overflow: auto;
+}
+
+.channel-selection-menu .profile-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 15px;
+}
+
+.channel-selection-menu .profile-name {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.channel-selection-menu .profile-username {
+    color: #909090;
+}
+
 .streams-default-container .account-selection{
     max-width: 700px;
     margin: 10px auto;
@@ -3589,7 +3615,7 @@ button.doneBtn {
 }
 
 .streams-default-container .channel-container:hover .profile-info{
-    color: #46a8ce;
+    color: #F5F7FB;
 }
 
 .streams-default-container.streams-default-container-new{
@@ -3664,11 +3690,7 @@ button.doneBtn {
 }
 
 .channel-container:hover{
-    background: #46a8ce;
-}
-
-.channel-container:hover .profile-info{
-    color:white;
+    background: #F5F7FB;
 }
 
 .add-channel-btn, .add-channel-btn:hover {
