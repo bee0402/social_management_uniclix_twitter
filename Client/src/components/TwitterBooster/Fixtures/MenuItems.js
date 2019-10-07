@@ -19,7 +19,7 @@ const MenuItems = [
     {   
         id: "twitter-booster_fans",
         displayName: "Followers",
-        uri: "/twitter-booster/fans",
+        uri: "/twitter-booster/followers",
         icon: "users"  
     },
     {   

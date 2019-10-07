@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import Dashboard from '../components/TwitterBooster/Sections/Dashboard';
 import AccountTargets from '../components/TwitterBooster/Sections/AccountTargets';
 import KeywordTargets from '../components/TwitterBooster/Sections/KeywordTargets';
-import Fans from '../components/TwitterBooster/Sections/Fans';
+import Followers from '../components/TwitterBooster/Sections/Followers';
 import NonFollowers from '../components/TwitterBooster/Sections/NonFollowers';
 import RecentUnfollowers from '../components/TwitterBooster/Sections/RecentUnfollowers';
 import RecentFollowers from '../components/TwitterBooster/Sections/RecentFollowers';
@@ -21,7 +21,7 @@ const ManageRouter = () => (
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/manage-accounts`} component={Accounts} />
             <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
-            <Route path={`/twitter-booster/fans`} component={Fans} />
+            <Route path={`/twitter-booster/followers`} component={Followers} />
             <Route path={`/twitter-booster/non-followers`} component={NonFollowers} />
             <Route path={`/twitter-booster/recent-unfollowers`} component={RecentUnfollowers} />
             <Route path={`/twitter-booster/recent-followers`} component={RecentFollowers} />

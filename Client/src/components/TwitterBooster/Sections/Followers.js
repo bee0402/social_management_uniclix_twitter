@@ -9,7 +9,7 @@ import channelSelector from '../../../selectors/channels';
 import Loader from '../../Loader';
 import UpgradeIntro from '../../UpgradeIntro';
 
-class Fans extends React.Component{
+class Followers extends React.Component{
     state = {
         userItems: [],
         actions: 0,
@@ -226,4 +226,4 @@ const mapDispatchToProps = (dispatch) => ({
     startSetChannels: () => dispatch(startSetChannels())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fans);
+export default connect(mapStateToProps, mapDispatchToProps)(Followers);
