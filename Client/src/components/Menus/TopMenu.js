@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 import {backendUrl} from "../../config/api";
 import {setComposerModal} from "../../actions/composer";
 
-const TopMenu = ({setComposerModal}) => (
+const TopMenu = ({setComposerModal, profile}) => (
     <div>
         <div className="navbar-uniclix">
             <a href={backendUrl} className="brand"><img src="/images/uniclix.png"/></a>
@@ -17,8 +17,8 @@ const TopMenu = ({setComposerModal}) => (
 
             <div className="current-profile">
                 <div className="current-profile-info">
-                    <p className="current-profile-name">Albert Feka</p>
-                    <p className="current-profile-email">email@email.com</p>
+                    <p className="current-profile-name">{profile.user.name}</p>
+                    <p className="current-profile-email">{profile.user.email}</p>
                 </div>
                 <div className="current-profile-avatar">
                     <img src="/images/dummy_profile.png" />
@@ -31,8 +31,15 @@ const TopMenu = ({setComposerModal}) => (
 
 );
 
+const mapStateToProps = (state) => {
+    const profile = state.profile
+    return {
+        profile
+    };
+};
+
 const mapDispatchToProps = (dispatch) => ({
     setComposerModal: (isOpen) => dispatch(setComposerModal(isOpen))
 });
 
-export default connect(undefined, mapDispatchToProps)(TopMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(TopMenu);
