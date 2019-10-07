@@ -2976,6 +2976,10 @@ button.streammaker-btn:hover {
     margin-top:15px !important;
 }
 
+.mrnone{
+    margin-right: 0 !important;
+}
+
 .ptb20{
     padding:20px 0 !important;
 }
@@ -3651,23 +3655,56 @@ button.doneBtn {
     top:0 !important;
 }
 
-.add-channel-plus-btn{
-    background:none;
-    padding:20px 25px;
+.add-channel-plus-btn {
+    background: rgba(45, 134, 218, 0.15);
+    padding: 16px 17px;
     border: 1px solid #46b9e6;
-    font-size: $l-size;
-    border-radius:10px;
-    color: #c1c1c1;
-    outline:none;
+    font-size: 1.2rem;
+    border-radius: 100px;
+    color: #46b9e6;
+    outline: none;
 }
 
 .left-side-label{
     font-size:$m-size;
     margin-left:10px;
+    font-weight: bold;
 }
 
 aside .btn-group {
     width: 100% !important;
+}
+
+.plan-info-container {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.plan-info-container h3 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+
+.plan-content-description {
+    font-weight: bold;
+}
+.plan-content > p {
+    margin: 0;
+}
+
+.plan-content {
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 20px 0;
+    margin: 10px 0;
+}
+
+.plan-info-container .btn-blue {
+    margin: 20px auto 0 auto;
+    padding: 10px 40px;
 }
 
 .no-data {
@@ -4046,10 +4083,12 @@ aside .btn-group {
 }
 
 .accounts-container__content__wrapper__footer{
-    margin-top:20px;
-    padding:10px 20px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
+    background: white;
+    border: 1px dashed #909090;
+    border-radius: 6px;
 }
 
 .account_box{

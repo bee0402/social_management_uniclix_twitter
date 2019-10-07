@@ -31,7 +31,7 @@ const MenuItems = [
     {   
         id: "twitter-booster_recent_unfollowers",
         displayName: "Manage Accounts",
-        uri: "/twitter-booster/recent-unfollowers",
+        uri: "/twitter-booster/manage-accounts",
         icon: "list" 
     }
     // {   

@@ -76,6 +76,9 @@ class Twitter extends React.Component {
                 // if(response.length < 1){
                 //     this.props.logout();
                 // }
+                this.setState(() => ({
+                    action: this.defaultAction
+                }));
             });
         }).catch((e) => {
             if(typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined"){
@@ -89,7 +92,7 @@ class Twitter extends React.Component {
 
     render(){
         return (
-            <div className="accounts-container">
+            <div className="main-container">
             <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden}/>
                 <SweetAlert
                     show={!!this.state.action.id}
@@ -105,7 +108,6 @@ class Twitter extends React.Component {
                         }else{
                             console.log('something went wrong');
                         }
-                        //this.setAction();
                     }}
                 />
 
@@ -121,36 +123,54 @@ class Twitter extends React.Component {
                     }}
                 />
 
-                <h2>HAVE TWITTER ACCOUNTS?</h2>
-                <p>Connect them all, and we'll help you get the right audience.</p>
-                
-                <div className="flex_container-center">
-                    <div className="accounts-container__logo col-md-1">
-                        <div>
-                            <i className="fa fa-twitter"></i>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="section-header no-border col-md-12">
+                            <div className="section-header__first-row">
+                            <h2>Manage Accounts</h2> 
+                            </div>
+
+                            <div className="section-header__second-row">
+                                <h3>Linked Accounts</h3> 
+                            </div>
                         </div>
                     </div>
-                    <div className="accounts-container__content col-md-10">
-                        <div className="accounts-container__content__wrapper">
-                            <div className="accounts-container__content__wrapper__heading">
-                                <h2>Let's grow your audience using Twitter!</h2>
-                            </div> 
-                            
+                </div>
+
+                
+                <div className="row mt20">
+                    <div className="col-md-7">
+
+                        <div className="col-md-12">
                             <ChannelItems channels={this.props.channels} setAction={this.setAction} /> 
                             {!!this.props.loading && <Loader />}
-                        </div> 
-            
-                        <div className="accounts-container__content__wrapper__footer">
-                            <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                        onFailure={this.onFailure} onSuccess={this.onSuccess}
-                                        requestTokenUrl={twitterRequestTokenUrl}
-                                        showIcon={true}
-                                        forceLogin={true}
-                                        className="add-channel-plus-btn">
-                                        <i className="fa fa-plus"></i>
-                            </TwitterLogin>
-                            <span className="left-side-label">Have an account? Let's connect!</span>
-                        </div> 
+
+                            <div className="accounts-container__content__wrapper__footer">
+                                <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                            onFailure={this.onFailure} onSuccess={this.onSuccess}
+                                            requestTokenUrl={twitterRequestTokenUrl}
+                                            showIcon={true}
+                                            forceLogin={true}
+                                            className="add-channel-plus-btn">
+                                            <i className="fa fa-plus"></i>
+                                </TwitterLogin>
+                                <span className="left-side-label">Add account</span>
+                            </div> 
+                        </div>
+
+                    </div>
+
+                    <div className="col-md-5">
+                        <div className="col-md-12 plan-info-container">
+                            <h3>Trial</h3>
+
+                            <div className="plan-content">
+                                <p className="plan-content-description">3 days left trial</p>
+                                <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                            </div>
+
+                            <button className="btn-blue">Start subscription</button>
+                        </div>
                     </div>
                 </div>
               
