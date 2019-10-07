@@ -4,17 +4,18 @@ import BottomScrollListener from 'react-bottom-scroll-listener';
 import UserList from "../../UserList";
 import UpgradeAlert from '../../UpgradeAlert';
 import {startSetChannels} from "../../../actions/channels";
-import { getNonFollowers, unfollow } from '../../../requests/twitter/channels';
+import { getNonFollowers, getFollowing, getInactiveFollowing, getRecentUnfollowers, unfollow } from '../../../requests/twitter/channels';
 import channelSelector from '../../../selectors/channels';
 import Loader from '../../Loader';
 import UpgradeIntro from '../../UpgradeIntro';
 
-class NonFollowers extends React.Component{
+class CleanupList extends React.Component{
     state = {
         userItems: [],
         actions: 0,
         loading: this.props.channelsLoading,
         forbidden: false,
+        category: "getFollowing",
         page: 1,
         order: "desc"
     }
@@ -26,8 +27,8 @@ class NonFollowers extends React.Component{
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if((this.props.selectedChannel !== prevProps.selectedChannel)){
+    componentDidUpdate(prevProps, prevState) {
+        if((this.props.selectedChannel !== prevProps.selectedChannel) || (this.state.category !== prevState.category)){
             this.fetchData();
         }
     }
@@ -67,9 +68,30 @@ class NonFollowers extends React.Component{
             });
     };
 
+    setCategory = (e) => {
+        const category = e.target.value;
+        this.setState(() => ({
+            category
+        }));
+    }
+
+    getCategoryFunction = () => {
+        switch(this.state.category){
+            case "getFollowing":
+                return getFollowing;
+            case "getNonFollowers":
+                return getNonFollowers;
+            case "getInactiveFollowing":
+                return getInactiveFollowing;
+            case "getRecentUnfollowers":
+                return getRecentUnfollowers;
+        }
+    };
+
     fetchData = (order = 'desc') => {
         this.setLoading(true);
-        getNonFollowers(order)
+        const categoryFunc = this.getCategoryFunction();
+        categoryFunc(order)
             .then((response) => {
                 this.setState(() => ({
                     userItems: response.items,
@@ -101,7 +123,8 @@ class NonFollowers extends React.Component{
         this.setLoading(true);
         let page = this.state.page + 1;
         const order = this.state.order;
-        getNonFollowers(order, page)
+        const categoryFunc = this.getCategoryFunction();
+        categoryFunc(order)
             .then((response) => {
                 this.setState((prevState) => ({
                     userItems: prevState.userItems.concat(response.items),
@@ -155,13 +178,21 @@ class NonFollowers extends React.Component{
                             <div></div>
                             <div className="section-header__select-menu">
                                 <label htmlFor="sortBy">Category</label>
-                                <select id="sortBy">
-                                    <option value="0">All</option>
-                                    <option value="1">Inactive</option>
-                                    <option value="2">Non followers</option>
+                                <select id="sortBy" onChange={(e) => this.setCategory(e)} value={this.state.category}>
+                                    <option value="getFollowing">All</option>
+                                    <option value="getInactiveFollowing">Inactive</option>
+                                    <option value="getNonFollowers">Non followers</option>
+                                    <option value="getRecentUnfollowers">Recent unfollowers</option>
                                 </select>
-                                <i className="fas fa-arrow-up"></i>
-                                <i className="fas fa-arrow-down"></i>
+                                {   this.state.order === "asc" ?
+                                    <i className="fas fa-arrow-up" onClick={() => this.fetchData("desc")}></i> :
+                                    <i className="fas fa-arrow-up disabled-btn" disabled></i>
+                                }
+
+                                {   this.state.order === "desc" ?
+                                    <i className="fas fa-arrow-down" onClick={() => this.fetchData("asc")}></i> :
+                                    <i className="fas fa-arrow-down disabled-btn" disabled></i>
+                                }
                             </div>
                         </div>
                     </div>
@@ -204,4 +235,4 @@ const mapDispatchToProps = (dispatch) => ({
     startSetChannels: () => dispatch(startSetChannels())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NonFollowers);
+export default connect(mapStateToProps, mapDispatchToProps)(CleanupList);

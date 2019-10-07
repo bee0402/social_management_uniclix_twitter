@@ -25,7 +25,7 @@ const MenuItems = [
     {   
         id: "twitter-booster_non_followers",
         displayName: "Clean up list",
-        uri: "/twitter-booster/non-followers",
+        uri: "/twitter-booster/clean-up-list",
         icon: "broom" 
     },
     {   

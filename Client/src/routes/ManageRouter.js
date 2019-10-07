@@ -4,7 +4,7 @@ import Dashboard from '../components/TwitterBooster/Sections/Dashboard';
 import AccountTargets from '../components/TwitterBooster/Sections/AccountTargets';
 import KeywordTargets from '../components/TwitterBooster/Sections/KeywordTargets';
 import Followers from '../components/TwitterBooster/Sections/Followers';
-import NonFollowers from '../components/TwitterBooster/Sections/NonFollowers';
+import CleanupList from '../components/TwitterBooster/Sections/CleanupList';
 import RecentUnfollowers from '../components/TwitterBooster/Sections/RecentUnfollowers';
 import RecentFollowers from '../components/TwitterBooster/Sections/RecentFollowers';
 import InactiveFollowing from '../components/TwitterBooster/Sections/InactiveFollowing';
@@ -22,7 +22,7 @@ const ManageRouter = () => (
             <Route path={`/twitter-booster/manage-accounts`} component={Accounts} />
             <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
             <Route path={`/twitter-booster/followers`} component={Followers} />
-            <Route path={`/twitter-booster/non-followers`} component={NonFollowers} />
+            <Route path={`/twitter-booster/clean-up-list`} component={CleanupList} />
             <Route path={`/twitter-booster/recent-unfollowers`} component={RecentUnfollowers} />
             <Route path={`/twitter-booster/recent-followers`} component={RecentFollowers} />
             <Route path={`/twitter-booster/inactive-following`} component={InactiveFollowing} />
