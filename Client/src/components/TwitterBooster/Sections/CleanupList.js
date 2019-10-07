@@ -208,9 +208,8 @@ class CleanupList extends React.Component{
                         perform={this.perform}
                         page="non-followers"
                         noData={{
-                            title: "WOW - great job, you have no non-followers",
-                            description: "We are mining your data, please return back later for more updates.",
-                            text: "We suggest you  increase your engagement with UniClix by following relevant accounts using Keyword Target feature."
+                            title: "Woops!",
+                            description: "Seems like you don't have any matching data!"
                         }}
                     />
                     <BottomScrollListener onBottom={this.loadMore} />
