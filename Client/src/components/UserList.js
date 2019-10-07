@@ -151,12 +151,9 @@ class UserList extends React.Component{
                         :
     
                         <SocialAccountsPrompt 
-                            image = "/images/connect_twitter_accounts.svg"
+                            image = "/images/no-data.svg"
                             title = {noData.title}
                             description = {noData.description}
-                            text = {noData.text}
-                            buttonTitle = "Engage by setting your keywords"
-                            buttonLink = "/twitter-booster/keyword-targets"
                         />
                         )
                     ) :

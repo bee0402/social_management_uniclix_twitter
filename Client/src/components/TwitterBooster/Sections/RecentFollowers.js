@@ -147,6 +147,7 @@ class RecentFollowers extends React.Component{
                     buttonLink = "/settings/billing"
                 />:
                 <div>
+                    {this.state.userItems.length > 0 && 
                     <div className="section-header">
                         <div className="section-header__first-row">
                         <h2>Followers</h2> 
@@ -165,7 +166,7 @@ class RecentFollowers extends React.Component{
                                 <i className="fas fa-arrow-down"></i>
                             </div>
                         </div>
-                    </div>
+                    </div>}
 
                     <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
                     
@@ -179,9 +180,8 @@ class RecentFollowers extends React.Component{
                         perform={this.perform}
                         page="recent-followers"
                         noData={{
-                            title: "You don't have any recent followers :( ",
-                            description: "We are mining your data, please return back later for more updates.",
-                            text: "We suggest you  increase your engagement with UniClix by following relevant accounts using Keyword Targets feature."
+                            title: "Woops!",
+                            description: "Seems like you don't have any new followers!",
                         }}
                     />
                     <BottomScrollListener onBottom={this.loadMore} />

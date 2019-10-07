@@ -148,6 +148,7 @@ class Fans extends React.Component{
                     />
                     :
                     <div>
+                    {this.state.userItems.length > 0 && 
                     <div className="section-header">
                         <div className="section-header__first-row">
                            <h2>Followers</h2> 
@@ -166,7 +167,7 @@ class Fans extends React.Component{
                                 <i className="fas fa-arrow-down"></i>
                             </div>
                         </div>
-                    </div>
+                    </div>}
                     
                         <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
 
