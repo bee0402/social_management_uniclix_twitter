@@ -287,6 +287,40 @@ a, a:hover, a:visited, a:active, a:link {
     box-shadow: none;
 }
 
+.login-form h3 {
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.login-form input {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+    margin-top: 5px;
+    padding: 20px;
+}
+
+.login-container .logo img {
+    object-fit: cover;
+    width: 100%;
+}
+
+.auth-switch-container {
+    position: absolute;
+    top: 35px;
+    right: 35px;
+    font-size: 1.8rem;
+}
+
+.login-container .logo {
+    width: 100px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
 .login-form h4 {
     font-weight: bold;
     margin: 0 0 30px 0;
@@ -335,7 +369,8 @@ a, a:hover, a:visited, a:active, a:link {
 }
 
 .social-login.login-btns, .form-container .login-form {
-    width: 300px;
+    width: 70%;
+    float: right;
     text-align: left;
 }
 
@@ -770,7 +805,11 @@ a, a:hover, a:visited, a:active, a:link {
     color: #D83E7F;
 }
 
-button.btn-text-blue {
+.auth-switch-btn {
+    font-size: 1.8rem;
+}
+
+.btn-text-blue {
     background: none;
     border: none;
     font-weight: bold;
@@ -1253,7 +1292,7 @@ button.btn-text-blue {
     border: none;
     border-radius: 22px;
     color: #ffffff!important;
-    background: #B358B3;
+    background: #2D86DA;
     padding: 10px 62px;
     letter-spacing: .5px;
     font-weight: 400;
@@ -3707,6 +3746,21 @@ aside .btn-group {
     padding: 10px 40px;
 }
 
+.login-side{
+    background-image: url('/images/login-bg.svg');
+}
+
+.register-side{
+    background-image: url('/images/register-bg.svg');
+}
+
+.register-side, .login-side {
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: contain;
+    height: 100vh;
+}
+
 .no-data {
     text-align: center;
     font-family: open-sansSemiBold, sans-serif;
@@ -4826,7 +4880,20 @@ table.compare-plans-table {
     }
     .form-container .login-form {
         width: 100%;
+        margin-top: 110px;
     }
+
+    .auth-switch-container {
+        position: absolute;
+        top: 20px;
+        right: 50px;
+        font-size: 1.2rem;
+    }
+
+    .register-side, .login-side{
+        background-image: none;
+    }
+
     .box-container {
         padding: 25px 25px;
     }
