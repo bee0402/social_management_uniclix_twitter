@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class OAuthController extends Controller
 {
@@ -40,10 +41,12 @@ class OAuthController extends Controller
             return response()->json(['errors'=>$validator->errors()], 400);
         }
 
+        $role = Role::first();
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'role_id' => Role::first()->id,
+            'role_id' => $role->id,
+            'trial_ends_at' => Carbon::now()->addDays($role->trial_days),
             'password' => Hash::make($request->input('password')),
         ]);
 

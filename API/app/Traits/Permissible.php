@@ -12,13 +12,12 @@ trait Permissible
 {
     public function hasRole($roleName)
     {  
-        if($roleName=="free") return true;
-        
-        if ($this->subscribedToPlan($roleName, 'main') || $this->subscribedToPlan($roleName."_annual", 'main')) {
+     
+        if ($this->subscribedToPlan($roleName, 'main') || $this->subscribedToPlan($roleName."_annual", 'main') || $this->onGenericTrial()) {
            return Role::where("id", $this->role_id)->where("name", strtolower($roleName))->exists();
         }
 
-        return $this->hasAddon($roleName);
+        return false;
     }
 
     public function hasPermission($permission)
@@ -27,7 +26,7 @@ trait Permissible
 
         if ($this->hasRole($role->name)) {
 
-            return $role->permissions()->where("name", strtolower($permission))->exists() || $this->hasAddonPermission($permission);
+            return $role->permissions()->where("name", strtolower($permission))->exists();
         }
 
         return false;

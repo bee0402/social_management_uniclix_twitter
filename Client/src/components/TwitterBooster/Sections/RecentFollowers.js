@@ -144,7 +144,7 @@ class RecentFollowers extends React.Component{
                         }
                     ]}
                     image = "/images/analytic_intro.svg"
-                    buttonLink = "/settings/billing"
+                    buttonLink = "/twitter-booster/manage-accounts"
                 />:
                 <div>
                     {this.state.userItems.length > 0 && 

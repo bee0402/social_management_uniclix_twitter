@@ -300,97 +300,65 @@ class Middleware extends React.Component{
         }
             
         return (
-            <div className="middleware">
-                <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden}/>
-                <SelectAccountsModal 
-                    isOpen={this.state.facebookPagesModal} 
-                    accounts={this.state.facebookPages}
-                    onSave={this.onFacebookPagesSave}
-                    error={this.state.error}
-                />
-                {middleware !== "loading" && <h2>{middleware === "channels" ? "Connect your social profiles." : ((!(!!addon) && addonTrial) || !!planParam ? "Start Your Free Trial" : "Boost Your Twitter")}</h2>}
+            <div className="login-container">                    
+                <div className="logo">
+                    <img src="/images/uniclix.png" />
+                </div>
+                
                 {middleware !== "channels" && middleware !== "billing" && <Loader />}
                 {loading && <LoaderWithOverlay />}
-                
-                {middleware == "channels" &&
-                <div className="box channels-box">
-                    
-                    {channels.length > 0 && <div className="channel-profile-container">                    
-                        <h5>Connect your social profiles:</h5>
+                <div className="col-md-7 col-xs-12 text-center">
+                    <div className="col-xs-12 text-center">
 
-                        <div className="channel-profiles">
+                        {middleware == "channels" &&
+                        <div className="box channels-box">
+                            {middleware !== "loading" && <h2>Connect your Twitter account</h2>}
+                            <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
+
+                            <div className="channel-buttons">
+
+                                {channels.length > 0 ?
+                                
+                                        channels.map(channel => (
+                                            <div key={channel.id} className="twitter-middleware-btn added-channel-btn">
+                                                
+                                                <div className="channel-profile-info"> 
+                                                    <img className="channel-profile-picture" src={channel.avatar} />  
+                                                    <div>                                                    
+                                                        <p className="channel-profile-type">@{channel.username}</p>
+                                                    </div>                             
+
+                                                </div>
+                                                <i className="fa fa-trash" onClick={() => this.remove(channel.id)}></i>
+                                            </div>  
+                                        ))
+                               
+                                :
+                                    <button className="col-md-12 twitter-middleware-btn" onClick={(e) => this.twitterRef.current.onButtonClick(e)}> <i className="fab fa-twitter"></i> Twitter</button>
+                                }       
+
+                                <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                    onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
+                                    requestTokenUrl={twitterRequestTokenUrl}
+                                    showIcon={false}
+                                    forceLogin={true}
+                                    className="hide"
+                                    ref={this.twitterRef}
+                                ></TwitterLogin> 
                             
-                            {channels.map(channel => (
-                                <div key={channel.id} className="channel-profile-box col-xs-12">
-                                    <img className="channel-profile-picture" src={channel.avatar} />
-                                    <div className="channel-profile-info">                                
-                                        <p className="channel-profile-name">{channel.name}</p>
-                                        <p className="channel-profile-type">{channel.type}</p>
-                                    </div>
-                                    <i className="fa fa-close" onClick={() => this.remove(channel.id)}></i>
-                                </div>  
-                            ))}
+                            </div>
+        
+                            {   
+                                continueBtn ?
+                                <button className="magento-btn w100" onClick={this.setRole}>Continue to Uniclix</button>
+                                :
+                                <button className="magento-btn w100 disabled-btn">Continue to Uniclix</button>
+                            }
                         </div>
-                    </div>}
-
-
-                    <div className="col-md-12">
-                        <h5>Click one of the buttons below to get started:</h5>
+                        }
                     </div>
-                    
-                    <div className="channel-buttons">
-                        {!twitterBooster && <div className="col-md-4 col-xs-12">
-                            <FacebookLogin
-                                appId={facebookAppId}
-                                autoLoad={false}
-                                fields={fbFields}
-                                scope={fbScope}
-                                callback={this.onFacebookSuccess} 
-                                cssClass="facebook_bg col-xs-12"
-                                icon={<i className="fa fa-facebook"></i>}
-                                textButton="Facebook"
-                                ref={this.facebookRef}
-                                disableMobileRedirect={true}
-                            />
-                        </div>}
-                        <div className="col-md-4 col-xs-12">
-                            <button className="twitter_bg col-xs-12" onClick={(e) => this.twitterRef.current.onButtonClick(e)}> <i className="fa fa-twitter"></i> Twitter</button>
-                        </div>
-
-                        {!twitterBooster && <div className="col-md-4 col-xs-12">
-                            
-                            <LinkedInButton 
-                                clientId={linkedinAppId}
-                                redirectUri={`${backendUrl}/api/linkedin/callback`}
-                                onSuccess={this.onLinkedInSuccess}
-                                onError={this.onFailure}
-                                cssClass="linkedin_bg col-xs-12"
-                                icon={<i className="fa fa-linkedin"></i>}
-                                textButton="Linkedin"
-                                ref={this.linkedinRef}
-                            />
-
-                        </div>}
-
-                        <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                            onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
-                            requestTokenUrl={twitterRequestTokenUrl}
-                            showIcon={false}
-                            forceLogin={true}
-                            className="hide"
-                            ref={this.twitterRef}
-                        ></TwitterLogin>
-                    
-                    </div>
-
-                    {   
-                        continueBtn ?
-                        <button className="magento-btn mt50" onClick={this.setRole}>Continue to Uniclix</button>
-                        :
-                        <button className="magento-btn mt50 disabled-btn">Continue to Uniclix</button>
-                    }
                 </div>
-                }
+                
 
                 {middleware == "billing" && !!planData ?
                 <div className="box billing channels-box">
@@ -479,6 +447,8 @@ class Middleware extends React.Component{
                 </div> : this.state.loading && <LoaderWithOverlay />
 
                 }
+
+                <div className="col-md-5 middleware-side"></div>
             </div>
         );
     }

@@ -255,6 +255,56 @@ a, a:hover, a:visited, a:active, a:link {
     max-width:272px !important;
 }
 
+.login-container .box.channels-box{
+    float: right;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+}
+
+.box.channels-box h2 {
+    font-weight: bold;
+    font-size: 3.2rem;
+}
+
+.added-channel-btn .channel-profile-info {
+    display: flex;
+    align-items: center;
+}
+
+.added-channel-btn {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
+    border: none !important;
+    cursor: pointer;
+}
+
+.added-channel-btn .channel-profile-info img {
+    border: 1px solid #dbdbdb;
+    border-radius: 100px;
+    margin-right: 10px;
+}
+
+.added-channel-btn:hover i {
+    display: flex !important;
+    color: #2D86DA;
+    font-size: 1.4rem;
+    width: 35px;
+    height: 35px;
+    background: none;
+    margin: 0;
+}
+
+.added-channel-btn i {
+    display: none !important;
+}
+
+.added-channel-btn i:hover{
+    background: rgba(#2D86DA, .12);
+}
+
 .plan-box .billingPeriodSelection{
     border:1px solid #eee;
     padding:10px 15px;
@@ -3016,6 +3066,11 @@ button.streammaker-btn:hover {
     margin-top:15px !important;
 }
 
+.w100{
+    width:100% !important;
+    max-width: 100% !important;
+}
+
 .mrnone{
     margin-right: 0 !important;
 }
@@ -3133,6 +3188,7 @@ button.doneBtn {
     padding: 10px 15px;
     cursor: pointer;
     margin-right: 13px;
+    margin-top:10px;
     border: 1px solid transparent;
 }
 
@@ -3777,7 +3833,11 @@ aside .btn-group {
     background-image: url('/images/register-bg.svg');
 }
 
-.register-side, .login-side {
+.middleware-side{
+    background-image: url('/images/connect-account-bg.svg');
+}
+
+.register-side, .login-side, .middleware-side {
     background-repeat: no-repeat;
     background-position: top right;
     background-size: contain;
@@ -4101,6 +4161,33 @@ aside .btn-group {
     font-family: open-sansBold;
     font-size: 12px;
     margin-left: 10px;
+}
+
+.twitter-middleware-btn i {
+    color: white;
+    background: #2D86DA;
+    width: 27px;
+    height: 26px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.twitter-middleware-btn {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+    border: 1px dashed #909090;
+    padding: 15px 30px;
+    background: white;
+    border-radius: 6px;
+}
+
+.login-container .channel-buttons{
+    width: 100%;
 }
 
 .twitter_color{

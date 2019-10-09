@@ -14,7 +14,7 @@ class AccountLinks extends React.Component {
 
                 <div className="">
 
-                    <NavLink to="/accounts/twitter" >
+                    <NavLink to="/twitter-booster/manage-accounts" >
                         <div className="account_box twitter_bg col-xs-12">
                             
                             <div>

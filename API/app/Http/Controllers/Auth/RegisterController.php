@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -65,11 +66,13 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
-        User::create([
+    {   
+        $role = Role::first();
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role_id' => Role::first()->id,
+            'role_id' => $role->id,
+            'trial_ends_at' => Carbon::now()->addDays($role->trial_days),
             'password' => Hash::make($data['password'])
         ]);
 

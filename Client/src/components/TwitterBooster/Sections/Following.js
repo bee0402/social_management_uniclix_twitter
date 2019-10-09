@@ -142,7 +142,7 @@ class Following extends React.Component{
                         }
                     ]}
                     image = "/images/analytic_intro.svg"
-                    buttonLink = "/settings/billing"
+                    buttonLink = "/twitter-booster/manage-accounts"
                 />:
                 <div>
                     <div className="section-header">

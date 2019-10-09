@@ -30,7 +30,7 @@ const Manage = ({channels, selectedChannel, selectChannel}) => {
                     title = "Prove the impact of your social media initiatives"
                     description = "Track your social growth, and get meaningful stats"
                     buttonTitle = "Connect your Twitter Account"
-                    buttonLink = "/accounts/twitter"
+                    buttonLink = "/twitter-booster/manage-accounts"
                 />
             </div>
             }

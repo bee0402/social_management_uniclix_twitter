@@ -16,10 +16,10 @@ const TopMenu = ({setComposerModal, profile}) => (
 
 
             <div className="current-profile">
-                <div className="current-profile-info">
+                {typeof profile !== 'undefined' && typeof profile.user !== 'undefined' && <div className="current-profile-info">
                     <p className="current-profile-name">{profile.user.name}</p>
                     <p className="current-profile-email">{profile.user.email}</p>
-                </div>
+                </div>}
                 <div className="current-profile-avatar">
                     <img src="/images/dummy_profile.png" />
                 </div>

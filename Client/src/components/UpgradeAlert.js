@@ -19,7 +19,7 @@ class UpgradeAlert extends React.Component {
             goBack, 
             setForbidden,
             toggle = false, 
-            redirectUri = "/settings/billing",
+            redirectUri = "/twitter-booster/manage-accounts",
             confirmBtn = "Upgrade",
             type="info"} = this.props;
         return (

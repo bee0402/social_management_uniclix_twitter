@@ -31,6 +31,10 @@ class KeywordTargets extends React.Component{
         if((this.props.selectedChannel !== prevProps.selectedChannel)){
             this.fetchTargets();
         }
+
+        if((this.props.channelsLoading !== prevProps.channelsLoading)){
+            this.setLoading(this.props.channelsLoading);
+        }
     }
 
     showSearchView = (searchView = false) => {
@@ -172,7 +176,7 @@ class KeywordTargets extends React.Component{
                         }
                     ]}
                     image = "/images/analytic_intro.svg"
-                    buttonLink = "/settings/billing"
+                    buttonLink = "/twitter-booster/manage-accounts"
                 />:
                 <div>
            

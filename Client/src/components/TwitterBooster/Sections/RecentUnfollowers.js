@@ -144,7 +144,7 @@ class RecentUnfollowers extends React.Component{
                             }
                         ]}
                         image = "/images/analytic_intro.svg"
-                        buttonLink = "/settings/billing"
+                        buttonLink = "/twitter-booster/manage-accounts"
                     />:
                 <div>
                     <h2>RECENT UNFOLLOWERS</h2>
