@@ -1,28 +1,33 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {NavLink} from "react-router-dom";
-import {backendUrl} from "../../config/api";
-import {setComposerModal} from "../../actions/composer";
+import { connect } from 'react-redux';
+import { NavLink } from "react-router-dom";
+import { backendUrl } from "../../config/api";
+import { setComposerModal } from "../../actions/composer";
 
-const TopMenu = ({setComposerModal, profile}) => (
-    <div>
+const TopMenu = ({ setComposerModal, profile }) => (
+    <div className="navbar-wrap">
         <div className="navbar-uniclix">
-            <a href={backendUrl} className="brand"><img src="/images/uniclix.png"/></a>
+            <a href={backendUrl} className="brand"><img src="/images/uniclix.png" /></a>
 
             <ul className="top-menu">
-                <li><NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink></li> 
-                <li><a href="#">Social media manager</a></li> 
+                <li><NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink></li>
+                <li><a href="#">Social media manager</a></li>
             </ul>
 
-
-            <div className="current-profile">
-                {typeof profile !== 'undefined' && typeof profile.user !== 'undefined' && <div className="current-profile-info">
-                    <p className="current-profile-name">{profile.user.name}</p>
-                    <p className="current-profile-email">{profile.user.email}</p>
-                </div>}
-                <div className="current-profile-avatar">
-                    <img src="/images/dummy_profile.png" />
+            <div className="right-top-nav">
+                <div className="current-profile">
+                    {typeof profile !== 'undefined' && typeof profile.user !== 'undefined' && <div className="current-profile-info">
+                        <p className="current-profile-name">{profile.user.name}</p>
+                        <p className="current-profile-email">{profile.user.email}</p>
+                    </div>}
+                    <div className="current-profile-avatar">
+                        <img src="/images/dummy_profile.png" />
+                    </div>
                 </div>
+                <ul className="current-profile-links">
+                    <li><a href="">Settings</a></li>
+                    <li><a href="">Log out</a></li>
+                </ul>
             </div>
         </div>
 

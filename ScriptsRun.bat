@@ -1,0 +1,1 @@
+cd Client && npm run build:dev && cd ../API && php artisan config:clear && php artisan serve
