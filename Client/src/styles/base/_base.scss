@@ -37,11 +37,11 @@
 @import "./leftNav";
 @import "./middleware";
 @import "./modal";
+@import "./layout";
 
 /*Nav top bar ============*/
 .navbar-wrap {
     .navbar-uniclix {
-        position: fixed;
         z-index: 999;
         top: 0;
         width: 100%;
@@ -71,7 +71,7 @@
         .top-menu {
             margin: 0;
             margin-left: 230px;
-            margin-bottom: 15px;
+            margin-bottom: 0;
 
             li {
                 a {
@@ -103,11 +103,25 @@
 
         .right-top-nav {
             /* Current Profile ======= */
+            float: right;
+            position: relative;
+            height: 100%;
+            transition: linear 0.3s;
+
             .current-profile {
-                float: right;
+                float: left;
+                right: 0px;
+                top: 0;
+                transition: linear 0.2s;
+                height: 100%;
+                background: $white;
+                position: absolute;
+                z-index: 2;
                 display: flex;
                 align-items: center;
                 padding: 0 3.5rem;
+                justify-content: flex-end;
+                min-width: 100%;
                 cursor: pointer;
 
                 .current-profile-info {
@@ -137,8 +151,58 @@
                     }
                 }
             }
-            .current-profile-links{
-                width: 0;
+
+            .current-profile-links {
+                opacity: 0;
+                position: relative;
+                z-index: 1;
+                float: right;
+                list-style: none;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                height: 100%;
+                margin: 0;
+                padding: 0 3rem 0 6rem;
+
+                li {
+                    float: left;
+                    padding: 10px 25px;
+
+                    a {
+                        font-family: Lato;
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 16px;
+                        line-height: 24px;
+                        /* identical to box height, or 150% */
+
+                        letter-spacing: 0.122042px;
+
+                        color: $white;
+
+                        i {
+                            color: $white;
+                            padding-right: 8px;
+                        }
+                    }
+                }
+            }
+
+            &:hover {
+                background: $primary_blue;
+
+                .current-profile {
+                    right: 100%;
+                    margin-right: -40px;
+                    border-radius: 0 50px 50px 0;
+                    padding-right: 20px;
+
+                }
+
+                .current-profile-links {
+                    opacity: 1;
+                }
             }
         }
     }
@@ -146,8 +210,6 @@
 
 /* TOp ALert =============*/
 .top-alert {
-    position: fixed;
-    top: 70px;
     padding: 15px;
     text-align: center;
     font-size: 1.4rem;

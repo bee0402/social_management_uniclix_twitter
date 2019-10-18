@@ -1,15 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
 import TwitterLogin  from "react-twitter-auth";
-import FacebookButton from './FacebookButton';
 import {startLogin, initLogin} from "../actions/auth";
 import {startSetChannels} from "../actions/channels";
 import {startSetProfile} from "../actions/profile";
 import {twitterRequestTokenUrl, twitterAccessTokenUrl, backendUrl, facebookAppId, linkedinAppId, pinterestAppId} from "../config/api";
 import {registerUser, loginUser} from '../requests/auth';
 import {LoaderWithOverlay} from "./Loader";
-import LinkedInButton from "./LinkedInButton";
-import PinterestButton from "./PinterestButton";
 
 export class LoginPage extends React.Component{
 
@@ -40,36 +37,6 @@ export class LoginPage extends React.Component{
             }).catch(error => {
                 this.setState(() => ({loading: false}));
             });
-        });
-    };
-
-    onFacebookSuccess = (response) => {
-        this.setState(() => ({loading: true}));
-        this.props.startLogin(response, "facebook").then(() => {
-            this.props.startSetProfile();
-            this.props.startSetChannels();
-        }).catch(error => {
-            this.setState(() => ({loading: false}));
-        });
-    };
-
-    onLinkedInSuccess = (response) => {
-        this.setState(() => ({loading: true}));
-        this.props.startLogin(response, "linkedin").then(() => {
-            this.props.startSetProfile();
-            this.props.startSetChannels();
-        }).catch(error => {
-            this.setState(() => ({loading: false}));
-        });
-    };
-
-    onPinterestSuccess = (response) => {
-        this.setState(() => ({loading: true}));
-        this.props.startLogin(response, "pinterest").then(() => {
-            this.props.startSetProfile();
-            this.props.startSetChannels();
-        }).catch(error => {
-            this.setState(() => ({loading: false}));
         });
     };
 
@@ -136,7 +103,7 @@ export class LoginPage extends React.Component{
                 this.performLogin(response.accessToken);
             }
         }).catch(e => {
-            this.setState(() => ({loading: false}));
+            this.setState({loading: false});
             if(typeof e.response !== "undefined" && typeof e.response.data.errors !== "undefined"){
                 this.setState(() => ({
                     error: Object.values(e.response.data.errors)[0][0]

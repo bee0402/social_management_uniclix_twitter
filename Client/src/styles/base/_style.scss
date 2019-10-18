@@ -11,7 +11,9 @@ html {
 
 body {
     font-family: Lato, sans-serif, Arial, Helvetica;
-    background: #F5F7FB;
+    background: $body_bg;
+    font-size: $base_size;
+    size: 1;
 }
 
 button,
@@ -356,19 +358,19 @@ a:link {
 
 .search-modal {
     padding: 30px;
-    text-align: center
-}
+    text-align: center;
 
-.search-modal input {
-    padding: 5px;
-    width: 50%;
-}
+    input {
+        padding: 5px;
+        width: 50%;
+    }
 
-.search-modal button {
-    border: none;
-    border-radius: 0;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    button {
+        border: none;
+        border-radius: 0;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
 }
 
 .sortLabel {
@@ -1866,15 +1868,6 @@ button.streammaker-btn:hover {
 
 .top-icons:hover {
     color: #459fd8;
-}
-
-.body-container {
-    padding: 0 90px;
-    margin-left: 236px;
-}
-
-.main-section {
-    margin-top: 180px;
 }
 
 .section-header {

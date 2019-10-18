@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import { backendUrl } from "../../config/api";
 import { setComposerModal } from "../../actions/composer";
+import { startLogout } from "../../actions/auth";
 
-const TopMenu = ({ setComposerModal, profile }) => (
+const TopMenu = ({ logout, profile }) => (
     <div className="navbar-wrap">
         <div className="navbar-uniclix">
             <a href={backendUrl} className="brand"><img src="/images/uniclix.png" /></a>
 
             <ul className="top-menu">
-                <li><NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink></li>
+                <li>
+                    <NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink>
+                </li>
                 <li><a href="#">Social media manager</a></li>
             </ul>
 
@@ -25,8 +28,14 @@ const TopMenu = ({ setComposerModal, profile }) => (
                     </div>
                 </div>
                 <ul className="current-profile-links">
-                    <li><a href="">Settings</a></li>
-                    <li><a href="">Log out</a></li>
+                    <li>
+                        <NavLink to="/settings" activeClassName="active" className="first-nav-item">
+                            <i className={`fa fa-cog `}></i> Settings</NavLink>
+                    </li>
+                    <li>
+                        <a className="link-cursor first-nav-item" onClick={logout}>
+                            <i className={`fa fa-sign-out-alt`}></i> Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -44,7 +53,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    setComposerModal: (isOpen) => dispatch(setComposerModal(isOpen))
+    setComposerModal: (isOpen) => dispatch(setComposerModal(isOpen)),
+    logout: () => dispatch(startLogout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopMenu);

@@ -1,3 +1,31 @@
-.navbar-wrap{
+.navbar-wrap {
     position: relative;
+}
+
+.app-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100vh;
+
+    .navbar-wrap {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .body-wrap {
+        display: flex;
+        flex-direction: row;
+        overflow: auto;
+        flex: 1;
+
+        .body-container {
+            padding: 0 90px;
+            margin-left: 236px;
+
+            .main-section {
+                padding: 30px 0 10px 0;
+            }
+        }
+    }
 }
