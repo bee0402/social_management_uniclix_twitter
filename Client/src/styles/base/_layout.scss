@@ -18,7 +18,12 @@
         flex-direction: row;
         overflow: auto;
         flex: 1;
-
+        & > div{
+            width: 100%;
+        }
+        & > .body-container{
+            width: auto;
+        }
         .body-container {
             padding: 0 90px;
             margin-left: 236px;
