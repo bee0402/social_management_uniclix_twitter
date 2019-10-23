@@ -27,6 +27,7 @@
     font-family: open-sansLight;
     src: url(/fonts/open-sans/OpenSans-Light.ttf);
 }
+@import url('https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&display=swap&subset=latin-ext');
 
 @import "./settings";
 @import "./analytics";
@@ -38,6 +39,7 @@
 @import "./middleware";
 @import "./modal";
 @import "./layout";
+@import "./tab";
 
 /*Nav top bar ============*/
 .navbar-wrap {

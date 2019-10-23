@@ -1,39 +1,42 @@
 import React from 'react';
 import { connect } from "react-redux";
 import VerticalSettingsMenu from "../Menus/VerticalSettingsMenu";
+import MenuItems from "../TwitterBooster/Fixtures/MenuItems";
+import VerticalMenu from "../Menus/VerticalMenu";
 import channelSelector from "../../selectors/channels";
 import SettingsRouter from '../../routes/SettingsRouter';
 
-const menuItems = [
-    {
-        id: "profile",
-        displayName: "Personal Info",
-        uri: "/settings/profile"
-    },
-    {
-        id: "company-info",
-        displayName: "Company Info",
-        uri: "/settings/company-info"
-    },
-    {
-        id: "team",
-        displayName: "Team",
-        uri: "/settings/team"
-    },
-    {
-        id: "billing",
-        displayName: "Manage Accout",
-        uri: "/settings/billing"
-    }
-];
+// const menuItems = [
+//     {
+//         id: "profile",
+//         displayName: "Personal Info",
+//         uri: "/settings/profile"
+//     },
+//     {
+//         id: "company-info",
+//         displayName: "Company Info",
+//         uri: "/settings/company-info"
+//     },
+//     {
+//         id: "team",
+//         displayName: "Team",
+//         uri: "/settings/team"
+//     },
+//     {
+//         id: "twitter-booster_recent_unfollowers",
+//         displayName: "Manage Accounts",
+//         uri: "/twitter-booster/manage-accounts",
+//         icon: "list"
+//     }
+// ];
 
 const Settings = ({ channels, selectedChannel, selectChannel }) => {
     const hasChannel = typeof (selectedChannel.username) !== "undefined";
     return (
         <div className="body-wrap">
             <div>
-                <VerticalSettingsMenu
-                    menuItems={menuItems}
+                <VerticalMenu
+                    menuItems={MenuItems}
                     channels={channels}
                     selectedChannel={selectedChannel}
                     selectChannel={selectChannel}

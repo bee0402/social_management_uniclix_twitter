@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from "react-redux";
 import Modal from "react-modal";
 import GeoSuggest from "react-geosuggest";
-import {updateProfile} from "../../../requests/profile";
+import { updateProfile } from "../../../requests/profile";
 import momentTz from "moment-timezone";
 import TimezoneSelectOptions from '../Fixtures/TimezoneOptions';
-import {validateEmail, validateUrl} from "../../../utils/validator";
-import {startSetProfile} from "../../../actions/profile";
-import {LoaderWithOverlay} from "../../Loader";
+import { validateEmail, validateUrl } from "../../../utils/validator";
+import { startSetProfile } from "../../../actions/profile";
+import { LoaderWithOverlay } from "../../Loader";
 
-class Profile extends React.Component{
+class Profile extends React.Component {
 
     state = {
         name: "",
@@ -26,15 +26,16 @@ class Profile extends React.Component{
         isLocationsModalOpen: false,
         error: false,
         success: false,
-        loading: false
+        loading: false,
+        isTabActive: 'personal-info'
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.initializeProfileData();
     }
 
     initializeProfileData = () => {
-        if(this.props.profile){
+        if (this.props.profile) {
             const user = this.props.profile.user;
             const topics = this.props.profile.topics;
             const locations = this.props.profile.locations;
@@ -47,7 +48,7 @@ class Profile extends React.Component{
             stateCopy["reason"] = user.usage_reason ? user.usage_reason : "Myself";
             stateCopy["topics"] = topics.map((topic) => topic.topic);
             stateCopy["locations"] = locations.map((location) => {
-                if(location){
+                if (location) {
                     location = JSON.parse(location.location);
                     return location;
                 }
@@ -93,7 +94,7 @@ class Profile extends React.Component{
             error: false
         }));
 
-        if(!validateEmail(this.state.email) || this.state.email === ""){
+        if (!validateEmail(this.state.email) || this.state.email === "") {
             this.setState(() => ({
                 error: "Please fix the email!",
                 loading: false
@@ -102,7 +103,7 @@ class Profile extends React.Component{
             return;
         }
 
-        if(this.state.website !== "" && !validateUrl(this.state.website)){
+        if (this.state.website !== "" && !validateUrl(this.state.website)) {
             this.setState(() => ({
                 error: "Please fix the website url!",
                 loading: false
@@ -111,7 +112,7 @@ class Profile extends React.Component{
             return;
         }
 
-        if(this.state.name === ""){
+        if (this.state.name === "") {
             this.setState(() => ({
                 error: "Name can't be empty!",
                 loading: false
@@ -157,28 +158,30 @@ class Profile extends React.Component{
 
     addTopic = (e) => {
         e.preventDefault();
-        if(this.state.topic){
+        if (this.state.topic) {
             this.setState((prevState) => {
                 return {
                     topics: [
                         ...prevState.topics.filter(topic => topic !== prevState.topic),
                         prevState.topic
                     ],
-                    topic: ""}
+                    topic: ""
+                }
             });
         }
     };
 
     addLocation = (e) => {
         e.preventDefault();
-        if(this.state.location){
+        if (this.state.location) {
             this.setState((prevState) => {
                 return {
                     locations: [
                         ...prevState.locations.filter(location => JSON.stringify(location) !== JSON.stringify(prevState.location)),
                         prevState.location
                     ],
-                    location: ""}
+                    location: ""
+                }
             });
         }
     };
@@ -201,37 +204,44 @@ class Profile extends React.Component{
         }));
     };
 
-    render(){
+    ChangeTab = (newIndex) => {
+        this.setState(() => ({
+            isTabActive: newIndex
+        }));
+    }
+
+    render() {
+        const { isTabActive, success, error } = this.state;
         return (
             <div>
-                {this.state.loading && <LoaderWithOverlay/>}
+                {this.state.loading && <LoaderWithOverlay />}
                 <Modal
                     isOpen={this.state.isTopicsModalOpen}
                     ariaHideApp={false}
                     className="topicsModal"
-                >       
-                    <form onSubmit={(e) => this.addTopic(e)}>  
+                >
+                    <form onSubmit={(e) => this.addTopic(e)}>
                         <h3>Add Topics</h3>
                         <div className="form-group flex_container-center">
                             <div>
                                 {this.state.topics.length >= 15 ?
-                                    <input disabled type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." /> 
-                                :
-                                    <input type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." /> 
+                                    <input disabled type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." />
+                                    :
+                                    <input type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." />
                                 }
-                                
+
                             </div>
                         </div>
                     </form>
 
-                        
-                        {!!this.state.topics.length && this.state.topics.map((topic, index) => (
-                          <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>  
-                        ))}
-                        
-                        <div className="right-inline top-border p10 m10-top">
-                            <button className="magento-btn small-btn" onClick={this.toggleTopicsModal}>Add</button>
-                        </div>
+
+                    {!!this.state.topics.length && this.state.topics.map((topic, index) => (
+                        <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>
+                    ))}
+
+                    <div className="right-inline top-border p10 m10-top">
+                        <button className="magento-btn small-btn" onClick={this.toggleTopicsModal}>Add</button>
+                    </div>
                 </Modal>
 
 
@@ -239,12 +249,12 @@ class Profile extends React.Component{
                     isOpen={this.state.isLocationsModalOpen}
                     ariaHideApp={false}
                     className="topicsModal"
-                >       
-                    <form onSubmit={(e) => this.addLocation(e)}>  
+                >
+                    <form onSubmit={(e) => this.addLocation(e)}>
                         <h3>Add Locations</h3>
                         <div className="form-group flex_container-center">
                             <div>
-                                <GeoSuggest 
+                                <GeoSuggest
                                     onSuggestSelect={this.onLocationsFieldChange}
                                     initialValue={this.state.location && this.state.location.label}
                                     disabled={this.state.locations.length >= 5 ? true : false}
@@ -253,115 +263,145 @@ class Profile extends React.Component{
                         </div>
                     </form>
 
-                        
-                        {!!this.state.locations.length && this.state.locations.map((location, index) => (
-                        <div key={index} className="addedItemLabels">{location.label} <span className="fa fa-times link-cursor" onClick={() => this.removeLocation(index)}></span></div>  
-                        ))}
-                        
-                        <div className="right-inline top-border p10 m10-top">
-                            <button className="magento-btn small-btn" onClick={this.toggleLocationsModal}>Add</button>
-                        </div>
+
+                    {!!this.state.locations.length && this.state.locations.map((location, index) => (
+                        <div key={index} className="addedItemLabels">{location.label} <span className="fa fa-times link-cursor" onClick={() => this.removeLocation(index)}></span></div>
+                    ))}
+
+                    <div className="right-inline top-border p10 m10-top">
+                        <button className="magento-btn small-btn" onClick={this.toggleLocationsModal}>Add</button>
+                    </div>
                 </Modal>
-
-                <h2>PROFILE</h2>
-                {this.state.error && 
-                    <div className="alert alert-danger">{this.state.error}</div>
+                <div className="section-header no-border">
+                    <div className="section-header__first-row">
+                        <h2>PROFILE</h2>
+                    </div>
+                </div>
+                {this.state.error &&
+                    <div className="alert alert-danger">{error}</div>
                 }
 
-                {this.state.success && 
-                    <div className="alert alert-success">{this.state.success}</div>
+                {this.state.success &&
+                    <div className="alert alert-success">{success}</div>
                 }
-                <form onSubmit={(e) => this.onSubmit(e)} className="profile-form">
-                    <div className="form-group shadow-box main-content-style">
-
- 
-                        <h3>Personal information</h3>
-                        
-                        <div className="column-container">
-                            <div className="col-6 col-md-6 form-field">
-                                <label htmlFor="name">Name</label>
-                                <input type="text" className="form-control" onChange={(e) => this.onFieldChange(e)} id="name" value={this.state.name} placeholder="johndoe" />
-                            </div>
-            
-                            <div className="col-6 col-md-6 form-field">
-                                <label htmlFor="email">Email</label>
-                                <input type="email" className="form-control" id="email" onChange={(e) => this.onFieldChange(e)} value={this.state.email} placeholder="johndoe@example.com" />
-                            </div>
+                <div className="tab-cnt">
+                    <div className="tab-head">
+                        <div className={`tab-nav-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
+                            <button href="#personal-info" onClick={() => this.ChangeTab('personal-info')}>Personal information</button>
                         </div>
-        
-                        <div className="form-field">
-                            <label htmlFor="website">Website</label>
-                            <input type="text" className="form-control" value={this.state.website} onChange={(e) => this.onFieldChange(e)} id="website" placeholder="www.example.com" />
-                        </div>
-        
-                    </div>
-        
-        
-                    <div className="form-group shadow-box main-content-style">
-
-                        <h3>Other details</h3>
-
-                        <div className="clearer clearfix">
-                            <div className="col-6 col-md-6 clearfix">
-                                <label htmlFor="name">I am using Uniclix for:</label>
-                                <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control" id="reason">
-                                    <option>Myself</option>
-                                    <option>My Business</option>
-                                    <option>My Clients</option>
-                                </select>
-                            </div>
-
-                            <div className="col-6 col-md-6 clearfix">
-                                <label htmlFor="topics">Organization Name</label>
-                                <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="My Organization" />
-                            </div>
-                        </div>
-
-                        <div className="seperator"></div>
-                        
-                        <div className="clearer clearfix">
-                            <label htmlFor="topics">My Topics</label> 
-                            <div className="clearfix">
-                                <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleTopicsModal}><span className="cus-plus-icon">+</span>Add Topic</button>
-                            </div>
-                            {!!this.state.topics.length && this.state.topics.map((topic, index) => (
-                                <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>  
-                              ))}
-                            <input type="hidden" className="form-control whiteBg" id="topics" readOnly={true} onClick={this.toggleTopicsModal} value={this.state.topics.map(topic => ` ${topic}`)} placeholder="food, pets, fashion..." />
-                        </div>
-        
-                        <div className="seperator"></div>
-
-                        <div className="clearer clearfix">
-                            <label htmlFor="website">My Locations</label>
-                            <div className="clearfix">
-                                <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleLocationsModal}><span className="cus-plus-icon">+</span>Add Location</button>
-                            </div>
-
-                            {!!this.state.locations.length && this.state.locations.map((location, index) => (
-                                <div key={index} className="addedItemLabels">{location.label} <span className="fa fa-times link-cursor" onClick={() => this.removeLocation(index)}></span></div>  
-                            ))}
-
-                            <input type="hidden" className="form-control whiteBg" id="website" readOnly={true} value={this.state.locations.map(location => ` ${location.label}`)} onClick={this.toggleLocationsModal} placeholder="New York City, Amsterdam, Venice..." />
-                        </div>
-        
-                        <div className="seperator"></div>
-
-                        <div className="form-field">
-                            <label htmlFor="name">Timezone</label>
-                            <select type="text" className="form-control" onChange={(e) => this.onFieldChange(e)} value={this.state.timezone} id="timezone">
-                                {TimezoneSelectOptions.map((timezone, index) => (
-                                    <option key={index} value={timezone.value}>{timezone.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <button className="magento-btn pull-right">Submit</button>
+                        <div className={`tab-nav-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
+                            <button href="#company-info" onClick={() => this.ChangeTab('company-info')}>Company information</button>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div className="tab-body">
+                        <div className={`cnt-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
+                            <form onSubmit={(e) => this.onSubmit(e)} className="profile-form">
+                                <div className="form-group shadow-box main-content-style">
+
+                                    <div className="column-container">
+                                        <div className="col-12 col-md-8 form-field">
+                                            <label htmlFor="name">Full Name</label>
+                                            <input type="text" className="form-control" onChange={(e) => this.onFieldChange(e)} id="name" value={this.state.name} placeholder="johndoe" />
+                                        </div>
+
+                                        <div className="col-12 col-md-8 clearfix">
+                                            <label htmlFor="name">Type</label>
+                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control" id="reason">
+                                                <option>Myself</option>
+                                                <option>My Business</option>
+                                                <option>My Clients</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-12 col-md-8 form-field">
+                                            <label htmlFor="email">Email addresse</label>
+                                            <input type="email" className="form-control" id="email" onChange={(e) => this.onFieldChange(e)} value={this.state.email} placeholder="johndoe@example.com" />
+                                        </div>
+                                        <div className="col-12 col-md-8 form-field">
+                                            <label htmlFor="website">Website</label>
+                                            <input type="text" className="form-control" value={this.state.website} onChange={(e) => this.onFieldChange(e)} id="website" placeholder="www.example.com" />
+                                        </div>
+
+                                        <div className="col-12 col-md-8 clearfix">
+                                            <label htmlFor="name">I am using Uniclix for:</label>
+                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control" id="reason">
+                                                <option>Myself</option>
+                                                <option>My Business</option>
+                                                <option>My Clients</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div className="form-group shadow-box main-content-style">
+
+                                    <div className="clearer clearfix">
+                                        <label htmlFor="topics">My Topics</label>
+                                        <div className="clearfix">
+                                            <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleTopicsModal}><span className="cus-plus-icon">+</span>Add Topic</button>
+                                        </div>
+                                        {!!this.state.topics.length && this.state.topics.map((topic, index) => (
+                                            <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>
+                                        ))}
+                                        <input type="hidden" className="form-control whiteBg" id="topics" readOnly={true} onClick={this.toggleTopicsModal} value={this.state.topics.map(topic => ` ${topic}`)} placeholder="food, pets, fashion..." />
+                                    </div>
+
+                                    <div className="seperator"></div>
+
+                                    <div className="clearer clearfix">
+                                        <label htmlFor="website">My Locations</label>
+                                        <div className="clearfix">
+                                            <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleLocationsModal}><span className="cus-plus-icon">+</span>Add Location</button>
+                                        </div>
+
+                                        {!!this.state.locations.length && this.state.locations.map((location, index) => (
+                                            <div key={index} className="addedItemLabels">{location.label} <span className="fa fa-times link-cursor" onClick={() => this.removeLocation(index)}></span></div>
+                                        ))}
+
+                                        <input type="hidden" className="form-control whiteBg" id="website" readOnly={true} value={this.state.locations.map(location => ` ${location.label}`)} onClick={this.toggleLocationsModal} placeholder="New York City, Amsterdam, Venice..." />
+                                    </div>
+
+                                    <div>
+                                        <button className="magento-btn pull-right">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div >
+                        <div className={`cnt-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
+                            <form onSubmit={(e) => this.onSubmit(e)} className="profile-form">
+
+
+                                <div className="form-group shadow-box main-content-style">
+
+
+                                    <div className="clearer clearfix">
+                                        <div className="col-12 col-md-8 clearfix">
+                                            <label htmlFor="topics">Company Name</label>
+                                            <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="My Organization" />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-field">
+                                        <label htmlFor="name">Timezone</label>
+                                        <select type="text" className="form-control" onChange={(e) => this.onFieldChange(e)} value={this.state.timezone} id="timezone">
+                                            {TimezoneSelectOptions.map((timezone, index) => (
+                                                <option key={index} value={timezone.value}>{timezone.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <button className="magento-btn pull-right">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div >
+                </div >
+            </div >
         );
     }
 }
