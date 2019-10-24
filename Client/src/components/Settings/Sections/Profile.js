@@ -209,9 +209,14 @@ class Profile extends React.Component {
             isTabActive: newIndex
         }));
     }
+    setLocation = (location) => {
+        console.log(location);
+        this.state.locations.map(location => ` ${location.label}`)
+    }
 
     render() {
-        const { isTabActive, success, error } = this.state;
+        const { isTabActive, success, error, locations } = this.state;
+        console.log(locations);
         return (
             <div>
                 {this.state.loading && <LoaderWithOverlay />}
@@ -301,12 +306,12 @@ class Profile extends React.Component {
                                     <div className="column-container">
                                         <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="name">Full Name</label>
-                                            <input type="text" className="form-control" onChange={(e) => this.onFieldChange(e)} id="name" value={this.state.name} placeholder="johndoe" />
+                                            <input type="text" className="form-control whiteBg" onChange={(e) => this.onFieldChange(e)} id="name" value={this.state.name} placeholder="johndoe" />
                                         </div>
 
-                                        <div className="col-12 col-md-8 clearfix">
+                                        <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="name">Type</label>
-                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control" id="reason">
+                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control whiteBg" id="reason">
                                                 <option>Myself</option>
                                                 <option>My Business</option>
                                                 <option>My Clients</option>
@@ -314,16 +319,16 @@ class Profile extends React.Component {
                                         </div>
                                         <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="email">Email addresse</label>
-                                            <input type="email" className="form-control" id="email" onChange={(e) => this.onFieldChange(e)} value={this.state.email} placeholder="johndoe@example.com" />
+                                            <input type="email" className="form-control whiteBg" id="email" onChange={(e) => this.onFieldChange(e)} value={this.state.email} placeholder="johndoe@example.com" />
                                         </div>
                                         <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="website">Website</label>
-                                            <input type="text" className="form-control" value={this.state.website} onChange={(e) => this.onFieldChange(e)} id="website" placeholder="www.example.com" />
+                                            <input type="text" className="form-control whiteBg" value={this.state.website} onChange={(e) => this.onFieldChange(e)} id="website" placeholder="www.example.com" />
                                         </div>
 
-                                        <div className="col-12 col-md-8 clearfix">
+                                        <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="name">I am using Uniclix for:</label>
-                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control" id="reason">
+                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control whiteBg" id="reason">
                                                 <option>Myself</option>
                                                 <option>My Business</option>
                                                 <option>My Clients</option>
@@ -332,12 +337,7 @@ class Profile extends React.Component {
                                     </div>
 
 
-                                </div>
-
-
-                                <div className="form-group shadow-box main-content-style">
-
-                                    <div className="clearer clearfix">
+                                    <div className="clearer form-field col-12 col-md-8  ">
                                         <label htmlFor="topics">My Topics</label>
                                         <div className="clearfix">
                                             <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleTopicsModal}><span className="cus-plus-icon">+</span>Add Topic</button>
@@ -348,23 +348,8 @@ class Profile extends React.Component {
                                         <input type="hidden" className="form-control whiteBg" id="topics" readOnly={true} onClick={this.toggleTopicsModal} value={this.state.topics.map(topic => ` ${topic}`)} placeholder="food, pets, fashion..." />
                                     </div>
 
-                                    <div className="seperator"></div>
-
-                                    <div className="clearer clearfix">
-                                        <label htmlFor="website">My Locations</label>
-                                        <div className="clearfix">
-                                            <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleLocationsModal}><span className="cus-plus-icon">+</span>Add Location</button>
-                                        </div>
-
-                                        {!!this.state.locations.length && this.state.locations.map((location, index) => (
-                                            <div key={index} className="addedItemLabels">{location.label} <span className="fa fa-times link-cursor" onClick={() => this.removeLocation(index)}></span></div>
-                                        ))}
-
-                                        <input type="hidden" className="form-control whiteBg" id="website" readOnly={true} value={this.state.locations.map(location => ` ${location.label}`)} onClick={this.toggleLocationsModal} placeholder="New York City, Amsterdam, Venice..." />
-                                    </div>
-
-                                    <div>
-                                        <button className="magento-btn pull-right">Save</button>
+                                    <div className="col-12 col-md-8">
+                                        <button className="magento-btn pull-left">Save</button>
                                     </div>
                                 </div>
                             </form>
@@ -377,24 +362,38 @@ class Profile extends React.Component {
                                 <div className="form-group shadow-box main-content-style">
 
 
-                                    <div className="clearer clearfix">
-                                        <div className="col-12 col-md-8 clearfix">
-                                            <label htmlFor="topics">Company Name</label>
-                                            <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="My Organization" />
-                                        </div>
+                                    <div className="col-12 col-md-8 form-field">
+                                        <label htmlFor="topics">Company Name</label>
+                                        <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="Company" />
+                                    </div>
+                                    <div className="col-12 col-md-8 form-field">
+                                        <label htmlFor="website">Country</label>
+                                        <GeoSuggest
+                                            className="col-12"
+                                            inputClassName="form-control whiteBg"
+                                            placeholder="Write your country name"
+                                            onSuggestSelect={this.onLocationsFieldChange}
+                                            initialValue={this.state.location && this.state.location.label}
+                                            disabled={this.state.locations.length >= 5 ? true : false}
+                                        />
+                                        <input type="hidden" id="website" readOnly={true} value={this.state.locations.map(location => ` ${location.label}`)} onClick={this.toggleLocationsModal} placeholder="New York City, Amsterdam, Venice..." />
                                     </div>
 
-                                    <div className="form-field">
-                                        <label htmlFor="name">Timezone</label>
-                                        <select type="text" className="form-control" onChange={(e) => this.onFieldChange(e)} value={this.state.timezone} id="timezone">
-                                            {TimezoneSelectOptions.map((timezone, index) => (
-                                                <option key={index} value={timezone.value}>{timezone.name}</option>
-                                            ))}
-                                        </select>
+                                    <div className="col-12 col-md-8 form-field">
+                                        <label htmlFor="topics">Addresse</label>
+                                        <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="Example: 22 E 22Th St, New York, NY 10033" />
+                                    </div>
+                                    <div className="col-12 col-md-8 form-field">
+                                        <label htmlFor="topics">Company Email</label>
+                                        <input type="email" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="info@uniclixapp.com" />
+                                    </div>
+                                    <div className="col-12 col-md-8 form-field">
+                                        <label htmlFor="topics">Company Phone</label>
+                                        <input type="tel" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="+1 603-278-1000" />
                                     </div>
 
-                                    <div>
-                                        <button className="magento-btn pull-right">Submit</button>
+                                    <div className="col-12 col-md-8">
+                                        <button className="magento-btn pull-left">Save</button>
                                     </div>
                                 </div>
                             </form>
