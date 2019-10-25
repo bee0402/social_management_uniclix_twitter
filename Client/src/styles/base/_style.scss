@@ -3644,6 +3644,13 @@ aside .btn-group {
     height: 100vh;
 }
 
+.steps-cnt {
+    max-width: 80%;
+    margin: 0 0 0 auto;
+    max-height: calc(100vh - 30px);
+    overflow-y: auto;
+}
+
 .no-data {
     text-align: center;
     font-family: open-sansSemiBold, sans-serif;

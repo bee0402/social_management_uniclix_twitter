@@ -7,6 +7,7 @@ import EmailChecker from "../components/EmailChecker";
 import ActiveChecker from "../components/ActiveChecker";
 import Middleware from "../components/Middleware";
 import MiddlewareHashtag from "../components/MiddlewareHashtag";
+import MiddlewareConnections from "../components/MiddlewareConnections";
 import SocialAccountsPrompt from "../components/SocialAccountsPrompt";
 
 import {
@@ -30,7 +31,7 @@ export const PrivateRoute = ({
                             <Middleware /> :
                             (middleware == 'hashtag') ?
                                 <div><MiddlewareHashtag /></div> :
-                                <div>{middleware}</div>
+                                <div><MiddlewareConnections /></div>
                         }
                     </div>
                     :

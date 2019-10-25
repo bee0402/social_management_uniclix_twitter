@@ -5,6 +5,7 @@ import { startSetProfile } from "../actions/profile";
 import { setMiddleware, setHashtags, setConnects } from '../actions/middleware';
 import { addKeywordTarget, destroyKeywordTarget } from '../requests/twitter/channels';
 import { startSetChannels } from "../actions/channels";
+import { getKeywordTargets } from '../requests/twitter/channels';
 import channelSelector from '../selectors/channels';
 import Loader from './Loader';
 
@@ -159,6 +160,10 @@ class MiddlewareHashtag extends React.Component {
             target
         }));
     };
+    componentDidMount() {
+
+        this.fetchTargets();
+    }
 
     onLocationSelect = (suggestedLocation) => {
 
@@ -181,7 +186,7 @@ class MiddlewareHashtag extends React.Component {
         if (target.length) {
             addKeywordTarget(target, location)
                 .then((response) => {
-                    this.props.reloadTargets(response);
+                    this.fetchTargets();
                     this.setLoading(false);
                 }).catch((error) => {
                     this.setLoading(false);
@@ -215,11 +220,11 @@ class MiddlewareHashtag extends React.Component {
         this.setLoading(true);
         destroyKeywordTarget(target)
             .then((response) => {
-                this.props.reloadTargets(response);
+                this.fetchTargets();
                 this.setLoading(false);
             }).catch((error) => {
                 this.setLoading(false);
-
+                console.log(error)
                 if (error.response.status === 401) {
 
                     if (this.props.selectedChannel.active) {
@@ -237,76 +242,104 @@ class MiddlewareHashtag extends React.Component {
             this.props.setMiddleware(false);
         });
     }
-    removeRole = () => {
+    setRole = () => {
         this.setLoading(true);
         this.props.startSetProfile().then(() => {
             this.setState(() => ({ loading: false }));
             this.props.setMiddleware('connections');
         });
     }
+    fetchTargets = () => {
+        this.setLoading(true);
+        getKeywordTargets()
+            .then((response) => {
+                if (typeof (response.items) === "undefined") return;
 
+                this.setState({
+                    targets: response.targets,
+                    loading: false
+                });
+
+            }).catch(error => {
+                this.setLoading(false);
+                console.log(error)
+
+                return Promise.reject(error);
+            });
+    };
     render() {
-        const { middleware } = this.props;
-        const { loading, allPlans } = this.state;
-
         return (
             <div className="login-container">
                 <div className="logo">
                     <img src="/images/uniclix.png" />
                 </div>
 
-
                 <div className="col-md-7 col-xs-12 text-center">
-                    <div className="item-list shadow-box">
-                        <div className="search-bar mt20">
-                            <form onSubmit={this.onSubmit}>
-                                <div className="form-row">
-                                    <div className="relative-pos">
-                                        <input type="text" className="form-control p20 search-input" onChange={this.onChange} id="keyword" name="keyword" placeholder="Add Hashtag" />
-                                        <div className="btn-container">
-                                            {
-                                                this.state.target ?
-                                                    <button className="gradient-background-teal-blue white-button add-target">+</button>
-                                                    :
-                                                    <button className="gradient-background-teal-blue white-button add-target disabled" disabled>+</button>
-                                            }
+                    <div className="steps-cnt">
+                        <div className="item-list shadow-box">
+                            <div className="search-bar mt20">
+                                <form onSubmit={this.onSubmit}>
+                                    <div className="form-row">
+                                        <div className="relative-pos">
+                                            <input type="text" className="form-control p20 search-input" onChange={this.onChange} id="keyword" name="keyword" placeholder="Add Hashtag" />
+                                            <div className="btn-container">
+                                                {
+                                                    this.state.target ?
+                                                        <button className="gradient-background-teal-blue white-button add-target">+</button>
+                                                        :
+                                                        <button className="gradient-background-teal-blue white-button add-target disabled" disabled>+</button>
+                                                }
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </div>
-                            </form>
-                        </div>
-
-                        <div className="added">
-                            <div>
-                                <div className={`section-header no-border mt20 mb20`}>
-                                    <div className="section-header__first-row">
                                     </div>
-
-                                    <div className="section-header__second-row">
-                                        <h3>Trending Hashtags</h3>
-                                    </div>
-                                </div>
-                                <div className="added-items">
-                                    {this.state.suggestedTargets.slice(1, 20).map((target, index) => (
-                                        <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
-                                            #{target.keyword}
-                                        </div>
-                                    ))}
-                                </div>
+                                </form>
                             </div>
 
-                            <div className="seperator mt20 mb20"></div>
-                            {!!this.state.targets.length ?
-                                <button className="magento-btn w100" onClick={this.setRole}>Select {3 - this.targets.length} to continue</button>
-                                :
-                                <button className="magento-btn w100 disabled-btn">Continue</button>
-                            }
-                            <button className="second-link" onClick={this.removeRole}>I’ll configure it later</button>
+                            <div className="added">
+                                <div>
+                                    <div className={`section-header no-border mt20 mb20`}>
+                                        <div className="section-header__first-row">
+                                        </div>
 
-                            {this.state.targets.length >= 3 && <button onClick={() => this.props.showSearchView(false)} className="btn-blue">Show me accounts to follow</button>}
-                            {this.state.loading && <Loader />}
+                                        <div className="section-header__second-row">
+                                            <h3>Trending Hashtags</h3>
+                                        </div>
+                                    </div>
+                                    <div className="added-items">
+                                        {this.state.suggestedTargets.slice(1, 20).map((target, index) => (
+                                            <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
+                                                #{target.keyword}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                {!!this.state.targets.length ?
+                                    <div>
+                                        <div className={`section-header no-border mt20 mb20`}>
+                                            <div className="section-header__first-row">
+                                            </div>
 
+                                            <div className="section-header__second-row">
+                                                <h3>Added by you</h3>
+                                            </div>
+                                        </div>
+                                        <div className="added-items">
+                                            {this.state.targets.map((target) => <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />)}
+                                        </div>
+                                    </div> : ''
+                                }
+                                <div className="seperator mt20 mb20"></div>
+                                {this.state.targets.length < 3 ?
+                                    <button className="magento-btn w100 disabled-btn">Select {3 - this.state.targets.length} to continue</button>
+                                    :
+                                    <button className="magento-btn w100" onClick={this.setRole}>Continue</button>
+                                }
+                                <button className="second-link" onClick={this.removeRole}>I’ll configure it later</button>
+
+                                {this.state.loading && <Loader />}
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -315,6 +348,12 @@ class MiddlewareHashtag extends React.Component {
         );
     }
 }
+
+const KeywordItem = ({ target, removeTarget }) => (
+    <div className="keyword-item added-keyword">
+        #{target.keyword} <i onClick={() => removeTarget(target.id)} className="fa fa-close"></i>
+    </div>
+);
 
 const mapStateToProps = (state) => {
     const selectedTwitterChannel = { selected: 1, provider: "twitter" };
