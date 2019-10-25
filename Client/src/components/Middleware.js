@@ -1,31 +1,22 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
-import { setMiddleware } from '../actions/middleware';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { setMiddleware, setHashtags, setConnects } from '../actions/middleware';
 import TwitterLogin from 'react-twitter-auth';
-import SelectAccountsModal from './Accounts/SelectAccountsModal';
-import {startSetChannels, startAddFacebookChannel, startAddLinkedinChannel, startAddPinterestChannel, startAddTwitterChannel} from "../actions/channels";
+import { startSetChannels, startAddTwitterChannel } from "../actions/channels";
 import { startSetProfile } from "../actions/profile";
-import {getAccounts, saveAccounts} from "../requests/facebook/channels";
-import FacebookLogin from 'react-facebook-login';
-import {twitterRequestTokenUrl, twitterAccessTokenUrl, backendUrl, facebookAppId, linkedinAppId, pinterestAppId} from "../config/api";
-import LinkedInButton from "./LinkedInButton";
-import { changePlan, activateAddon, cancelAddon, getPlanData } from '../requests/billing';
-import PinterestButton from "./PinterestButton";
-import channelSelector, {findAccounts} from "../selectors/channels";
-import {fbFields, fbScope} from "./FacebookButton";
-import {destroyChannel} from "../requests/channels";
-import Loader, {LoaderWithOverlay} from './Loader';
-import UpgradeAlert from "./UpgradeAlert";
-import {getParameterByName} from "../utils/helpers";
+import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../config/api";
+import { changePlan, activateAddon, getPlanData } from '../requests/billing';
+import channelSelector from "../selectors/channels";
+import { destroyChannel } from "../requests/channels";
+import Loader, { LoaderWithOverlay } from './Loader';
+import { getParameterByName } from "../utils/helpers";
 import Checkout from "./Settings/Sections/Checkout";
 
-class Middleware extends React.Component{
+class Middleware extends React.Component {
 
     state = {
         continueBtn: this.props.channels.length > 0,
-        facebookPagesModal: false,
-        facebookPages: [],
         twitterBooster: this.props.location.search.indexOf('twitter-booster') != -1,
         billingPeriod: getParameterByName("period", this.props.location.search) || "annually",
         plan: getParameterByName("plan", this.props.location.search),
@@ -37,53 +28,52 @@ class Middleware extends React.Component{
     }
 
     twitterRef = React.createRef();
-    facebookRef = React.createRef();
-    linkedinRef = React.createRef();
 
-    componentDidMount(){
-        const {profile} = this.props;
+    componentDidMount() {
+        const { profile } = this.props;
 
-        if((this.state.plan || this.state.addon) && !!profile && !profile.subscription.activeSubscription && !profile.addon.activeAddon){
-                this.props.setMiddleware("billing");
-                getPlanData().then(response => {
-                    this.setState({
-                        allPlans: response.allPlans
-                    });
+        if ((this.state.plan || this.state.addon) && !!profile && !profile.subscription.activeSubscription && !profile.addon.activeAddon) {
+            this.props.setMiddleware("billing");
+            getPlanData().then(response => {
+                this.setState({
+                    allPlans: response.allPlans
                 });
-                return;
+            });
+            return;
         }
 
         const middleware = this.props.channels.length < 1;
 
-        if(!middleware){
-            this.props.setMiddleware(false);
+        if (!middleware) {
+            this.props.setMiddleware('hashtag');
         }
     }
 
-    componentDidUpdate(prevProps){
-        if(prevProps.channels !== this.props.channels){
+    componentDidUpdate(prevProps) {
+        if (prevProps.channels !== this.props.channels) {
             this.setState(() => ({
                 continueBtn: this.props.channels.length > 0
             }));
         }
 
-        if(prevProps.profile.subscription !== this.props.profile.subscription || prevProps.profile.addon !== this.props.profile.addon){
-            if((this.state.plan || this.state.addon) && !this.props.profile.subscription.activeSubscription && !this.props.profile.addon.activeAddon && !this.state.addonTrial){
+        if (prevProps.profile.subscription !== this.props.profile.subscription || prevProps.profile.addon !== this.props.profile.addon) {
+            if ((this.state.plan || this.state.addon) && !this.props.profile.subscription.activeSubscription && !this.props.profile.addon.activeAddon && !this.state.addonTrial) {
                 this.props.setMiddleware("billing");
                 return;
-            }else{
-                if(this.props.channels.length < 1) {
+            } else {
+                if (this.props.channels.length < 1) {
                     this.props.setMiddleware("channels");
                     return;
                 }
-                
-                this.props.setMiddleware(false);
+
+                this.props.setMiddleware('hashtag');
+                this.setState({loading: false})
             }
         }
     }
 
     onFailure = (response) => {
-        this.setState(() => ({loading: false}));
+        this.setState(() => ({ loading: false }));
     };
 
     setForbidden = (forbidden = false) => {
@@ -101,12 +91,12 @@ class Middleware extends React.Component{
     setRole = () => {
         let plan = getParameterByName("plan", this.props.location.search);
         let addon = getParameterByName("addon", this.props.location.search);
-        this.setState(() => ({loading: true}));
-        
-        if(plan){
+        this.setState(() => ({ loading: true }));
+
+        if (plan) {
             changePlan(plan).then(response => {
                 this.props.startSetProfile().then(() => {
-                    this.setState(() => ({loading: false}));
+                    this.setState(() => ({ loading: false }));
                     this.props.setMiddleware(false);
                 });
             }).then()
@@ -115,17 +105,18 @@ class Middleware extends React.Component{
                         this.setState(() => ({
                             forbidden: true,
                             error: error.response.data.error,
-                            redirect: error.response.data.redirect  
+                            redirect: error.response.data.redirect
                         }))
                     } else {
                         this.setError("Something went wrong!");
                     }
                 });
-            
+
             return;
         }
 
-        if(addon){
+        if (addon) {
+            console.log(addon, 'addon');
             activateAddon(addon).then(response => {
                 this.props.startSetProfile();
             });
@@ -134,231 +125,128 @@ class Middleware extends React.Component{
         }
 
         this.props.startSetProfile().then(() => {
-            this.setState(() => ({loading: false}));
-            this.props.setMiddleware(false);
+            this.setState(() => ({ loading: false }));
+            this.props.setMiddleware('hashtag');
+            this.props.middlewareHashtags('hashtag');
         });
     };
 
     onTwitterSuccess = (response) => {
-        this.setState(() => ({loading: true}));
+        this.setState(() => ({ loading: true }));
 
-        try{
+        try {
             response.json().then(body => {
                 this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
-                .then(response => {
-                    this.setState(() => ({loading: false}));
-                }).catch(error => {
-                    this.setState(() => ({loading: false}));
-                    if(error.response.status === 403){
-                        this.setForbidden(true);
-                    }else{
-                        this.setError("Something went wrong!");
-                    }
-                });
-            });
-        }catch(e){
-        }
-    };
-
-    onFacebookSuccess = (response) => {
-        try{
-            this.setState(() => ({loading: true}));
-            if(response){
-                this.setState(() => ({loading: false}));
-                this.props.startAddFacebookChannel(response.accessToken)
-                .then(() => {
-                    this.setState(() => ({loading: true}));
-                    getAccounts().then((response) => {
-    
-                        if(response.length){
-                            this.setState(() => ({
-                                facebookPages: response,
-                                facebookPagesModal: true,
-                                loading: false
-                            }));
+                    .then(response => {
+                        this.setState(() => ({ loading: false }));
+                    }).catch(error => {
+                        this.setState(() => ({ loading: false }));
+                        if (error.response.status === 403) {
+                            this.setForbidden(true);
+                        } else {
+                            this.setError("Something went wrong!");
                         }
                     });
-                }).catch(error => {
-                    this.setState(() => ({loading: false}));
-                    if(error.response.status === 403){
-                        this.setForbidden(true);
-                        return;
-                    }               
-                    
-                    if(error.response.status === 409){
-                        this.setError("This facebook account is already registered from another uniclix account.");
-                    }
-                    else{
-                        this.setError("Something went wrong!");
-                    }
-                });
-            }        
-        }catch(e){
-            console.log(e);
-            this.setState(() => ({loading: false}));
-        }
-
-    };
-
-    onFacebookPagesSave = (accounts) => {
-        this.setState(() => ({
-            error: "",
-            loading: true
-        }));
-        saveAccounts(accounts)
-        .then(() => {
-            this.setState(() => ({loading: false}));
-            this.props.startSetChannels();
-            this.toggleFacebookPagesModal();
-        }).catch( error => {
-            this.setState(() => ({loading: false}));
-            if(error.response.status === 403){
-                this.setForbidden(true);
-            }else{
-                this.setError("Something went wrong!");
-            }
-        });
-    };
-
-    toggleFacebookPagesModal = () => {
-        this.setState(() => ({
-            facebookPagesModal: !this.state.facebookPagesModal
-        }));
-    }
-
-    onLinkedInSuccess = (response) => {
-        try{
-            this.setState(() => ({loading: true}));
-            this.props.startAddLinkedinChannel(response.accessToken).then(() => {
-                this.setState(() => ({loading: false}));
-            }).catch(error => {
-                this.setState(() => ({loading: false}));
-                if(error.response.status === 403){
-                    this.setForbidden(true);
-                }else{
-                    this.setError("Something went wrong!");
-                }
             });
-        }catch(e){
-            this.setState(() => ({loading: false}));
-        }
-    };
-
-    onPinterestSuccess = (response) => {
-        try{
-            this.setState(() => ({loading: true}));
-            this.props.startAddPinterestChannel(response.accessToken).then(() => {
-                this.setState(() => ({loading: false}));
-            }).catch(error => {
-                this.setState(() => ({loading: false}));
-                if(error.response.status === 403){
-                    this.setForbidden(true);
-                }else{
-                    this.setError("Something went wrong!");
-                }
-            });
-        }catch(e){
-            this.setState(() => ({loading: false}));
+        } catch (e) {
         }
     };
 
     setBillingPeriod = () => {
-        this.setState(() => ({billingPeriod: this.state.billingPeriod === "annually" ? "monthly" : "annually"}));
+        this.setState(() => ({ billingPeriod: this.state.billingPeriod === "annually" ? "monthly" : "annually" }));
     };
 
     remove = (id) => {
-        this.setState(() => ({loading: true}));
+        this.setState(() => ({ loading: true }));
         return destroyChannel(id)
-        .then((response) => {
-            this.setState(() => ({loading: false}));
-            this.props.startSetChannels()
             .then((response) => {
-                // if(response.length < 1){
-                //     this.props.logout();
-                // }
+                this.setState(() => ({ loading: false }));
+                this.props.startSetChannels()
+                    .then((response) => {
+                    });
+            }).catch((e) => {
+                this.setState(() => ({ loading: false }));
+                if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
+                    this.setState(() => ({
+                        error: e.response.data.error
+                    }));
+                    return;
+                }
             });
-        }).catch((e) => {
-            this.setState(() => ({loading: false}));
-            if(typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined"){
-                this.setState(() => ({
-                    error: e.response.data.error
-                }));
-                return;
-            }
-        });
     }
 
-    render(){
-        const {middleware, channels} = this.props;
-        const {continueBtn, loading, twitterBooster, allPlans, addon, addonTrial} = this.state;
+    render() {
+        const { middleware, channels, middlewareHashtags } = this.props;
+        const { continueBtn, loading, twitterBooster, allPlans, addon, addonTrial } = this.state;
         let planParam = getParameterByName("plan", this.props.location.search);
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === planParam);
         planData = planData.length > 0 ? planData[0] : false;
         let planName = "";
-        if(planData){
+        if (planData) {
             planName = this.state.billingPeriod === "annually" ? planData["Name"].toLowerCase() + "_annual" : planData["Name"].toLowerCase();
         }
-            
+
         return (
-            <div className="login-container">                    
+            <div className="login-container">
                 <div className="logo">
                     <img src="/images/uniclix.png" />
                 </div>
-                
+
                 {middleware !== "channels" && middleware !== "billing" && <Loader />}
                 {loading && <LoaderWithOverlay />}
+
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
 
                         {middleware == "channels" &&
-                        <div className="box channels-box">
-                            {middleware !== "loading" && <h2>Connect your Twitter account</h2>}
-                            <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
+                            <div className="box channels-box">
+                                {middleware !== "loading" && <h2>Connect your Twitter account</h2>}
+                                <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
 
-                            <div className="channel-buttons">
+                                <div className="channel-buttons">
 
-                                {channels.length > 0 ?
-                                
+                                    {channels.length > 0 ?
+
                                         channels.map(channel => (
                                             <div key={channel.id} className="twitter-middleware-btn added-channel-btn">
-                                                
-                                                <div className="channel-profile-info"> 
-                                                    <img className="channel-profile-picture" src={channel.avatar} />  
-                                                    <div>                                                    
+
+                                                <div className="channel-profile-info">
+                                                    <img className="channel-profile-picture" src={channel.avatar} />
+                                                    <div>
                                                         <p className="channel-profile-type">@{channel.username}</p>
-                                                    </div>                             
+                                                    </div>
 
                                                 </div>
                                                 <i className="fa fa-trash" onClick={() => this.remove(channel.id)}></i>
-                                            </div>  
+                                            </div>
                                         ))
-                               
-                                :
-                                    <button className="col-md-12 twitter-middleware-btn" onClick={(e) => this.twitterRef.current.onButtonClick(e)}> <i className="fab fa-twitter"></i> Twitter</button>
-                                }       
 
-                                <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                    onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
-                                    requestTokenUrl={twitterRequestTokenUrl}
-                                    showIcon={false}
-                                    forceLogin={true}
-                                    className="hide"
-                                    ref={this.twitterRef}
-                                ></TwitterLogin> 
-                            
+                                        :
+                                        <button className="col-md-12 twitter-middleware-btn" onClick={(e) => this.twitterRef.current.onButtonClick(e)}> <i className="fab fa-twitter"></i> Twitter</button>
+                                    }
+
+                                    <TwitterLogin loginUrl={twitterAccessTokenUrl}
+                                        onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
+                                        requestTokenUrl={twitterRequestTokenUrl}
+                                        showIcon={false}
+                                        forceLogin={true}
+                                        className="hide"
+                                        ref={this.twitterRef}
+                                    ></TwitterLogin>
+
+                                </div>
+
+                                {
+                                    continueBtn ?
+                                        <button className="magento-btn w100" onClick={this.setRole}>Continue to Uniclix</button>
+                                        :
+                                        <button className="magento-btn w100 disabled-btn">Continue to Uniclix</button>
+                                }
                             </div>
-        
-                            {   
-                                continueBtn ?
-                                <button className="magento-btn w100" onClick={this.setRole}>Continue to Uniclix</button>
-                                :
-                                <button className="magento-btn w100 disabled-btn">Continue to Uniclix</button>
-                            }
-                        </div>
                         }
                     </div>
                 </div>
-                
+
 
                 {middleware == "billing" && !!planData ?
                 <div className="box billing channels-box">
@@ -448,6 +336,7 @@ class Middleware extends React.Component{
 
                 }
 
+
                 <div className="col-md-5 middleware-side"></div>
             </div>
         );
@@ -455,11 +344,13 @@ class Middleware extends React.Component{
 }
 
 const mapStateToProps = (state) => {
-    const filter = {selected: 1, provider: undefined};
+    const filter = { selected: 1, provider: undefined };
     const selectedChannel = channelSelector(state.channels.list, filter);
 
     return {
         middleware: state.middleware.step,
+        middlewareHashtags: state.middleware.stepHashtags,
+        middlewareSuggested: state.middleware.stepSuggested,
         channels: state.channels.list,
         profile: state.profile,
         selectedChannel
@@ -468,11 +359,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setMiddleware: (middleware) => dispatch(setMiddleware(middleware)),
+    setHashtags: (middlewareHashtags) => dispatch(setHashtags(middlewareHashtags)),
+    setConnects: (middlewareSuggested) => dispatch(setConnects(middlewareSuggested)),
     startSetChannels: () => dispatch(startSetChannels()),
-    startAddFacebookChannel: (token) => dispatch(startAddFacebookChannel(token)),
     startAddTwitterChannel: (token, secret) => dispatch(startAddTwitterChannel(token, secret)),
-    startAddLinkedinChannel: (token) => dispatch(startAddLinkedinChannel(token)),
-    startAddPinterestChannel: (token) => dispatch(startAddPinterestChannel(token)),
     startSetProfile: () => dispatch(startSetProfile())
 });
 

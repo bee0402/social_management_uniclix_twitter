@@ -6,6 +6,7 @@ import Composer from "../components/Compose";
 import EmailChecker from "../components/EmailChecker";
 import ActiveChecker from "../components/ActiveChecker";
 import Middleware from "../components/Middleware";
+import MiddlewareHashtag from "../components/MiddlewareHashtag";
 import SocialAccountsPrompt from "../components/SocialAccountsPrompt";
 
 import {
@@ -16,6 +17,8 @@ import {
 export const PrivateRoute = ({
     isAuthenticated,
     middleware,
+    middlewareHashtags,
+    middlewareSuggested,
     component: Component,
     ...rest }) => (
         <Route {...rest} component={(props) => (
@@ -23,7 +26,12 @@ export const PrivateRoute = ({
                 ((!!middleware)
                     ?
                     <div>
-                        <Middleware />
+                        {(middleware == 'channels') ?
+                            <Middleware /> :
+                            (middleware == 'hashtag') ?
+                                <div><MiddlewareHashtag /></div> :
+                                <div>{middleware}</div>
+                        }
                     </div>
                     :
                     <div>
@@ -55,7 +63,9 @@ export const PrivateRoute = ({
 
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.token,
-    middleware: state.middleware.step
+    middleware: state.middleware.step,
+    middlewareHashtags: state.middleware.stepHashtags,
+    middlewareSuggested: state.middleware.stepSuggested
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

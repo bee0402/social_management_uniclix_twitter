@@ -3616,6 +3616,23 @@ aside .btn-group {
 
 .middleware-side {
     background-image: url('/images/connect-account-bg.svg');
+
+    &.girl {
+        background-image: url('/images/hashtag-girl-bg.svg');
+    }
+}
+
+.second-link {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.4rem;
+    letter-spacing: 0.130517px;
+    color: $primary_blue;
+    background: transparent;
+    border: none;
+    outline: none;
+    margin: 5px;
 }
 
 .register-side,

@@ -334,10 +334,14 @@ class Profile extends React.Component {
                                                 <option>My Clients</option>
                                             </select>
                                         </div>
+
+                                        <div className="col-12 col-md-8">
+                                            <button className="magento-btn pull-left">Save</button>
+                                        </div>
                                     </div>
 
 
-                                    <div className="clearer form-field col-12 col-md-8  ">
+                                    {/* <div className="clearer form-field col-12 col-md-8  ">
                                         <label htmlFor="topics">My Topics</label>
                                         <div className="clearfix">
                                             <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleTopicsModal}><span className="cus-plus-icon">+</span>Add Topic</button>
@@ -346,11 +350,8 @@ class Profile extends React.Component {
                                             <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>
                                         ))}
                                         <input type="hidden" className="form-control whiteBg" id="topics" readOnly={true} onClick={this.toggleTopicsModal} value={this.state.topics.map(topic => ` ${topic}`)} placeholder="food, pets, fashion..." />
-                                    </div>
+                                    </div> */}
 
-                                    <div className="col-12 col-md-8">
-                                        <button className="magento-btn pull-left">Save</button>
-                                    </div>
                                 </div>
                             </form>
 

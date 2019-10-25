@@ -38,7 +38,7 @@ const setAuthentication = () => {
     token = token == "undefined" || typeof(token) === "undefined" ? undefined : token;
 
     store.dispatch(login(token));
-    store.dispatch(setMiddleware("loading"));
+    store.dispatch(setMiddleware("channels"));
     setAuthorizationHeader(token);
 
     if(token && token !== "undefined"){
