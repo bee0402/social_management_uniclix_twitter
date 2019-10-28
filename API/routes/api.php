@@ -77,6 +77,8 @@ Route::prefix("twitter")->group(function(){
         Route::get('analytics', 'Twitter\AnalyticsController@index');
         Route::patch('channels/select/{id}', 'Twitter\ChannelController@select');
         Route::post('channels/add', 'Twitter\ChannelController@add');
+        //update step on boarding
+        Route::post('on-boarding/{step}', 'Twitter\UserController@updateStep');
 
         Route::get('account-targets', 'Twitter\AccountTargetsController@feed');
         Route::post('account-targets/store', 'Twitter\AccountTargetsController@store');

@@ -27,7 +27,7 @@ export const PrivateRoute = ({
                 ((!!middleware)
                     ?
                     <div>
-                        {(middleware == 'channels') ?
+                        {(middleware == 'channels' || middleware == "loading") ?
                             <Middleware /> :
                             (middleware == 'hashtag') ?
                                 <div><MiddlewareHashtag /></div> :

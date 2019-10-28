@@ -1,6 +1,13 @@
 import axios from "axios";
 import {apiUrl} from "../../config/api";
 
+export const onBoard = (step) => {
+    return axios.post(`${apiUrl}/twitter/on-boarding/${step}`)
+        .then((response) => {
+            return response.data;
+        });
+};
+
 export const getDashboard = () => {
     return axios.get(`${apiUrl}/twitter/dashboard`)
         .then((response) => {

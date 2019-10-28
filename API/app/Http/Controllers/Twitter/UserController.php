@@ -24,16 +24,25 @@ class UserController extends Controller
         $channelId = $request->input("channelId");
         $username = $request->input("username");
 
-        if(!$channelId || !$username) return response()->json(["error" => "Required fields missing."], 400);
+        if (!$channelId || !$username) return response()->json(["error" => "Required fields missing."], 400);
 
         $channel = $this->user->channels()->find($channelId);
 
-        if(!$channel) return response()->json(["error" => "Channel not found."], 404);
+        if (!$channel) return response()->json(["error" => "Channel not found."], 404);
 
         $channel = $channel->details;
         $user = $channel->getUserInfo($username);
 
-        if(empty($user)) return response()->json(["error" => "No info found for $username"], 404);
+        if (empty($user)) return response()->json(["error" => "No info found for $username"], 404);
+
+        return response()->json($user[0]);
+    }
+
+    public function updateStep($step)
+    {
+        $user = auth()->user();
+        $user->on_board_step = $step;
+        $user->save();
 
         return response()->json($user[0]);
     }

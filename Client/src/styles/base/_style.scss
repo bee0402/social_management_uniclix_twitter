@@ -3647,7 +3647,32 @@ aside .btn-group {
 .steps-cnt {
     max-width: 80%;
     margin: 0 0 0 auto;
-    max-height: calc(100vh - 30px);
+    max-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+
+    &.steps-cnt-middle {
+        max-height: calc(100vh - 22rem);
+
+        .scrollableY-cnt {
+            margin-bottom: 2rem;
+        }
+    }
+
+    .user-info {
+        p {
+            text-align: left;
+        }
+
+        img {
+            border-radius: 50%;
+        }
+    }
+}
+
+.scrollableY-cnt {
+    height: 100%;
+    margin-bottom: 1rem;
     overflow-y: auto;
 }
 

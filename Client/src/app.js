@@ -17,7 +17,7 @@ const Root = () => (
     <div>
         <Provider store={store}>
             <AppRouter />
-        </Provider>    
+        </Provider>
     </div>
 );
 
@@ -25,7 +25,7 @@ const Root = () => (
 let hasRendered = false;
 
 const renderApp = () => {
-    if(!hasRendered){
+    if (!hasRendered) {
         ReactDOM.render(<Root />, document.getElementById("app"));
         hasRendered = true;
     }
@@ -35,26 +35,30 @@ const renderApp = () => {
 const setAuthentication = () => {
     let token = localStorage.getItem("token") || undefined;
 
-    token = token == "undefined" || typeof(token) === "undefined" ? undefined : token;
+    token = token == "undefined" || typeof (token) === "undefined" ? undefined : token;
 
     store.dispatch(login(token));
-    store.dispatch(setMiddleware("channels"));
     setAuthorizationHeader(token);
 
-    if(token && token !== "undefined"){
+    if (token && token !== "undefined") {
         let channels = localStorage.getItem("channels");
         channels = channels ? JSON.parse(channels) : [];
 
         let profile = localStorage.getItem("profile");
         profile = profile ? JSON.parse(profile) : "";
 
-        if(!profile){
+        if (!profile) {
             localStorage.setItem("token", undefined);
             store.dispatch(logout());
             setAuthorizationHeader(undefined);
+        } else {
+            if (profile.user.on_board_step == 0) store.dispatch(setMiddleware("channels"));
+            if (profile.user.on_board_step == 1) store.dispatch(setMiddleware("hashtag"));
+            if (profile.user.on_board_step == 2) store.dispatch(setMiddleware("connections"));
+            if (profile.user.on_board_step > 2) store.dispatch(setMiddleware(false));
         }
 
-        new Promise(function(resolve, reject) {
+        new Promise(function (resolve, reject) {
             store.dispatch(setProfile(profile));
             store.dispatch(setChannels(channels));
             return resolve(true);
