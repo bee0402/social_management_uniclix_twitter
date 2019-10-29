@@ -232,16 +232,22 @@ class MiddlewareHashtag extends React.Component {
                                             <div className="added-items">
                                                 {suggestedTargets.slice(0, 12).map((target, index) => (
                                                     targets.map(function (keyw, e) {
-                                                        tgId = keyw.id
                                                         return keyw.keyword
                                                     }).indexOf(target.keyword) == -1 ?
                                                         <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
                                                             #{target.keyword}
                                                         </div>
                                                         :
-                                                        <div key={index} onClick={(e) => this.removeTarget(tgId)} className="keyword-item  added-keyword">
-                                                            #{target.keyword}
-                                                        </div>
+                                                        targets.map((actualKey, e) => {
+                                                            if (actualKey.keyword == target.keyword) {
+                                                                return (
+                                                                    <div key={index} onClick={(e) => this.removeTarget(actualKey.id)} className="keyword-item  added-keyword">
+                                                                        #{actualKey.keyword}
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        })
+
                                                 ))}
                                             </div>
                                         </div>

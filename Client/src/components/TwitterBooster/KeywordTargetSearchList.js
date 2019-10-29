@@ -19,7 +19,7 @@ class KeywordTargetSearchList extends React.Component {
         suggestedTargets: [
             { keyword: "NEWS", location: "" },
             { keyword: "BUSINESS", location: "" },
-            { keyword: "SOCIALMEDIAMANAGEMENT ", location: "" },
+            { keyword: "SOCIALMEDIAMANAGEMENT", location: "" },
             { keyword: "TWITTERGROWTH", location: "" },
             { keyword: "TECHNOLOGY", location: "" },
             { keyword: "SPORTS", location: "" },
@@ -274,9 +274,23 @@ class KeywordTargetSearchList extends React.Component {
                                 </div>
                                 <div className="added-items">
                                     {this.state.suggestedTargets.slice(1, 20).map((target, index) => (
-                                        <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
-                                            #{target.keyword}
-                                        </div>
+                                        this.props.targets.map(function (keyw, e) {
+                                            return keyw.keyword
+                                        }).indexOf(target.keyword) == -1 ?
+                                            <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
+                                                #{target.keyword}
+                                            </div>
+                                            :
+                                            this.props.targets.map( (actualKey, e)  =>{
+                                                if (actualKey.keyword == target.keyword) {
+                                                    return (
+                                                        <div key={e} onClick={(e) => this.removeTarget(actualKey.id)} className="keyword-item  added-keyword">
+                                                            #{actualKey.keyword}
+                                                        </div>
+                                                    )
+                                                }
+                                            })
+
                                     ))}
                                 </div>
                             </div>
@@ -294,7 +308,16 @@ class KeywordTargetSearchList extends React.Component {
                                         </div>
                                     </div>
                                     <div className="added-items">
-                                        {this.props.targets.map((target) => <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />)}
+
+                                        {this.props.targets.map((target, index) => (
+                                            this.state.suggestedTargets.slice(1, 20).map(function (keyU, e) {
+                                                return keyU.keyword
+                                            }).indexOf(target.keyword) < 0 ?
+                                                <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />
+                                                :
+                                                ''
+                                        ))}
+
                                     </div>
                                 </div>
                                 :
