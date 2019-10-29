@@ -20,135 +20,17 @@ class MiddlewareHashtag extends React.Component {
         loading: false,
         suggestedTargets: [
             { keyword: "NEWS", location: "" },
-            { keyword: "BUSINESS", location: "" },
-            { keyword: "SOCIALMEDIAMANAGEMENT ", location: "" },
-            { keyword: "TWITTERGROWTH", location: "" },
             { keyword: "TECHNOLOGY", location: "" },
             { keyword: "SPORTS", location: "" },
+            { keyword: "BUSINESS", location: "" },
+            { keyword: "FASHION", location: "" },
+            { keyword: "MINDFULLNESS", location: "" },
+            { keyword: "BEAUTY", location: "" },
             { keyword: "TRAVEL", location: "" },
-            { keyword: "POLITICS", location: "" },
             { keyword: "CONSERVATIVEVIEW", location: "" },
             { keyword: "LIBERALVIEW", location: "" },
             { keyword: "SCIENCE", location: "" },
-            { keyword: "CELEBRITY", location: "" },
-            { keyword: "RECIPES", location: "" },
-            { keyword: "DESIGN", location: "" },
-            { keyword: "STYLE", location: "" },
-            { keyword: "COMPUTERSCIENCE", location: "" },
-            { keyword: "PHOTOGRAPHY", location: "" },
-            { keyword: "HEALTHYEATING", location: "" },
-            { keyword: "WOMENSNEWS", location: "" },
-            { keyword: "BEAUTY", location: "" },
-            { keyword: "MINDFULNESS", location: "" },
-            { keyword: "WORLDECONOMY", location: "" },
-            { keyword: "SUSTAINABILITY", location: "" },
-            { keyword: "STREETART", location: "" },
-            { keyword: "SKATEBOARDING", location: "" },
-            { keyword: "MUSIC", location: "" },
-            { keyword: "TV", location: "" },
-            { keyword: "MOVIES", location: "" },
-            { keyword: "COOLSTUFF", location: "" },
-            { keyword: "WORKOUTS", location: "" },
-            { keyword: "HOME", location: "" },
-            { keyword: "CLASSICALMUSIC", location: "" },
-            { keyword: "GAMING", location: "" },
-            { keyword: "ELECTRICVEHICLES", location: "" },
-            { keyword: "LEADERSHIP", location: "" },
-            { keyword: "FOOD&DINING", location: "" },
-            { keyword: "NATIONALPARKS", location: "" },
-            { keyword: "STARTUPS", location: "" },
-            { keyword: "MUSICFESTIVALS", location: "" },
-            { keyword: "HEALTH", location: "" },
-            { keyword: "DIGITALPHOTOGRAPHY", location: "" },
-            { keyword: "BREAKTHROUGHS", location: "" },
-            { keyword: "AUTOS", location: "" },
-            { keyword: "ADVERTISING", location: "" },
-            { keyword: "MARKETING", location: "" },
-            { keyword: "ROADTRIPS", location: "" },
-            { keyword: "BOOKS", location: "" },
-            { keyword: "RUNNING", location: "" },
-            { keyword: "FOREIGNPOLICY", location: "" },
-            { keyword: "EDUCATION", location: "" },
-            { keyword: "NEWYORKCITY", location: "" },
-            { keyword: "ARCHITECTURE", location: "" },
-            { keyword: "YOGA", location: "" },
-            { keyword: "DOGS", location: "" },
-            { keyword: "PARENTING", location: "" },
-            { keyword: "BASKETBALL", location: "" },
-            { keyword: "ENTREPRENEURSHIP", location: "" },
-            { keyword: "TINYHOUSEMOVEMENT", location: "" },
-            { keyword: "SELFIMPROVEMENT", location: "" },
-            { keyword: "CYCLING", location: "" },
-            { keyword: "APPS", location: "" },
-            { keyword: "STARWARS", location: "" },
-            { keyword: "PERSONALFINANCE", location: "" },
-            { keyword: "DIY", location: "" },
-            { keyword: "SLEEP", location: "" },
-            { keyword: "GREENLIVING", location: "" },
-            { keyword: "NFL", location: "" },
-            { keyword: "SPACE", location: "" },
-            { keyword: "COFFEE", location: "" },
-            { keyword: "OUTDOORS", location: "" },
-            { keyword: "GAMEOFTHRONES", location: "" },
-            { keyword: "GARDENING", location: "" },
-            { keyword: "HOWTOS", location: "" },
-            { keyword: "WRITING", location: "" },
-            { keyword: "CRAFTING", location: "" },
-            { keyword: "MOTORSPORT", location: "" },
-            { keyword: "WEDDINGS", location: "" },
-            { keyword: "INTERIORDESIGN", location: "" },
-            { keyword: "MEMES", location: "" },
-            { keyword: "CRYPTOCURRENCY", location: "" },
-            { keyword: "WORKLIFEBALANCE", location: "" },
-            { keyword: "PSYCHOLOGY", location: "" },
-            { keyword: "PRODUCTIVITY", location: "" },
-            { keyword: "EQUALITY", location: "" },
-            { keyword: "LITERATURE", location: "" },
-            { keyword: "CUTEANIMALS", location: "" },
-            { keyword: "CLIMATECHANGE", location: "" },
-            { keyword: "CREATIVITY", location: "" },
-            { keyword: "HIKING", location: "" },
-            { keyword: "MENTALHEALTH", location: "" },
-            { keyword: "COUNTRYMUSIC", location: "" },
-            { keyword: "COMICS", location: "" },
-            { keyword: "RENEWABLEENERGY", location: "" },
-            { keyword: "PODCASTING", location: "" },
-            { keyword: "WINE", location: "" },
-            { keyword: "THEARTS", location: "" },
-            { keyword: "GENEALOGY", location: "" },
-            { keyword: "MUSEUMS", location: "" },
-            { keyword: "AUGMENTED REALITY", location: "" },
-            { keyword: "TIMELAPSEPHOTOGRAPHY", location: "" },
-            { keyword: "ALTERNATIVEMEDICINE", location: "" },
-            { keyword: "BASEBALL", location: "" },
-            { keyword: "SOCIALMEDIA", location: "" },
-            { keyword: "NEUROSCIENCE", location: "" },
-            { keyword: "TRAVELGEAR", location: "" },
-            { keyword: "ACTIVISM", location: "" },
-            { keyword: "RELATIONSHIPS", location: "" },
-            { keyword: "VINYLRECORDS", location: "" },
-            { keyword: "LISTWORTHY", location: "" },
-            { keyword: "CITIES", location: "" },
-            { keyword: "BIOTECHNOLOGY", location: "" },
-            { keyword: "HOMEIMPROVEMENT", location: "" },
-            { keyword: "NORTHKOREA", location: "" },
-            { keyword: "NETNEUTRALITY", location: "" },
-            { keyword: "EXTREMESPORTS", location: "" },
-            { keyword: "VENTURECAPITAL", location: "" },
-            { keyword: "SAILING", location: "" },
-            { keyword: "ROBOTICS", location: "" },
-            { keyword: "GENERATIONZ", location: "" },
-            { keyword: "INVESTING", location: "" },
-            { keyword: "UXDESIGN", location: "" },
-            { keyword: "RELIGION", location: "" },
-            { keyword: "MOTORCYCLES", location: "" },
-            { keyword: "WOODWORKING", location: "" },
-            { keyword: "MANAGEMENT", location: "" },
-            { keyword: "REALESTATE", location: "" },
-            { keyword: "COMEDY", location: "" },
-            { keyword: "MACHINE LEARNING", location: "" },
-            { keyword: "KNITTING", location: "" },
-            { keyword: "INNOVATION", location: "" },
+            { keyword: "CELEBRITY", location: "" }
         ],
         targets: [],
         infoModal: localStorage.getItem('twitterBoosterInfoModal') !== 'seen'
@@ -186,8 +68,10 @@ class MiddlewareHashtag extends React.Component {
         if (target.length) {
             addKeywordTarget(target, location)
                 .then((response) => {
-                    this.fetchTargets();
-                    this.setLoading(false);
+                    this.setState({
+                        targets: response,
+                        loading: false
+                    });
                 }).catch((error) => {
                     this.setLoading(false);
 
@@ -220,8 +104,10 @@ class MiddlewareHashtag extends React.Component {
         this.setLoading(true);
         destroyKeywordTarget(target)
             .then((response) => {
-                this.fetchTargets();
-                this.setLoading(false);
+                this.setState({
+                    targets: response,
+                    loading: false
+                });
             }).catch((error) => {
                 this.setLoading(false);
                 console.log(error)
@@ -314,51 +200,54 @@ class MiddlewareHashtag extends React.Component {
                                         </div>
                                     </form>
                                 </div>
+                                {!!targets &&
+                                    <div className="added">
 
-                                <div className="added">
-                                    <div>
-                                        <div className={`section-header no-border mt20 mb20`}>
-                                            <div className="section-header__second-row">
-                                                <h3>Added by you</h3>
+                                        <div>
+                                            <div className={`section-header no-border mt20 mb20`}>
+                                                <div className="section-header__second-row">
+                                                    <h3>Added by you</h3>
+                                                </div>
+                                            </div>
+                                            <div className="added-items">
+                                                {targets.map((target, index) => (
+                                                    suggestedTargets.slice(0, 12).map(function (keyU, e) {
+                                                        tgId = keyU.id
+                                                        return keyU.keyword
+                                                    }).indexOf(target.keyword) < 0 ?
+                                                        <div key={index} onClick={(e) => this.removeTarget(target.id)} className="keyword-item  added-keyword">
+                                                            #{target.keyword}
+                                                        </div>
+                                                        :
+                                                        ''
+                                                ))}
                                             </div>
                                         </div>
-                                        <div className="added-items">
-                                            {targets.slice(0, 12).map((target, index) => (
-                                                suggestedTargets.map(function (keyw) {
-                                                    tgId = keyw.id
-                                                    return keyw.keyword
-                                                }).indexOf(target.keyword) < 0 ?
-                                                    <div key={index} onClick={(e) => this.removeTarget(target.id)} className="keyword-item  added-keyword">
-                                                        #{target.keyword}
-                                                    </div>
-                                                    :
-                                                    ''
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className={`section-header no-border mt20 mb20`}>
-                                            <div className="section-header__second-row">
-                                                <h3>Trending Hashtags</h3>
+                                        <div>
+                                            <div className={`section-header no-border mt20 mb20`}>
+                                                <div className="section-header__second-row">
+                                                    <h3>Trending Hashtags</h3>
+                                                </div>
+                                            </div>
+                                            <div className="added-items">
+                                                {suggestedTargets.slice(0, 12).map((target, index) => (
+                                                    targets.map(function (keyw, e) {
+                                                        tgId = keyw.id
+                                                        return keyw.keyword
+                                                    }).indexOf(target.keyword) == -1 ?
+                                                        <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
+                                                            #{target.keyword}
+                                                        </div>
+                                                        :
+                                                        <div key={index} onClick={(e) => this.removeTarget(tgId)} className="keyword-item  added-keyword">
+                                                            #{target.keyword}
+                                                        </div>
+                                                ))}
                                             </div>
                                         </div>
-                                        <div className="added-items">
-                                            {suggestedTargets.slice(0, 12).map((target, index) => (
-                                                targets.map(function (keyw) {
-                                                    tgId = keyw.id
-                                                    return keyw.keyword
-                                                }).indexOf(target.keyword) > 0 ?
-                                                    <div key={index} onClick={(e) => this.removeTarget(tgId)} className="keyword-item  added-keyword">
-                                                        #{target.keyword}
-                                                    </div>
-                                                    :
-                                                    <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
-                                                        #{target.keyword}
-                                                    </div>
-                                            ))}
-                                        </div>
                                     </div>
-                                </div>
+                                }
+
                             </div>
                         </div>
                         {this.state.targets.length < 3 ?
