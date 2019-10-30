@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux";
-import Modal from "react-modal";
+import {NavLink} from "react-router-dom";
 import GeoSuggest from "react-geosuggest";
 import { updateProfile } from "../../../requests/profile";
 import momentTz from "moment-timezone";
-import TimezoneSelectOptions from '../Fixtures/TimezoneOptions';
 import { validateEmail, validateUrl } from "../../../utils/validator";
+import { getKeywordTargets } from '../../../requests/twitter/channels';
 import { startSetProfile } from "../../../actions/profile";
 import { LoaderWithOverlay } from "../../Loader";
 
@@ -15,9 +15,11 @@ class Profile extends React.Component {
         name: "",
         email: "",
         website: "",
+        type: "",
         organizationName: "",
         reason: "",
         topics: [],
+        targets: [],
         topic: "",
         locations: [],
         location: "",
@@ -32,7 +34,33 @@ class Profile extends React.Component {
 
     componentDidMount() {
         this.initializeProfileData();
+        this.fetchTargets();
     }
+    fetchTargets = () => {
+        getKeywordTargets()
+            .then((response) => {
+                if (typeof (response.items) === "undefined") return;
+
+                this.setState(() => ({
+                    targets: response.targets
+                }));
+            }).catch(error => {
+                this.setLoading(false);
+
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
+                    }
+                }
+
+                if (error.response.status === 403) {
+                    this.setForbidden(true);
+                }
+
+                return Promise.reject(error);
+            });
+    };
 
     initializeProfileData = () => {
         if (this.props.profile) {
@@ -60,21 +88,7 @@ class Profile extends React.Component {
         }
     };
 
-    toggleTopicsModal = (e) => {
-        e.preventDefault();
-        this.setState(() => ({
-            isTopicsModalOpen: !this.state.isTopicsModalOpen
-        }));
-    };
-
-    onTopicsFieldChange = (topic) => {
-        this.setState(() => ({
-            topic
-        }));
-    };
-
     onLocationsFieldChange = (location) => {
-        console.log(location);
         this.setState(() => ({
             location
         }));
@@ -156,127 +170,19 @@ class Profile extends React.Component {
         }));
     };
 
-    addTopic = (e) => {
-        e.preventDefault();
-        if (this.state.topic) {
-            this.setState((prevState) => {
-                return {
-                    topics: [
-                        ...prevState.topics.filter(topic => topic !== prevState.topic),
-                        prevState.topic
-                    ],
-                    topic: ""
-                }
-            });
-        }
-    };
-
-    addLocation = (e) => {
-        e.preventDefault();
-        if (this.state.location) {
-            this.setState((prevState) => {
-                return {
-                    locations: [
-                        ...prevState.locations.filter(location => JSON.stringify(location) !== JSON.stringify(prevState.location)),
-                        prevState.location
-                    ],
-                    location: ""
-                }
-            });
-        }
-    };
-
-    removeTopic = (index) => {
-        let topics = [...this.state.topics];
-        topics.splice(index, 1);
-
-        this.setState(() => ({
-            topics
-        }));
-    };
-
-    removeLocation = (index) => {
-        let locations = [...this.state.locations];
-        locations.splice(index, 1);
-
-        this.setState(() => ({
-            locations
-        }));
-    };
 
     ChangeTab = (newIndex) => {
         this.setState(() => ({
             isTabActive: newIndex
         }));
     }
-    setLocation = (location) => {
-        console.log(location);
-        this.state.locations.map(location => ` ${location.label}`)
-    }
 
     render() {
-        const { isTabActive, success, error, locations } = this.state;
-        console.log(locations);
+        const { isTabActive, success, error, locations, targets } = this.state;
         return (
             <div>
                 {this.state.loading && <LoaderWithOverlay />}
-                <Modal
-                    isOpen={this.state.isTopicsModalOpen}
-                    ariaHideApp={false}
-                    className="topicsModal"
-                >
-                    <form onSubmit={(e) => this.addTopic(e)}>
-                        <h3>Add Topics</h3>
-                        <div className="form-group flex_container-center">
-                            <div>
-                                {this.state.topics.length >= 15 ?
-                                    <input disabled type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." />
-                                    :
-                                    <input type="text" className="form-control" onChange={(e) => this.onTopicsFieldChange(e.target.value)} value={this.state.topic} placeholder="food, pets, fashion..." />
-                                }
 
-                            </div>
-                        </div>
-                    </form>
-
-
-                    {!!this.state.topics.length && this.state.topics.map((topic, index) => (
-                        <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>
-                    ))}
-
-                    <div className="right-inline top-border p10 m10-top">
-                        <button className="magento-btn small-btn" onClick={this.toggleTopicsModal}>Add</button>
-                    </div>
-                </Modal>
-
-
-                <Modal
-                    isOpen={this.state.isLocationsModalOpen}
-                    ariaHideApp={false}
-                    className="topicsModal"
-                >
-                    <form onSubmit={(e) => this.addLocation(e)}>
-                        <h3>Add Locations</h3>
-                        <div className="form-group flex_container-center">
-                            <div>
-                                <GeoSuggest
-                                    onSuggestSelect={this.onLocationsFieldChange}
-                                    initialValue={this.state.location && this.state.location.label}
-                                    disabled={this.state.locations.length >= 5 ? true : false}
-                                />
-                            </div>
-                        </div>
-                    </form>
-
-
-                    {!!this.state.locations.length && this.state.locations.map((location, index) => (
-                        <div key={index} className="addedItemLabels">{location.label} <span className="fa fa-times link-cursor" onClick={() => this.removeLocation(index)}></span></div>
-                    ))}
-
-                    <div className="right-inline top-border p10 m10-top">
-                        <button className="magento-btn small-btn" onClick={this.toggleLocationsModal}>Add</button>
-                    </div>
-                </Modal>
                 <div className="section-header no-border">
                     <div className="section-header__first-row">
                         <h2>PROFILE</h2>
@@ -311,10 +217,13 @@ class Profile extends React.Component {
 
                                         <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="name">Type</label>
-                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control whiteBg" id="reason">
-                                                <option>Myself</option>
-                                                <option>My Business</option>
-                                                <option>My Clients</option>
+                                            <select type="text" value={this.state.type} onChange={(e) => this.onFieldChange(e)} name="type" className="form-control whiteBg" id="type">
+                                                <option>Choose type</option>
+                                                <option value="Influencer / Non-business">Influencer / Non-business</option>
+                                                <option value="Self-employed">Self-employed</option>
+                                                <option value="Small or medium business (1-499 employees)">Small or medium business (1-499 employees)</option>
+                                                <option value="Enterprise (500+ employees)">Enterprise (500+ employees)</option>
+                                                <option value="NGO / Non-profit / Governmental organization">NGO / Non-profit / Governmental organization</option>
                                             </select>
                                         </div>
                                         <div className="col-12 col-md-8 form-field">
@@ -323,34 +232,34 @@ class Profile extends React.Component {
                                         </div>
                                         <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="website">Website</label>
-                                            <input type="text" className="form-control whiteBg" value={this.state.website} onChange={(e) => this.onFieldChange(e)} id="website" placeholder="www.example.com" />
+                                            <input type="text" className="form-control whiteBg" value={this.state.website} onChange={(e) => this.onFieldChange(e)} name="website" id="website" placeholder="www.example.com" />
                                         </div>
 
                                         <div className="col-12 col-md-8 form-field">
                                             <label htmlFor="name">I am using Uniclix for:</label>
-                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control whiteBg" id="reason">
+                                            <select type="text" value={this.state.reason} onChange={(e) => this.onFieldChange(e)} className="form-control whiteBg" name="reason" id="reason">
                                                 <option>Myself</option>
                                                 <option>My Business</option>
                                                 <option>My Clients</option>
                                             </select>
                                         </div>
 
+                                        <div className="clearer form-field col-12 col-md-8  ">
+                                            <label htmlFor="topics">My Topics</label>
+                                            <div className="clearfix text-right">
+                                                <NavLink to="/twitter-booster/keyword-targets" className="default-white-btn pull-right">Edit hashtags</NavLink>
+                                            </div>
+                                            <div className="added-items">
+                                                {targets.map((target, index) => (
+                                                    <div className="keyword-item added-keyword" key={index}>#{target.keyword}</div>
+                                                ))}
+                                            </div>
+                                        </div>
+
                                         <div className="col-12 col-md-8">
                                             <button className="magento-btn pull-left">Save</button>
                                         </div>
                                     </div>
-
-
-                                    {/* <div className="clearer form-field col-12 col-md-8  ">
-                                        <label htmlFor="topics">My Topics</label>
-                                        <div className="clearfix">
-                                            <button href="javascript:void();" className="default-white-btn pull-right" onClick={this.toggleTopicsModal}><span className="cus-plus-icon">+</span>Add Topic</button>
-                                        </div>
-                                        {!!this.state.topics.length && this.state.topics.map((topic, index) => (
-                                            <div key={index} className="addedItemLabels">{topic} <span className="fa fa-times link-cursor" onClick={() => this.removeTopic(index)}></span></div>
-                                        ))}
-                                        <input type="hidden" className="form-control whiteBg" id="topics" readOnly={true} onClick={this.toggleTopicsModal} value={this.state.topics.map(topic => ` ${topic}`)} placeholder="food, pets, fashion..." />
-                                    </div> */}
 
                                 </div>
                             </form>
@@ -382,15 +291,15 @@ class Profile extends React.Component {
 
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Addresse</label>
-                                        <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="Example: 22 E 22Th St, New York, NY 10033" />
+                                        <input type="text" className="form-control whiteBg" id="Addresse" name="addresse" onChange={(e) => this.onFieldChange(e)} value={this.state.addresse} placeholder="Example: 22 E 22Th St, New York, NY 10033" />
                                     </div>
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Company Email</label>
-                                        <input type="email" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="info@uniclixapp.com" />
+                                        <input type="email" className="form-control whiteBg" id="companyEmail" name="companyEmail" onChange={(e) => this.onFieldChange(e)} value={this.state.companyEmail} placeholder="info@uniclixapp.com" />
                                     </div>
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Company Phone</label>
-                                        <input type="tel" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="+1 603-278-1000" />
+                                        <input type="tel" className="form-control whiteBg" id="companyPhone" name="companyPhone" onChange={(e) => this.onFieldChange(e)} value={this.state.companyPhone} placeholder="+1 603-278-1000" />
                                     </div>
 
                                     <div className="col-12 col-md-8">

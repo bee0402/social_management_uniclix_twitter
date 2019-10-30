@@ -21,7 +21,6 @@ class KeywordTargets extends React.Component{
     }
 
     componentDidMount() {
-        
         if(!this.props.channelsLoading){
             this.fetchTargets();
         }
@@ -156,6 +155,7 @@ class KeywordTargets extends React.Component{
     };
 
     render(){
+
         return (
             <div>
                 {this.state.forbidden ? <UpgradeIntro 

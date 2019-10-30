@@ -1,6 +1,6 @@
 import React from 'react';
 import Loader from 'react-loader-spinner';
-import AnalyticsTooltip from '../../AnalyticsTooltip';
+import {NavLink} from "react-router-dom";
 import { pageInsightsByType } from "../../../../requests/twitter/channels";
 
 class TwitterOverviewCard extends React.Component {
@@ -88,7 +88,7 @@ class TwitterOverviewCard extends React.Component {
         }
     };
     render() {
-        const { name, description, iconPath } = this.props;
+        const { name, iconPath, link } = this.props;
 
         return (
             <div className="overview-card analytics-card">
@@ -116,8 +116,9 @@ class TwitterOverviewCard extends React.Component {
 
                         <p><span>+12</span> this week</p>
                     </div>
-
-                    {this.state.tweetsCount}
+                    <NavLink to={link}>
+                        {this.state.tweetsCount}
+                    </NavLink>
                 </div>
             </div>
         );

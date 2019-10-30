@@ -63,6 +63,7 @@ class Dashboard extends React.Component {
                                 name='Tweets'
                                 type="tweetsCount"
                                 description='tweets'
+                                link=""
                                 tooltipDesc='The number of tweets published from your Twitter account'
                                 iconPath={`/images/twitter-blue-icon.svg`}
                                 {...propData} />
@@ -72,6 +73,7 @@ class Dashboard extends React.Component {
                                 name='Followers'
                                 type="followersCount"
                                 description='followers'
+                                link="twitter-booster/followers"
                                 tooltipDesc='The number of people who are following your Twitter account'
                                 iconPath={`/images/followers-blue-icon.svg`}
                                 {...propData} />
@@ -81,6 +83,7 @@ class Dashboard extends React.Component {
                                 name='Following'
                                 type="followingCount"
                                 description='following'
+                                link="/twitter-booster/clean-up-list"
                                 tooltipDesc='Toatal number of people you are following on your Twitter accounts'
                                 iconPath={`/images/user-check-blue-icon.svg`}
                                 {...propData} />
