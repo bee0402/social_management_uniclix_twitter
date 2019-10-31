@@ -11,6 +11,7 @@ import InactiveFollowing from '../components/TwitterBooster/Sections/InactiveFol
 import Following from '../components/TwitterBooster/Sections/Following';
 import WhiteList from '../components/TwitterBooster/Sections/WhiteList';
 import BlackList from '../components/TwitterBooster/Sections/BlackList';
+import AutoDM from '../components/TwitterBooster/Sections/AutoDM';
 import Accounts from '../components/Accounts/Twitter';
 
 const ManageRouter = () => (
@@ -21,6 +22,7 @@ const ManageRouter = () => (
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/manage-accounts`} component={Accounts} />
             <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
+            <Route path={`/twitter-booster/auto-dm`} component={AutoDM} />
             <Route path={`/twitter-booster/followers`} component={Followers} />
             <Route path={`/twitter-booster/clean-up-list`} component={CleanupList} />
             <Route path={`/twitter-booster/recent-unfollowers`} component={RecentUnfollowers} />

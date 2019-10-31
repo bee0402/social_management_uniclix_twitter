@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {NavLink} from "react-router-dom";
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import UpgradeAlert from '../../UpgradeAlert';
 import UserList from "../../UserList";
@@ -162,7 +163,7 @@ class Followers extends React.Component{
                     <div className="section-header">
                         <div className="section-header__first-row">
                            <h2>Followers</h2> 
-                           <button className="btn-text-blue">Set up auto DM</button>
+                           <NavLink to="/twitter-booster/auto-dm" className="btn-text-blue">Set up auto DM</NavLink>
                         </div>
 
                         <div className="section-header__second-row">

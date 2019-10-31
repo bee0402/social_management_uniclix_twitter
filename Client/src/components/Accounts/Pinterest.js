@@ -8,7 +8,6 @@ import {destroyChannel} from "../../requests/channels";
 import {logout} from "../../actions/auth";
 import Loader from "../../components/Loader";
 import ChannelItems from "./ChannelItems";
-import PinterestButton from "../PinterestButton";
 import {apiUrl} from "../../config/api";
 import UpgradeAlert from "../UpgradeAlert";
 
@@ -143,14 +142,7 @@ class Pinterest extends React.Component {
                         </div> 
             
                         <div className="accounts-container__content__wrapper__footer">
-                            <PinterestButton
-                                clientId={pinterestAppId}
-                                redirectUri={`${apiUrl}/pinterest/callback`}
-                                onSuccess={this.onSuccess} 
-                                onError={() => console.log("something wrong.")}
-                                cssClass="add-channel-plus-btn"
-                                icon={<i className="fa fa-plus"></i>}
-                                />
+                           
                             <span className="left-side-label">Have an account? Let's connect!</span>
                         </div> 
                     </div>

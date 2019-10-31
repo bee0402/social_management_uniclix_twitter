@@ -73,7 +73,7 @@ class Dashboard extends React.Component {
                                 name='Followers'
                                 type="followersCount"
                                 description='followers'
-                                link="twitter-booster/followers"
+                                link="/twitter-booster/followers"
                                 tooltipDesc='The number of people who are following your Twitter account'
                                 iconPath={`/images/followers-blue-icon.svg`}
                                 {...propData} />

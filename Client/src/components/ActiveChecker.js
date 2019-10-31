@@ -7,7 +7,6 @@ import {getAccounts, saveAccounts} from "../requests/facebook/channels";
 import FacebookLogin from 'react-facebook-login';
 import {twitterRequestTokenUrl, twitterAccessTokenUrl, backendUrl, facebookAppId, linkedinAppId, pinterestAppId} from "../config/api";
 import LinkedInButton from "./LinkedInButton";
-import PinterestButton from "./PinterestButton";
 import channelSelector, {findAccounts} from "../selectors/channels";
 import {fbFields, fbScope} from "./FacebookButton";
 import Loader from "./Loader";
@@ -154,15 +153,6 @@ class ActiveChecker extends React.Component{
                         onError={this.onFailure}
                     />
                 );
-             }else if(selectedChannel.type == "pinterest"){
-                return (
-                    <PinterestButton 
-                    clientId={pinterestAppId}
-                    redirectUri={`${backendUrl}/api/pinterest/callback`}
-                    onSuccess={this.onPinterestSuccess}
-                    onError={this.onFailure}
-                    />
-                );
              }else{
                  return (
                      <div className="social-login">
@@ -185,12 +175,6 @@ class ActiveChecker extends React.Component{
                             clientId={linkedinAppId}
                             redirectUri={`${backendUrl}/api/linkedin/callback`}
                             onSuccess={this.onLinkedInSuccess}
-                            onError={this.onFailure}
-                        />
-                        <PinterestButton 
-                            clientId={pinterestAppId}
-                            redirectUri={`${backendUrl}/api/pinterest/callback`}
-                            onSuccess={this.onPinterestSuccess}
                             onError={this.onFailure}
                         />
                     </div>);
