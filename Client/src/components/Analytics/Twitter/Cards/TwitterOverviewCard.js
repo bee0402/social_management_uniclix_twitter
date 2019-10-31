@@ -1,6 +1,6 @@
 import React from 'react';
 import Loader from 'react-loader-spinner';
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { pageInsightsByType } from "../../../../requests/twitter/channels";
 
 class TwitterOverviewCard extends React.Component {
@@ -23,33 +23,20 @@ class TwitterOverviewCard extends React.Component {
             this.fetchAllAnalytics();
         }
     }
-    cardWeekly = (type, count) => {
-        if (type == "tweetsCount") {
-            this.setState({ tweetsCount: "<span>" + count + " new trending topics</span> in your area" });
-        } else if (type == "followersCount") {
-            this.setState({ tweetsCount: "<span>" + count + " new users</span> to follow" });
-        } else if (type == "followingCount") {
-            this.setState({ tweetsCount: "<span>" + count + " inactive users</span> to clean up" });
-        }
 
-    }
     fetchAnalytics = () => {
-        const { selectedAccount, startDate = null, endDate = null, type } = this.props
+        const { selectedAccount, type } = this.props
+
+        let endDate = new Date();
+        let startDate = new Date();
+        startDate.setDate(startDate.getDate() - 7)
+
         try {
             pageInsightsByType(selectedAccount, startDate, endDate, type)
                 .then((response) => {
                     this.setState({
                         count: response,
                     });
-                    let description = "";
-                    if (type == "tweetsCount") {
-                        description = <div className="analytics-description clearfix"><span> {response} new trending topics</span> in your area"</div>;
-                    } else if (type == "followersCount") {
-                        description = <div className="analytics-description clearfix"><span> {response} new users</span> to follow</div>;
-                    } else if (type == "followingCount") {
-                        description = <div className="analytics-description clearfix"><span> {response} inactive users</span> to clean up</div>;
-                    }
-                    this.setState({ tweetsCount: description });
                 }).catch(error => {
                     if (error.response.status === 403) {
                         this.props.setForbidden(true);
@@ -88,7 +75,7 @@ class TwitterOverviewCard extends React.Component {
         }
     };
     render() {
-        const { name, iconPath, link } = this.props;
+        const { name, iconPath, link, description } = this.props;
 
         return (
             <div className="overview-card analytics-card">
@@ -114,10 +101,10 @@ class TwitterOverviewCard extends React.Component {
                             <img src={`/images/stat-line.svg`} />
                         </div>
 
-                        <p><span>+12</span> this week</p>
+                        <p><span>+{this.state.count}</span> this week</p>
                     </div>
                     <NavLink to={link}>
-                        {this.state.tweetsCount}
+                        {description}
                     </NavLink>
                 </div>
             </div>

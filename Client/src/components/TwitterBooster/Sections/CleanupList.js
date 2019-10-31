@@ -22,6 +22,9 @@ class CleanupList extends React.Component{
 
     componentDidMount() {
         
+        if(this.props.location.search == "?inactive"){
+            this.setState({category: "getInactiveFollowing"})
+        }
         if(!this.props.channelsLoading){
             this.fetchData();
         }

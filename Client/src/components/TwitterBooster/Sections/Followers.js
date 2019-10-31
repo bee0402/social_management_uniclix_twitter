@@ -22,7 +22,9 @@ class Followers extends React.Component{
     }
 
     componentDidMount() {
-        
+        if(this.props.location.search == "?recent"){
+            this.setState({category: "getRecent"})
+        }
         if(!this.props.channelsLoading){
             this.fetchData();
         }
