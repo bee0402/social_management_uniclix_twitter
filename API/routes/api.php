@@ -107,6 +107,7 @@ Route::prefix("twitter")->group(function(){
         Route::get('tweet/replies', 'Twitter\RepliesController@replies');
         Route::post('tweet/delete', 'Twitter\Actions\StatusController@delete');
         Route::post('dm', 'Twitter\Actions\DMController@DM');
+        Route::post('aadm', 'Twitter\Actions\DMController@activateADM');
 
         Route::get('user/info', 'Twitter\UserController@info');
 

@@ -22,7 +22,8 @@ class Channel extends Model
         "username",
         "payload",
         "access_token",
-        "selected"
+        "selected",
+        "auto_dm"
     ];
 
     public function user()
@@ -78,6 +79,11 @@ class Channel extends Model
     public function retweets()
     {
         return $this->hasMany(Retweet::class);
+    }
+
+    public function autoDMs()
+    {
+        return $this->hasMany(AutoDM::class);
     }
 
     public function likes()

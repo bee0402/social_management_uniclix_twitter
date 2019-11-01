@@ -4522,23 +4522,39 @@ table.compare-plans-table {
         justify-content: space-between;
         padding: 1.4rem 1.8rem;
 
+    }
+}
+
+.blue-txt-btn {
+    color: $primary_blue;
+    border: none;
+    padding: 6px 30px;
+    font-family: open-sansSemiBold, sans-serif;
+    outline: none;
+    background: transparent;
+}
+
+.aadm-cnt {
+    .add-dm-message {
+        margin-top: 1rem;
+
+        .btn-container {
+            position: absolute;
+            right: 4px;
+            top: 4px;
+
+            .disabled {
+                opacity: 0.8;
+            }
+        }
+
         .default-button {
             background: $primary_blue;
         }
     }
-}
 
-.add-dm-message {
-    margin-top: 1rem;
-
-    .btn-container {
-        position: absolute;
-        right: 4px;
-        top: 4px;
-    }
-
-    .default-button {
-        background: $primary_blue;
+    .tab-body {
+        padding-top: 1rem;
     }
 }
 
@@ -4602,4 +4618,14 @@ table.compare-plans-table {
     .slider.round:before {
         border-radius: 50%;
     }
+}
+
+.subsection-header {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.149163px;
+    margin-bottom: 1.1rem;
+    color: $primary_black;
 }

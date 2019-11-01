@@ -1,37 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import UpgradeAlert from '../../UpgradeAlert';
 import UserList from "../../UserList";
-import {startSetChannels} from "../../../actions/channels";
+import { startSetChannels } from "../../../actions/channels";
 import { getFans, follow, getRecentFollowers } from '../../../requests/twitter/channels';
 import channelSelector from '../../../selectors/channels';
 import Loader from '../../Loader';
 import UpgradeIntro from '../../UpgradeIntro';
 
-class Followers extends React.Component{
+class Followers extends React.Component {
     state = {
         userItems: [],
         actions: 0,
         page: 1,
         order: "desc",
         forbidden: false,
-        category: "getFans",
+        category: "",
         loading: this.props.channelsLoading
     }
 
     componentDidMount() {
-        if(this.props.location.search == "?recent"){
-            this.setState({category: "getRecent"})
-        }
-        if(!this.props.channelsLoading){
-            this.fetchData();
+        if (!this.props.channelsLoading) {
+            if (this.props.location.search == "?recent") {
+                this.setState({ category: "getRecentFollowers" })
+            } else {
+                this.setState({ category: "getFans" })
+            }
+            setTimeout(() => {
+                this.fetchData();
+            }, 0)
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if((this.props.selectedChannel !== prevProps.selectedChannel) || (this.state.category !== prevState.category)){
+        if ((this.props.selectedChannel !== prevProps.selectedChannel) || (this.state.category !== prevState.category)) {
             this.fetchData();
         }
     }
@@ -67,10 +71,10 @@ class Followers extends React.Component{
                     actions: prevState.actions - 1
                 }));
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
@@ -93,15 +97,15 @@ class Followers extends React.Component{
                 }));
             }).catch((error) => {
                 this.setLoading(false);
-                
-                if(error.response.status === 401){
-            
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
-                if(error.response.status === 403){
+                if (error.response.status === 403) {
                     this.setForbidden(true);
                 }
 
@@ -124,10 +128,10 @@ class Followers extends React.Component{
                 }));
             }).catch((error) => {
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
@@ -135,14 +139,14 @@ class Followers extends React.Component{
             });
     };
 
-    render(){
+    render() {
         return (
             <div>
                 {
-                    this.state.forbidden ? <UpgradeIntro 
+                    this.state.forbidden ? <UpgradeIntro
                         title="A simpler way to boost your twitter influence"
-                        description = "Track your social growth, and engage with your targeted audience."
-                        infoData = {[
+                        description="Track your social growth, and engage with your targeted audience."
+                        infoData={[
                             {
                                 title: "Grow your audience",
                                 description: "Grow your Twitter audience and expand your Influence with UniClix Twitter Booster."
@@ -156,58 +160,58 @@ class Followers extends React.Component{
                                 description: "Get started now, Follow relevant users only, Unfollow Inactive users, schedule posts, retweet, and monitor your Twitter mentions and streams with Uniclix Twitter Booster."
                             }
                         ]}
-                        image = "/images/analytic_intro.svg"
-                        buttonLink = "/twitter-booster/manage-accounts"
+                        image="/images/analytic_intro.svg"
+                        buttonLink="/twitter-booster/manage-accounts"
                     />
-                    :
-                    <div>
-                    
-                    <div className="section-header">
-                        <div className="section-header__first-row">
-                           <h2>Followers</h2> 
-                           <NavLink to="/twitter-booster/auto-dm" className="btn-text-blue">Set up auto DM</NavLink>
-                        </div>
+                        :
+                        <div>
 
-                        <div className="section-header__second-row">
-                            <p>This is a list of your active and recent followers</p> 
-                            <div className="section-header__select-menu">
-                                <label htmlFor="sortBy">Category</label>
-                                <select id="sortBy" onChange={(e) => this.setCategory(e)} value={this.state.category}>
-                                    <option value="getRecentFollowers">Recent</option>
-                                    <option value="getFans">Fans</option>
-                                </select>
-                                {   this.state.order === "asc" ?
-                                    <i className="fas fa-arrow-up" onClick={() => this.fetchData("desc")}></i> :
-                                    <i className="fas fa-arrow-up disabled-btn" disabled></i>
-                                }
+                            <div className="section-header">
+                                <div className="section-header__first-row">
+                                    <h2>Followers</h2>
+                                    <NavLink to="/twitter-booster/auto-dm" className="btn-text-blue">Set up auto DM</NavLink>
+                                </div>
 
-                                {   this.state.order === "desc" ?
-                                    <i className="fas fa-arrow-down" onClick={() => this.fetchData("asc")}></i> :
-                                    <i className="fas fa-arrow-down disabled-btn" disabled></i>
-                                }
+                                <div className="section-header__second-row">
+                                    <p>This is a list of your active and recent followers</p>
+                                    <div className="section-header__select-menu">
+                                        <label htmlFor="sortBy">Category</label>
+                                        <select id="sortBy" onChange={(e) => this.setCategory(e)} value={this.state.category}>
+                                            <option value="getRecentFollowers">Recent</option>
+                                            <option value="getFans">Fans</option>
+                                        </select>
+                                        {this.state.order === "asc" ?
+                                            <i className="fas fa-arrow-up" onClick={() => this.fetchData("desc")}></i> :
+                                            <i className="fas fa-arrow-up disabled-btn" disabled></i>
+                                        }
+
+                                        {this.state.order === "desc" ?
+                                            <i className="fas fa-arrow-down" onClick={() => this.fetchData("asc")}></i> :
+                                            <i className="fas fa-arrow-down disabled-btn" disabled></i>
+                                        }
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                        <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
 
-                        <UserList 
-                            userItems={ this.state.userItems }
-                            actionType="follow"
-                            actions={this.state.actions}
-                            loading={this.state.loading}
-                            showSortOption={true}
-                            fetchData={this.fetchData}
-                            perform={this.perform}
-                            page="fans"
-                            noData={{
-                                title: "We are mining your data, please return back later",
-                                description: "We suggest you  increase your engagement with UniClix by following relevant accounts using Keyword Target feature.",
-                                text: false
-                            }}
-                        />
-                        <BottomScrollListener onBottom={this.loadMore} />
-                    </div>
+                            <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
+
+                            <UserList
+                                userItems={this.state.userItems}
+                                actionType="follow"
+                                actions={this.state.actions}
+                                loading={this.state.loading}
+                                showSortOption={true}
+                                fetchData={this.fetchData}
+                                perform={this.perform}
+                                page="fans"
+                                noData={{
+                                    title: "We are mining your data, please return back later",
+                                    description: "We suggest you  increase your engagement with UniClix by following relevant accounts using Keyword Target feature.",
+                                    text: false
+                                }}
+                            />
+                            <BottomScrollListener onBottom={this.loadMore} />
+                        </div>
                 }
                 {this.state.loading && <Loader />}
             </div>
@@ -216,7 +220,7 @@ class Followers extends React.Component{
 }
 
 const mapStateToProps = (state) => {
-    const selectedTwitterChannel = {selected: 1, provider: "twitter"};
+    const selectedTwitterChannel = { selected: 1, provider: "twitter" };
     const selectedChannel = channelSelector(state.channels.list, selectedTwitterChannel);
 
     return {

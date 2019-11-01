@@ -105,8 +105,8 @@ class Dashboard extends React.Component {
                                     name='Tweets'
                                     type="tweetsCount"
                                     description='tweets'
-                                    link=""
-                                    description={<div className="analytics-description clearfix"><span>0 new trending topics</span> in your area</div>}
+                                    link="/twitter-booster/keyword-targets"
+                                    description={<div className="analytics-description clearfix"><span>Recommended twitter accounts </span> to follow</div>}
                                     tooltipDesc='The number of tweets published from your Twitter account'
                                     iconPath={`/images/twitter-blue-icon.svg`}
                                     {...propData} />

@@ -31,26 +31,27 @@ class DMController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function DM(Request $request)
-    {   try{
+    {
+        try {
             $content = $request->input('content');
             $userId = $request->input('userId');
-            
+
             $channelId = $request->input('channelId');
 
-            if($channelId){
+            if ($channelId) {
                 $channel = $this->user->getChannel($channelId);
                 $channel = $channel->details;
-            }else{
+            } else {
                 $channel = $this->selectedChannel;
             }
-            
-            if($content && $userId){
+
+            if ($content && $userId) {
                 $channel->DM($userId, $content);
                 return response()->json(["success" => true, "message" => "DM posted successfully"]);
             }
 
             return response()->json(["success" => false, "message" => "No text or screen_name provided"], 400);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(["success" => false, "message" => "You can not DM this user."], 400);
         }
 
@@ -58,4 +59,25 @@ class DMController extends Controller
     }
 
 
+
+    public function activateADM(Request $request)
+    {
+        $user = auth()->user();
+        try {
+            $channelId = $request->input('channelId');
+            $channel = $user->getChannel($channelId);
+
+            $status = $request->input('status');
+
+            if ($channel) {
+                $channel->auto_dm = $status;
+                $channel->save();
+                return response()->json(["success" => true, "message" => "Auto DM activated successfully"]);
+            }
+
+            return response()->json(["success" => false, "message" => "No status or wrong channel id provided"], 400);
+        } catch (\Exception $e) {
+            return response()->json(["success" => false, "message" => "You can not activated Auto DM in this account."], 400);
+        }
+    }
 }

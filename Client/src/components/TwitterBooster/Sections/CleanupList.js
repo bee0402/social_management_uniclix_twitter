@@ -3,35 +3,38 @@ import { connect } from 'react-redux';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 import UserList from "../../UserList";
 import UpgradeAlert from '../../UpgradeAlert';
-import {startSetChannels} from "../../../actions/channels";
+import { startSetChannels } from "../../../actions/channels";
 import { getNonFollowers, getFollowing, getInactiveFollowing, getRecentUnfollowers, unfollow } from '../../../requests/twitter/channels';
 import channelSelector from '../../../selectors/channels';
 import Loader from '../../Loader';
 import UpgradeIntro from '../../UpgradeIntro';
 
-class CleanupList extends React.Component{
+class CleanupList extends React.Component {
     state = {
         userItems: [],
         actions: 0,
         loading: this.props.channelsLoading,
         forbidden: false,
-        category: "getFollowing",
+        category: "",
         page: 1,
         order: "desc"
     }
 
     componentDidMount() {
-        
-        if(this.props.location.search == "?inactive"){
-            this.setState({category: "getInactiveFollowing"})
-        }
-        if(!this.props.channelsLoading){
-            this.fetchData();
+        if (!this.props.channelsLoading) {
+            if (this.props.location.search == "?inactive") {
+                this.setState({ category: "getInactiveFollowing" })
+            } else {
+                this.setState({ category: "getFollowing" })
+            }
+            setTimeout(() => {
+                this.fetchData();
+            }, 0)
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if((this.props.selectedChannel !== prevProps.selectedChannel) || (this.state.category !== prevState.category)){
+        if ((this.props.selectedChannel !== prevProps.selectedChannel) || (this.state.category !== prevState.category)) {
             this.fetchData();
         }
     }
@@ -60,10 +63,10 @@ class CleanupList extends React.Component{
                     actions: prevState.actions - 1
                 }));
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
@@ -78,18 +81,6 @@ class CleanupList extends React.Component{
         }));
     }
 
-    getCategoryFunction = () => {
-        switch(this.state.category){
-            case "getFollowing":
-                return getFollowing;
-            case "getNonFollowers":
-                return getNonFollowers;
-            case "getInactiveFollowing":
-                return getInactiveFollowing;
-            case "getRecentUnfollowers":
-                return getRecentUnfollowers;
-        }
-    };
 
     fetchData = (order = 'desc') => {
         this.setLoading(true);
@@ -107,19 +98,32 @@ class CleanupList extends React.Component{
             }).catch((error) => {
                 this.setLoading(false);
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
-                if(error.response.status === 403){
+                if (error.response.status === 403) {
                     this.setForbidden(true);
                 }
 
                 return Promise.reject(error);
             });
+    };
+
+    getCategoryFunction = () => {
+        switch (this.state.category) {
+            case "getFollowing":
+                return getFollowing;
+            case "getNonFollowers":
+                return getNonFollowers;
+            case "getInactiveFollowing":
+                return getInactiveFollowing;
+            case "getRecentUnfollowers":
+                return getRecentUnfollowers;
+        }
     };
 
     loadMore = () => {
@@ -137,10 +141,10 @@ class CleanupList extends React.Component{
                 }));
             }).catch((error) => {
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
@@ -148,13 +152,13 @@ class CleanupList extends React.Component{
             });
     };
 
-    render(){
+    render() {
         return (
             <div>
-                {this.state.forbidden ? <UpgradeIntro 
+                {this.state.forbidden ? <UpgradeIntro
                     title="A simpler way to boost your twitter influence"
-                    description = "Track your social growth, and engage with your targeted audience."
-                    infoData = {[
+                    description="Track your social growth, and engage with your targeted audience."
+                    infoData={[
                         {
                             title: "Grow your audience",
                             description: "Grow your Twitter audience and expand your Influence with UniClix Twitter Booster."
@@ -168,63 +172,63 @@ class CleanupList extends React.Component{
                             description: "Get started now, Follow relevant users only, Unfollow Inactive users, schedule posts, retweet, and monitor your Twitter mentions and streams with Uniclix Twitter Booster."
                         }
                     ]}
-                    image = "/images/analytic_intro.svg"
-                    buttonLink = "/twitter-booster/manage-accounts"
-                />:
-                <div>
-                    <div className="section-header">
-                        <div className="section-header__first-row">
-                        <h2>Clean up list</h2>
-                        </div>
+                    image="/images/analytic_intro.svg"
+                    buttonLink="/twitter-booster/manage-accounts"
+                /> :
+                    <div>
+                        <div className="section-header">
+                            <div className="section-header__first-row">
+                                <h2>Clean up list</h2>
+                            </div>
 
-                        <div className="section-header__second-row">                                
-                            <div></div>
-                            <div className="section-header__select-menu">
-                                <label htmlFor="sortBy">Category</label>
-                                <select id="sortBy" onChange={(e) => this.setCategory(e)} value={this.state.category}>
-                                    <option value="getFollowing">All</option>
-                                    <option value="getInactiveFollowing">Inactive</option>
-                                    <option value="getNonFollowers">Non followers</option>
-                                    <option value="getRecentUnfollowers">Recent unfollowers</option>
-                                </select>
-                                {   this.state.order === "asc" ?
-                                    <i className="fas fa-arrow-up" onClick={() => this.fetchData("desc")}></i> :
-                                    <i className="fas fa-arrow-up disabled-btn" disabled></i>
-                                }
+                            <div className="section-header__second-row">
+                                <div></div>
+                                <div className="section-header__select-menu">
+                                    <label htmlFor="sortBy">Category</label>
+                                    <select id="sortBy" onChange={(e) => this.setCategory(e)} value={this.state.category}>
+                                        <option value="getFollowing">All</option>
+                                        <option value="getInactiveFollowing">Inactive</option>
+                                        <option value="getNonFollowers">Non followers</option>
+                                        <option value="getRecentUnfollowers">Recent unfollowers</option>
+                                    </select>
+                                    {this.state.order === "asc" ?
+                                        <i className="fas fa-arrow-up" onClick={() => this.fetchData("desc")}></i> :
+                                        <i className="fas fa-arrow-up disabled-btn" disabled></i>
+                                    }
 
-                                {   this.state.order === "desc" ?
-                                    <i className="fas fa-arrow-down" onClick={() => this.fetchData("asc")}></i> :
-                                    <i className="fas fa-arrow-down disabled-btn" disabled></i>
-                                }
+                                    {this.state.order === "desc" ?
+                                        <i className="fas fa-arrow-down" onClick={() => this.fetchData("asc")}></i> :
+                                        <i className="fas fa-arrow-down disabled-btn" disabled></i>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
-                    <UserList 
-                        userItems={ this.state.userItems }
-                        actionType="unfollow"
-                        actions={this.state.actions}
-                        loading={this.state.loading}
-                        showSortOption={true}
-                        fetchData={this.fetchData}
-                        perform={this.perform}
-                        page="non-followers"
-                        noData={{
-                            title: "Woops!",
-                            description: "Seems like you don't have any matching data!"
-                        }}
-                    />
-                    <BottomScrollListener onBottom={this.loadMore} />
-                    {this.state.loading && <Loader />}
-                </div>}
+                        <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
+                        <UserList
+                            userItems={this.state.userItems}
+                            actionType="unfollow"
+                            actions={this.state.actions}
+                            loading={this.state.loading}
+                            showSortOption={true}
+                            fetchData={this.fetchData}
+                            perform={this.perform}
+                            page="non-followers"
+                            noData={{
+                                title: "Woops!",
+                                description: "Seems like you don't have any matching data!"
+                            }}
+                        />
+                        <BottomScrollListener onBottom={this.loadMore} />
+                        {this.state.loading && <Loader />}
+                    </div>}
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    const selectedTwitterChannel = {selected: 1, provider: "twitter"};
+    const selectedTwitterChannel = { selected: 1, provider: "twitter" };
     const selectedChannel = channelSelector(state.channels.list, selectedTwitterChannel);
 
     return {
