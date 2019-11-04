@@ -17,7 +17,7 @@ class AutoDM extends React.Component {
         keyword: "",
         replaceKeyword: 0,
         activeKeywords: [],
-        isADMactive: this.props.selectedChannel.auto_dm
+        isADMactive: this.props.selectedChannel.details.auto_dm
     }
     componentDidMount() {
         if (!this.props.channelsLoading) {
@@ -91,21 +91,26 @@ class AutoDM extends React.Component {
             });
     }
     saveMessage = () => {
+        this.setState({ loading: true })
         const channelId = this.props.selectedChannel.id;
         const status = this.state.keyword;
         if (this.state.isADMactive) {
             return saveAutoMessages(channelId, status)
                 .then((response) => {
                     toastContainer.success("DM posted successfully.", "Success", { closeButton: true });
+                    this.setState({
+                        loading: false,
+                        keyword: ""
+                    });
                     return Promise.resolve(response)
                 })
                 .catch((error) => {
-
+                    this.setState({
+                        loading: false
+                    });
                     if (typeof error.response.statusText == "undefined") {
-                        console.log(error);
                         return;
                     }
-                    console.log(error);
                     Promise.reject(error);
                 });
         }

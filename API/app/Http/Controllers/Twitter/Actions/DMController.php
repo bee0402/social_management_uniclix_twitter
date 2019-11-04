@@ -64,8 +64,7 @@ class DMController extends Controller
     public function activateADM(Request $request)
     {
         try {
-            $channelId = $request->input('channelId');
-            $channel = $this->user->getChannel($channelId);
+            $channel = $this->selectedChannel;
 
             $status = $request->input('status');
 
