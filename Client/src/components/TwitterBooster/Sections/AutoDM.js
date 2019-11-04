@@ -29,7 +29,7 @@ class AutoDM extends React.Component {
         if ((this.props.selectedChannel !== prevProps.selectedChannel) || (this.state.category !== prevState.category)) {
             this.fetchData();
             this.setState({
-                isADMactive: this.props.selectedChannel.auto_dm
+                isADMactive: this.props.selectedChannel.details.auto_dm
             })
         }
     }
