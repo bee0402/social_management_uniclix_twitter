@@ -9,7 +9,10 @@ import Loader from '../../Loader';
 import DraftEditor from "../../DraftEditor";
 
 let toastContainer;
-
+const predefinedMessages = [
+    "Welcome @username to my profile, thanks for follow me!",
+    "Add a new message, give warmth to your welcome and boost your account"
+]
 class AutoDM extends React.Component {
     state = {
         loading: true,
@@ -74,10 +77,10 @@ class AutoDM extends React.Component {
     activateDm = (e) => {
         const channelId = this.props.selectedChannel.id;
         const status = !this.state.isADMactive;
-        this.setState({ isADMactive: status })
         return activateADM(channelId, status)
             .then((response) => {
                 toastContainer.success("DM posted successfully.", "Success", { closeButton: true });
+                this.setState({ isADMactive: status })
                 return Promise.resolve(response)
             })
             .catch((error) => {
@@ -90,11 +93,13 @@ class AutoDM extends React.Component {
                 Promise.reject(error);
             });
     }
+
     saveMessage = () => {
-        this.setState({ loading: true })
+        console.log(this.props.selectedChannel, 'this.props.selectedChannel')
         const channelId = this.props.selectedChannel.id;
         const status = this.state.keyword;
         if (this.state.isADMactive) {
+            this.setState({ loading: true })
             return saveAutoMessages(channelId, status)
                 .then((response) => {
                     toastContainer.success("DM posted successfully.", "Success", { closeButton: true });
@@ -159,7 +164,7 @@ class AutoDM extends React.Component {
                                 showImagesIcon={false}
                                 showHashtagsIcon={false}
                                 inclisive={true}
-                                sendAction={() => this.saveMessage()}
+                                sendAction={this.saveMessage}
                             />
 
                         </div>
@@ -178,26 +183,27 @@ class AutoDM extends React.Component {
                         <div className="tab-body">
                             <div className={`cnt-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
                                 <ul className="list-items">
-                                    <li className="list-item">Welcome @username to my profile, thanks for follow me!
-                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage('Welcome @username to my profile, thanks for follow me!')}>Select</button>
-                                    </li>
-                                    <li className="list-item">Add a new message, give warmth to your welcome and boost your account
-                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage('Add a new message, give warmth to your welcome and boost your account')}>Select</button></li>
-                                    <li className="list-item">Welcome @username to my profile, thanks for follow me!
-                                    <button className="blue-txt-btn add-message " onClick={() => this.selectMessage('Welcome @username to my profile, thanks for follow me!')}>Select</button></li>
-                                    <li className="list-item">Add a new message, give warmth to your welcome and boost your account
-                                    <button className="blue-txt-btn add-message " onClick={() => this.selectMessage('Add a new message, give warmth to your welcome and boost your account')}>Select</button></li>
-                                    <li className="list-item">Welcome @username to my profile, thanks for follow me!
-                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage('Welcome @username to my profile, thanks for follow me!')}>Select</button></li>
+                                    {
+                                        predefinedMessages.map((predMessage, index) => (
+                                            activeKeywords.includes(predMessage) ?
+                                                <li className="list-item active" key={index}>{predMessage}
+                                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
+                                                </li> :
+                                                <li className="list-item active" key={index}>{predMessage}
+                                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
+                                                </li>
+                                        ))
+                                    }
                                 </ul>
                             </div >
                             <div className={`cnt-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
                                 <ul className="list-items">
                                     {
                                         activeKeywords.map((item, index) => (
-                                            <li className="list-item" key={index}>{item}
-                                                <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${item}`)}>Select</button>
-                                            </li>
+                                            predefinedMessages.includes(item) ? '' :
+                                                <li className="list-item" key={index}>{item}
+                                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${item}`)}>Select</button>
+                                                </li>
                                         ))
                                     }
 

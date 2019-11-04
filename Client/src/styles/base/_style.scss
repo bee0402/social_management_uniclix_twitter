@@ -4522,6 +4522,9 @@ table.compare-plans-table {
         justify-content: space-between;
         padding: 1.4rem 1.8rem;
 
+        &.active{
+            border: 1px solid $primary_blue;
+        }
     }
 }
 
