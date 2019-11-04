@@ -26,6 +26,7 @@ class Channel extends Model
         "auto_dm"
     ];
 
+    
     public function user()
     {
         return $this->belongsTo(User::class);
