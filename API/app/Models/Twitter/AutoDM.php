@@ -8,6 +8,6 @@ class AutoDM extends Model
 {
     public $table = "twitter_direct_messages";
 
-    protected $fillable = ["channel_id", "keyword", "source", "created_at", "updated_at"];
+    protected $fillable = ["channel_id", "message", "source", "created_at", "updated_at"];
 
 }

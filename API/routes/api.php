@@ -108,6 +108,8 @@ Route::prefix("twitter")->group(function(){
         Route::post('tweet/delete', 'Twitter\Actions\StatusController@delete');
         Route::post('dm', 'Twitter\Actions\DMController@DM');
         Route::post('aadm', 'Twitter\Actions\DMController@activateADM');
+        Route::post('auto-response-message', 'Twitter\Actions\DMController@saveResponses');
+        Route::get('my-autodms', 'Twitter\Actions\DMController@getMyAutoDm');
 
         Route::get('user/info', 'Twitter\UserController@info');
 

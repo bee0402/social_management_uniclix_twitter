@@ -194,6 +194,23 @@ export const activateADM = (channelId, status = 0) => {
         });
 };
 
+export const saveAutoMessages = (channelId, message = '') => {
+    return axios.post(`${apiUrl}/twitter/auto-response-message`, {
+        channelId,
+        message
+    })
+        .then((response) => {
+            return response.data;
+        });
+};
+
+export const getAutoMessages = () => {
+    return axios.get(`${apiUrl}/twitter/my-autodms`)
+        .then((response) => {
+            return response.data;
+        });
+};
+
 export const pageInsightsByType = (id, startDate, endDate, type) => {
     return axios.get(`${apiUrl}/twitter/insights/${type}?id=${id}&startDate=${startDate}&endDate=${endDate}`)
         .then((response) => {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Twitter\Actions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Twitter\AutoDM;
 
 class DMController extends Controller
 {
@@ -78,6 +79,43 @@ class DMController extends Controller
             return response()->json(["success" => false, "message" => "No status or wrong channel id provided"], 400);
         } catch (\Exception $e) {
             return response()->json(["success" => false, "message" => "You can not activated Auto DM in this account."], 400);
+        }
+    }
+
+    public function saveResponses(Request $request)
+    {
+        $user = auth()->user();
+        try {
+            $channelId = $request->input('channelId');
+            $channel = $user->getChannel($channelId);
+
+            $message = $request->input('message');
+
+            if ($channel) {
+                $autoDm = new AutoDM();
+                $autoDm->channel_id = $channelId;
+                $autoDm->message = $message;
+                $autoDm->save();
+                return response()->json(["success" => true, "message" => "Auto response message is saved successfully!"]);
+            }
+
+            return response()->json(["success" => false, "message" => "No status or wrong channel id provided"], 400);
+        } catch (\Exception $e) {
+            return response()->json(["success" => false, "message" => "You can not save auto response in this account."], 400);
+        }
+    }
+
+    public function getMyAutoDm(Request $request)
+    {
+        try {
+            $channel = $this->selectedChannel;
+            $date = $channel->autoDMs($channel->id)
+                ->pluck("message")
+                ->toArray();
+
+            return response()->json(["success" => true, "data" => $date]);
+        } catch (\Exception $e) {
+            return response()->json(["success" => false, "message" => "You can not save auto response in this account."], 400);
         }
     }
 }

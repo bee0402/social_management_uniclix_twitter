@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modifier, EditorState, getDefaultKeyBinding, KeyBindingUtil} from 'draft-js';
+import { Modifier, EditorState, getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
 import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import 'draft-js-mention-plugin/lib/plugin.css';
@@ -8,15 +8,15 @@ import ImageUploader from 'react-images-browse/src/component/compiled';
 import moment from "moment";
 import hashtagSuggestionList from '../fixtures/hashtagSuggestions';
 
-const {hasCommandModifier} = KeyBindingUtil;
+const { hasCommandModifier } = KeyBindingUtil;
 
-class DraftEditor extends React.Component{
+class DraftEditor extends React.Component {
 
     imageIcon = React.createRef();
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        if(typeof(emojiPlugin) === "undefined"){
+        if (typeof (emojiPlugin) === "undefined") {
             this.emojiPlugin = createEmojiPlugin();
             this.hashtagMentionPlugin = createMentionPlugin({
                 mentionPrefix: "#",
@@ -27,27 +27,33 @@ class DraftEditor extends React.Component{
 
     defaultPost = {
         id: "",
-        content: "", 
+        content: "",
         type: "store",
         images: [],
         scheduled_at: moment(),
         scheduled_at_original: moment()
     };
-    
+
     state = {
         editorState: createEditorStateWithText(this.props.content),
         hashtagSuggestions: hashtagSuggestionList,
         letterCount: 0,
         pictures: this.props.pictures,
-        showEmojiIcon: typeof(this.props.showEmojiIcon) !== "undefined" ? this.props.showEmojiIcon : true,
-        showImagesIcon: typeof(this.props.showImagesIcon) !== "undefined" ? this.props.showImagesIcon : true,
-        showHashtagsIcon: typeof(this.props.showHashtagsIcon) !== "undefined" ? this.props.showHashtagsIcon : true,
-        showSendIcon: typeof(this.props.sendAction) !== "undefined" ? this.props.sendAction : false,
-        placeholderText: typeof(this.props.placeholderText) !== "undefined" ? this.props.placeholderText : "What's on your mind?",
-        singleImage: typeof(this.props.singleImage) !== "undefined" ? this.props.singleImage : true,
-        imageLimit:  typeof(this.props.imageLimit) !== "undefined" ? this.props.imageLimit : 4
+        showEmojiIcon: typeof (this.props.showEmojiIcon) !== "undefined" ? this.props.showEmojiIcon : true,
+        showImagesIcon: typeof (this.props.showImagesIcon) !== "undefined" ? this.props.showImagesIcon : true,
+        showHashtagsIcon: typeof (this.props.showHashtagsIcon) !== "undefined" ? this.props.showHashtagsIcon : true,
+        showSendIcon: typeof (this.props.sendAction) !== "undefined" ? this.props.sendAction : false,
+        placeholderText: typeof (this.props.placeholderText) !== "undefined" ? this.props.placeholderText : "What's on your mind?",
+        singleImage: typeof (this.props.singleImage) !== "undefined" ? this.props.singleImage : true,
+        imageLimit: typeof (this.props.imageLimit) !== "undefined" ? this.props.imageLimit : 4
     };
-
+    componentDidUpdate(prevProps, prevState) {
+        if ((this.props.ChangeAllContent !== prevProps.ChangeAllContent)) {
+            this.setState({
+                editorState: createEditorStateWithText(this.props.content),
+            })
+        }
+    }
 
     focus = () => {
         this.editor.focus();
@@ -61,7 +67,7 @@ class DraftEditor extends React.Component{
             editorState,
             letterCount: text.length
         }), () => {
-            if(typeof(this.props.onChange) !== "undefined"){
+            if (typeof (this.props.onChange) !== "undefined") {
                 this.props.onChange(text);
             }
         });
@@ -69,13 +75,13 @@ class DraftEditor extends React.Component{
 
     onDrop = (pictures, pictureDataUrls) => {
         this.setState((prevState) => {
-            if(prevState.pictures !== pictures){
+            if (prevState.pictures !== pictures) {
                 return {
                     pictures: pictureDataUrls
                 }
             }
         }, () => {
-            if(typeof(this.props.onImagesChange) !== "undefined"){
+            if (typeof (this.props.onImagesChange) !== "undefined") {
                 this.props.onImagesChange(pictureDataUrls);
             }
         });
@@ -90,9 +96,9 @@ class DraftEditor extends React.Component{
 
     onImageIconClick = () => {
         this.imageIcon.current.
-        inputElement.
-        previousSibling.
-        click();
+            inputElement.
+            previousSibling.
+            click();
     };
 
     onHashIconClick = () => {
@@ -117,11 +123,11 @@ class DraftEditor extends React.Component{
     };
 
     myKeyBindingFn = (e) => {
-        const {onEnterKey} = this.props;
+        const { onEnterKey } = this.props;
         if (e.key === "Enter" && !e.shiftKey) {
 
-            if(typeof(onEnterKey) !== "undefined"){
-                onEnterKey(); 
+            if (typeof (onEnterKey) !== "undefined") {
+                onEnterKey();
             }
             //return 'myeditor-save';
         }
@@ -129,17 +135,17 @@ class DraftEditor extends React.Component{
         return getDefaultKeyBinding(e);
     }
 
-    render(){
+    render() {
 
         const emojiPlugin = this.emojiPlugin;
         const hashtagMentionPlugin = this.hashtagMentionPlugin;
 
-        const { EmojiSuggestions, EmojiSelect} = emojiPlugin;
+        const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
         const { MentionSuggestions: HashtagSuggestions } = hashtagMentionPlugin;
         const plugins = [emojiPlugin, hashtagMentionPlugin];
-        const {scheduledLabel, inclusive, toggle, network, sendAction, letterLimit = 280} = this.props;
+        const { scheduledLabel, inclusive, toggle, network, sendAction, textBtn = false, letterLimit = 280 } = this.props;
 
-        return(
+        return (
             <div className="draft_editor_container">
 
                 {inclusive &&
@@ -191,8 +197,8 @@ class DraftEditor extends React.Component{
                     </form>
                 </div>
                 <div className="editor-icons">
-                    {this.state.showImagesIcon && 
-                        (   this.state.imageLimit <= this.state.pictures.length ?
+                    {this.state.showImagesIcon &&
+                        (this.state.imageLimit <= this.state.pictures.length ?
                             <i className="fa fa-image upload-images disabled-btn"></i>
                             :
                             <i onClick={this.onImageIconClick} className="fa fa-image upload-images"></i>
@@ -202,24 +208,31 @@ class DraftEditor extends React.Component{
                     {this.state.showEmojiIcon && <EmojiSelect />}
                     {this.state.showHashtagsIcon && <i onClick={this.onHashIconClick} className="fa fa-hashtag add-hashtag"></i>}
 
-                    {this.state.showSendIcon && 
+                    {this.state.showSendIcon &&
                         this.state.letterCount > letterLimit || this.state.letterCount < 1 ?
-                        <img className={`disabled-btn`} src={`/images/paper-plane.svg`} /> :
-                        <img onClick={sendAction} src={`/images/paper-plane.svg`} />
+                        (textBtn ?
+                            <button className="default-button add-message disabled" disabled>Save</button>
+                            :
+                            <img className={`disabled-btn`} src={`/images/paper-plane.svg`} />)
+                        : (textBtn ?
+                            <button onClick={sendAction} className="default-button add-message">Save</button>
+                            :
+                            <img onClick={sendAction} src={`/images/paper-plane.svg`} />
+                        )
                     }
                 </div>
 
-                {inclusive && 
-                    <div className="modal-footer" style={{position:"relative"}}>
-                    
+                {inclusive &&
+                    <div className="modal-footer" style={{ position: "relative" }}>
+
                         <p className={`letter-count pull-left ${this.state.letterCount > letterLimit && network == 'twitter' ? 'red-txt' : ''}`}>{this.state.letterCount}</p>
 
                         {(this.state.letterCount > letterLimit && network == "twitter") || (this.state.pictures.length < 1 && network == "pinterest") || (this.state.letterCount < 1 && this.state.pictures.length < 1) ?
                             <button disabled onClick={this.onDone} className={`upgrade-btn pull-right disabled-btn`}>Done</button>
-                        :
+                            :
                             <button onClick={this.onDone} className={`upgrade-btn pull-right`}>Done</button>
                         }
-                        
+
                     </div>
                 }
             </div>

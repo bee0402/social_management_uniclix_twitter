@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer } from "react-toastr";
 import { startSetChannels } from "../../../actions/channels";
-import { activateADM } from '../../../requests/twitter/channels';
+import { activateADM, saveAutoMessages, getAutoMessages } from '../../../requests/twitter/channels';
 import UpgradeAlert from '../../UpgradeAlert';
 import channelSelector from '../../../selectors/channels';
 import Loader from '../../Loader';
+import DraftEditor from "../../DraftEditor";
 
 let toastContainer;
 
@@ -14,6 +15,8 @@ class AutoDM extends React.Component {
         loading: true,
         isTabActive: 'predefined',
         keyword: "",
+        replaceKeyword: 0,
+        activeKeywords: [],
         isADMactive: this.props.selectedChannel.auto_dm
     }
     componentDidMount() {
@@ -32,10 +35,22 @@ class AutoDM extends React.Component {
     }
 
     fetchData = (order = 'desc') => {
-
-        this.setState({
-            loading: false
+        return getAutoMessages().then((response) => {
+            this.setState({
+                activeKeywords: response.data,
+                loading: false
+            })
+            return Promise.resolve(response)
         })
+            .catch((error) => {
+
+                if (typeof error.response.statusText == "undefined") {
+                    console.log(error);
+                    return;
+                }
+                console.log(error);
+                Promise.reject(error);
+            });
     };
 
 
@@ -52,7 +67,8 @@ class AutoDM extends React.Component {
         this.setState(() => (state));
     };
     selectMessage = (val) => {
-        this.setState({ keyword: val });
+
+        this.setState({ keyword: val, replaceKeyword: this.state.replaceKeyword + 1 });
     }
 
     activateDm = (e) => {
@@ -75,10 +91,32 @@ class AutoDM extends React.Component {
             });
     }
     saveMessage = () => {
+        const channelId = this.props.selectedChannel.id;
+        const status = this.state.keyword;
+        if (this.state.isADMactive) {
+            return saveAutoMessages(channelId, status)
+                .then((response) => {
+                    toastContainer.success("DM posted successfully.", "Success", { closeButton: true });
+                    return Promise.resolve(response)
+                })
+                .catch((error) => {
 
+                    if (typeof error.response.statusText == "undefined") {
+                        console.log(error);
+                        return;
+                    }
+                    console.log(error);
+                    Promise.reject(error);
+                });
+        }
     }
+
+    updateDMState = (keyword = "") => {
+        this.setState({ letterCount: 10000 - keyword.length, keyword })
+    };
+
     render() {
-        const { isTabActive, isADMactive, keyword } = this.state
+        const { isTabActive, isADMactive, keyword, replaceKeyword, activeKeywords } = this.state
         return (
             <div>
                 <div>
@@ -105,23 +143,23 @@ class AutoDM extends React.Component {
                 {this.state.loading && <Loader />}
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
                 <div className="aadm-cnt">
-                    <form onSubmit={this.onSubmit}>
-                        <div className="form-row">
-                            <div className="relative-pos add-dm-message">
-                                <input type="text" className="form-control p20 search-input" onChange={(e) => this.onFieldChange(e)} id="keyword" name="keyword" value={keyword} placeholder="Add Message" />
-                                <div className="btn-container">
-                                    {
-                                        false ?
-                                            <button onClick={() => this.saveMessage()} className="default-button add-message">Save</button>
-                                            :
-                                            <button className="default-button add-message disabled" disabled>Save</button>
-                                    }
-
-                                </div>
-                            </div>
+                    <div className="form-row">
+                        <div className="relative-pos add-dm-message">
+                            <DraftEditor
+                                onChange={this.updateDMState}
+                                content={keyword}
+                                pictures={[]}
+                                ChangeAllContent={replaceKeyword}
+                                textBtn={true}
+                                showImagesIcon={false}
+                                showHashtagsIcon={false}
+                                inclisive={true}
+                                sendAction={() => this.saveMessage()}
+                            />
 
                         </div>
-                    </form>
+
+                    </div>
                     <div className="tab-cnt">
                         <h3 className="subsection-header">Predefined Messages</h3>
                         <div className="tab-head">
@@ -150,9 +188,14 @@ class AutoDM extends React.Component {
                             </div >
                             <div className={`cnt-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
                                 <ul className="list-items">
-                                    <li className="list-item">Welcome @username to my profile, thanks for follow me!
-                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage('Welcome @username to my profile, thanks for follow me!')}>Select</button>
-                                    </li>
+                                    {
+                                        activeKeywords.map((item, index) => (
+                                            <li className="list-item" key={index}>{item}
+                                                <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${item}`)}>Select</button>
+                                            </li>
+                                        ))
+                                    }
+
                                 </ul>
                             </div>
                         </div >
