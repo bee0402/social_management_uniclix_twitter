@@ -79,8 +79,9 @@ class AutoDM extends React.Component {
         const status = !this.state.isADMactive;
         return activateADM(channelId, status)
             .then((response) => {
-                toastContainer.success("DM posted successfully.", "Success", { closeButton: true });
                 this.setState({ isADMactive: status })
+                let message = this.state.isADMactive ? 'activated' : 'deactivated'
+                toastContainer.success(`Auto DM ${message} successfully.`, "Success", { closeButton: true });
                 return Promise.resolve(response)
             })
             .catch((error) => {
@@ -102,7 +103,7 @@ class AutoDM extends React.Component {
             this.setState({ loading: true })
             return saveAutoMessages(channelId, status)
                 .then((response) => {
-                    toastContainer.success("DM posted successfully.", "Success", { closeButton: true });
+                    toastContainer.success(`Auto DM response set successfully.`, "Success", { closeButton: true });
                     this.setState({
                         loading: false,
                         keyword: ""

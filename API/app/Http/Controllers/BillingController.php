@@ -79,7 +79,7 @@ class BillingController extends Controller
                 $user->newSubscription($subType, $plan)->create($id);
             }
 
-            $roleName = explode("_", $plan)[0];
+            $roleName = $plan;
 
             if($subType == "main"){
                 $role = Role::where("name", $roleName)->first();

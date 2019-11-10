@@ -5,6 +5,7 @@ import { stripePublishableKey } from '../../../config/api';
 
 export default class Checkout extends React.Component {
   onToken = (token) => {
+    console.log(token)
     token.plan = this.props.plan
     token.trialDays = this.props.trialDays
     token.subType = this.props.subType

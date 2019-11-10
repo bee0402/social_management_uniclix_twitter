@@ -31,20 +31,23 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('sync:follower.ids')
-                  ->everyThirtyMinutes();
+        $schedule->command('sync:follower.ids')
+            ->everyThirtyMinutes();
+
+        $schedule->command('sync:autodm.ids')
+            ->everyThirtyMinutes();
 
         $schedule->command('sync:following.ids')
             ->everyThirtyMinutes();
 
         $schedule->command('sync:tweets')
-        ->everyThirtyMinutes();
+            ->everyThirtyMinutes();
 
         $schedule->command('sync:retweets')
-        ->everyThirtyMinutes();
+            ->everyThirtyMinutes();
 
         $schedule->command('sync:likes')
-        ->everyThirtyMinutes();
+            ->everyThirtyMinutes();
 
         $schedule->command('run:scheduled')
             ->everyMinute();
@@ -60,7 +63,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
