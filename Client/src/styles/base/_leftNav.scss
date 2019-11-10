@@ -1,13 +1,12 @@
 /* Left Nav ======= */
 .vertical-menu {
-    position: fixed;
+    position: relative;
     top: 0;
     float: left;
     height: 100%;
     width: 235px;
     overflow: hidden;
     background: white;
-    margin-top: 120px;
     z-index: 999;
     border-top-right-radius: 50px;
 

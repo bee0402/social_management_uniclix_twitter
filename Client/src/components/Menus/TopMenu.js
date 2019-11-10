@@ -4,8 +4,10 @@ import { NavLink } from "react-router-dom";
 import { backendUrl } from "../../config/api";
 import { setComposerModal } from "../../actions/composer";
 import { startLogout } from "../../actions/auth";
+import { withRouter } from "react-router";
 
-const TopMenu = ({ logout, profile }) => (
+const TopMenu = ({ logout, profile, props }) => (
+
     <div className="navbar-wrap">
         <div className="navbar-uniclix">
             <a href={backendUrl} className="brand"><img src="/images/uniclix.png" /></a>
@@ -39,16 +41,19 @@ const TopMenu = ({ logout, profile }) => (
                 </ul>
             </div>
         </div>
-
-        <div className="top-alert"><span>You have 3 days remaining on your Twitter Booster trial.</span> Add your billing information now to start your subscription. <button className="btn-text-pink">Start subscription</button></div>
+        {!profile.subscription.activeSubscription &&
+            <div className="top-alert"><span>You have {profile.role.trial_days} days remaining on your Twitter Booster trial.</span>
+                Add your billing information now to start your subscription.
+         <button className="btn-text-pink" onClick={() => props.history.push('/twitter-booster/manage-accounts')}>Start subscription</button>
+            </div>
+        }
     </div>
-
 );
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
     const profile = state.profile
     return {
-        profile
+        profile,
+        props
     };
 };
 
@@ -57,4 +62,4 @@ const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(startLogout())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopMenu);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopMenu));

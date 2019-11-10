@@ -1,21 +1,19 @@
 import React from 'react';
-import {NavLink, Link} from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) => {
     return (
-        <div>
-            <aside className="vertical-menu scrollbar">
+        <aside className="vertical-menu scrollbar">
 
-                <ProfileInfo selectedChannel = {selectedChannel} channels={channels} selectChannel={selectChannel}/>
-        
-                <MenuItems menuItems={ menuItems } />
-                <SupportSection />
-            </aside>
-        </div>
+            <ProfileInfo selectedChannel={selectedChannel} channels={channels} selectChannel={selectChannel} />
+
+            <MenuItems menuItems={menuItems} />
+            <SupportSection />
+        </aside>
     );
 };
 
-class ProfileInfo extends React.Component{
+class ProfileInfo extends React.Component {
     state = {
         channelMenu: false
     }
@@ -26,14 +24,14 @@ class ProfileInfo extends React.Component{
         }));
     }
 
-    render(){
-        const {selectedChannel, channels, selectChannel} = this.props;
+    render() {
+        const { selectedChannel, channels, selectChannel } = this.props;
 
         return (
             <div>
                 <div className="profile-info" onClick={this.toggleDropdown}>
                     <span className="pull-left profile-img-container">
-                        <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={selectedChannel.avatar} />
+                        <img onError={(e) => e.target.src = '/images/dummy_profile.png'} src={selectedChannel.avatar} />
                         <i className={`fab fa-${selectedChannel.type} ${selectedChannel.type}_bg smallIcon`}></i>
                     </span>
                     <div>
@@ -41,9 +39,9 @@ class ProfileInfo extends React.Component{
                     </div>
                 </div>
 
-                <ProfileSelectionDropDown 
-                    channels = {channels} 
-                    selectChannel={selectChannel} 
+                <ProfileSelectionDropDown
+                    channels={channels}
+                    selectChannel={selectChannel}
                     isOpen={this.state.channelMenu}
                 />
             </div>
@@ -55,9 +53,9 @@ class ProfileInfo extends React.Component{
 const ProfileSelectionDropDown = ({ channels, selectChannel, isOpen }) => (
     <div className={`channel-selection-menu select-channel ${isOpen ? 'is-open' : ''}`}>
         <div>
-            {!!channels.length && 
+            {!!channels.length &&
                 channels.map((channel) => (
-                    <ProfileSelectionItem key={channel.id} channel={channel} selectChannel={selectChannel}/>
+                    <ProfileSelectionItem key={channel.id} channel={channel} selectChannel={selectChannel} />
                 ))
             }
         </div>
@@ -69,7 +67,7 @@ const ProfileSelectionItem = ({ channel, selectChannel }) => (
         <a href="#" className="block-urls" onClick={(e) => { selectChannel(channel.id) }}>
             <div className="profile-info ">
                 <span className="profile-img-container">
-                    <img onError={(e) => e.target.src='/images/dummy_profile.png'} src={channel.avatar} />
+                    <img onError={(e) => e.target.src = '/images/dummy_profile.png'} src={channel.avatar} />
                     <i className={`fab fa-${channel.type} ${channel.type}_bg smallIcon`}></i>
                 </span>
                 <div>
@@ -81,17 +79,17 @@ const ProfileSelectionItem = ({ channel, selectChannel }) => (
     </div>
 );
 
-class MenuItems extends React.Component{
+class MenuItems extends React.Component {
 
-    render(){
-        const {menuItems} = this.props;
+    render() {
+        const { menuItems } = this.props;
 
         return (
             <ul className="v-menu-links clear-both">
                 {menuItems.map((item) => (
                     <li key={item.id} ><NavLink className="links" to={item.uri}><i className={`fa fa-${item.icon}`}></i> <span>{item.displayName}</span></NavLink></li>
                 ))}
-            </ul>            
+            </ul>
         );
     }
 }

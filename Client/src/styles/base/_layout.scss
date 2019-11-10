@@ -16,17 +16,27 @@
     .body-wrap {
         display: flex;
         flex-direction: row;
-        overflow: auto;
+        overflow: hidden;
         flex: 1;
-        & > div{
+
+        &>div {
             width: 100%;
+            display: flex;
+            justify-content: space-between;
+            max-height: 100%;
+
         }
-        & > .body-container{
-            width: auto;
+
+        .vertical-menu {
+            min-height: 400px;
         }
+
         .body-container {
-            padding: 0 90px;
-            margin-left: 236px;
+            padding: 0 90px 30px 90px;
+            margin-left: 20px;
+            flex: 1;
+            overflow: auto;
+            max-height: 100%;
 
             .main-section {
                 padding: 30px 0 10px 0;
