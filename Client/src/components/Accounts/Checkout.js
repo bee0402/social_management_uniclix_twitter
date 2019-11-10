@@ -307,7 +307,7 @@ class Checkout extends React.Component {
                                         </div>
                                         <div>
                                             <p>Send receipt to my email
-                                <label className="switch round">
+                                                <label className="switch round">
                                                     <input type="checkbox" defaultChecked='checked' onChange={(e) => this.activateDm(e)} />
                                                     <span className="slider round"></span>
                                                 </label>
