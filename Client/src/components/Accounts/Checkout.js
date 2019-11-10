@@ -78,6 +78,7 @@ class Checkout extends React.Component {
             window.document.body.appendChild(s);
         }
     }
+
     checkIfValidCC = (val) => {
         let patern = new RegExp("^[0-9_ ]*$");
         if (patern.test(val) && val.length < 20) {
@@ -103,7 +104,6 @@ class Checkout extends React.Component {
     }
 
     beforeunload = (e) => {
-        console.log('test')
         if (this.props.dataUnsaved) {
             e.preventDefault();
             e.returnValue = true;
@@ -177,7 +177,6 @@ class Checkout extends React.Component {
             cvc: this.state.form.cvc,
             address_city: this.state.form.address_city,
             address_zip: this.state.form.postal,
-            address_country: this.state.form.location.label,
             address_line1: this.state.form.address_line1
         }, (status, response) => {
 
