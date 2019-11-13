@@ -6,6 +6,7 @@ import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api"
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
 import { destroyChannel } from "../../requests/channels";
+import { cancelSubscription } from "../../requests/billing";
 import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import ChannelItems from "./ChannelItems";
@@ -107,6 +108,26 @@ class Twitter extends React.Component {
             this.props.history.push('/twitter-booster/checkout')
         }, 0)
     }
+
+    cancelSubscription = () => {
+        return cancelSubscription()
+            .then((response) => {
+                this.props.startSetChannels()
+                    .then((response) => {
+                        console.log(response)
+                        this.setState(() => ({
+                            action: this.defaultAction
+                        }));
+                    });
+            }).catch((e) => {
+                if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
+                    this.setState(() => ({
+                        error: e.response.data.error
+                    }));
+                    return;
+                }
+            });
+    }
     render() {
         const { shouldBlockNavigation } = this.state
         const { profile } = this.props
@@ -183,58 +204,64 @@ class Twitter extends React.Component {
                             </div>
 
                         </div>
-                        {!profile.subscription.activeSubscription ?
-                            <div className="col-md-5">
-                                <div className="col-md-12 plan-info-container">
-                                    <h3>Trial</h3>
+                        {!!profile.subscription ?
+                            (!profile.subscription.activeSubscription ?
+                                <div className="col-md-5">
+                                    <div className="col-md-12 plan-info-container">
+                                        <h3>Trial</h3>
 
-                                    <div className="plan-content">
-                                        <p className="plan-content-description">3 days left trial</p>
-                                        <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                        <div className="plan-content">
+                                            <p className="plan-content-description">3 days left trial</p>
+                                            <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                        </div>
+
+                                        <button className="btn-blue" onClick={() => { this.startCheckout() }}>Start subscription</button>
                                     </div>
-
-                                    <button className="btn-blue" onClick={() => { this.startCheckout() }}>Start subscription</button>
                                 </div>
-                            </div>
-                            :
-                            <div className="col-md-5">
-                                <div className=" plan-info-container">
-                                    <h3>My Plan <button className="btn-text-pink">Cancel subscription</button></h3>
+                                :
+                                <div className="col-md-5">
+                                    <div className=" plan-info-container">
+                                        <h3>My Plan
+                                            <button
+                                                className="btn-text-pink"
+                                                onClick={() => this.cancelSubscription}
+                                            >Cancel subscription</button></h3>
 
-                                    <div className="plan-content table">
-                                        <div className="row-price">
-                                            <div className="col-price">
-                                                <p className="plan-content-description">Current price</p>
-                                                <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                        <div className="plan-content table">
+                                            <div className="row-price">
+                                                <div className="col-price">
+                                                    <p className="plan-content-description">Current price</p>
+                                                    <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                                </div>
+                                                <div className="col-price">
+                                                    <p className="price">$10</p>
+                                                </div>
                                             </div>
-                                            <div className="col-price">
-                                                <p className="price">$10</p>
+                                            <br />
+                                            <div className="row-price new-accounts">
+                                                <div className="col-price">
+                                                    <p className="plan-content-accounts">x2 accounts</p>
+                                                </div>
+                                                <div className="col-price">
+                                                    <p className="price">$20</p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <br />
-                                        <div className="row-price new-accounts">
-                                            <div className="col-price">
-                                                <p className="plan-content-accounts">x2 accounts</p>
-                                            </div>
-                                            <div className="col-price">
-                                                <p className="price">$20</p>
+                                        <div className="order-total table">
+                                            <div className="row-price">
+                                                <div className="col-price">
+                                                    <p className="plan-content-description">TOTAL</p>
+                                                    <p className="plan-content-accounts">Monthly</p>
+                                                </div>
+                                                <div className="col-price">
+                                                    <p className="price">$30</p>
+                                                </div>
                                             </div>
                                         </div>
+                                        <button className="btn-blue" onClick={() => { this.startCheckout() }}>Go to checkout</button>
                                     </div>
-                                    <div className="order-total table">
-                                        <div className="row-price">
-                                            <div className="col-price">
-                                                <p className="plan-content-description">TOTAL</p>
-                                                <p className="plan-content-accounts">Monthly</p>
-                                            </div>
-                                            <div className="col-price">
-                                                <p className="price">$30</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button className="btn-blue" onClick={() => { this.startCheckout() }}>Go to checkout</button>
                                 </div>
-                            </div>
+                            ) : ""
                         }
                     </div>
 
