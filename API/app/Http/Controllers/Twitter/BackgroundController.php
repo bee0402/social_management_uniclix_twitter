@@ -30,6 +30,27 @@ class BackgroundController extends Controller
         $channel->stopProcess("syncTwitterFollowerIds");
     }
 
+    public function SyncAutoDMs(Request $request)
+    {
+        if(!($item = $request->input('item'))) return;
+
+        $params = unserialize($request->input('params'));
+
+        $sleep = isset($params['sleep']) ? $params['sleep'] : 60;
+
+        $channel = unserialize($item);
+
+        $channel->startProcess("syncTwitterFollowerIds");
+
+        try{
+            $channel->SyncAutoDMs($sleep);
+        }catch(\Exception $e){
+            getErrorResponse($e, $channel->global);
+        }
+
+        $channel->stopProcess("syncTwitterFollowerIds");
+    }
+
 
     public function syncFollowingIds(Request $request)
     {

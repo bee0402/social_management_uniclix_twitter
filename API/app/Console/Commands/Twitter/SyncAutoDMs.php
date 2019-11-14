@@ -38,11 +38,11 @@ class SyncAutoDMs extends Command
      */
     public function handle()
     {
-        $channels = Channel::whereDoesntHave("processes", function($q){
+        $channels = Channel::whereDoesntHave("processes", function ($q) {
             $q->where('process_name', 'SyncAutoDMs');
         })->get();
 
-        $action = route('sync.follower.ids');
+        $action = route('sync.autodm.ids');
         multiRequest($action, $channels);
     }
 }

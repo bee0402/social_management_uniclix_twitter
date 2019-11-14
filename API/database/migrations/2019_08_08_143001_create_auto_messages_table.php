@@ -18,7 +18,8 @@ class CreateAutoMessagesTable extends Migration
             $table->increments("id");
             $table->integer("channel_id")->unsigned();
             $table->string("source");
-            $table->string("message	");
+            $table->string("message");
+            $table->boolean("active");
             $table->timestamps();
 
             $table->foreign("channel_id")->references("id")->on("twitter_channels")->onDelete("cascade");

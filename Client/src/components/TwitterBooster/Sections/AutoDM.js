@@ -5,7 +5,7 @@ import { startSetChannels } from "../../../actions/channels";
 import { activateADM, saveAutoMessages, getAutoMessages } from '../../../requests/twitter/channels';
 import UpgradeAlert from '../../UpgradeAlert';
 import channelSelector from '../../../selectors/channels';
-import Loader from '../../Loader';
+import LoaderWithOverlay from '../../Loader';
 import DraftEditor from "../../DraftEditor";
 
 let toastContainer;
@@ -39,14 +39,35 @@ class AutoDM extends React.Component {
 
     fetchData = (order = 'desc') => {
         return getAutoMessages().then((response) => {
-            this.setState({
-                activeKeywords: response.data,
-                loading: false
+            let allData = response.data;
+            let alldataArray = allData.map((item) => {
+                return item.message;
             })
+            let activeResponse = allData.filter((item) => {
+                if (item.active) {
+                    return item.message;
+                }
+            })
+
+            this.setState({
+                activeKeywords: alldataArray,
+                isADMactive: this.state.isADMactive,
+                loading: false
+            });
+            if (activeResponse.length > 0 && !!this.state.isADMactive) {
+                this.setState({
+                    keyword: activeResponse[0].message,
+                    replaceKeyword: activeResponse[0].message.length
+                })
+            } else {
+                this.setState({
+                    keyword: "",
+                    replaceKeyword: 0
+                })
+            }
             return Promise.resolve(response)
         })
             .catch((error) => {
-
                 if (typeof error.response.statusText == "undefined") {
                     console.log(error);
                     return;
@@ -69,36 +90,37 @@ class AutoDM extends React.Component {
         state[id] = e.target.value;
         this.setState(() => (state));
     };
-    selectMessage = (val) => {
 
-        this.setState({ keyword: val, replaceKeyword: this.state.replaceKeyword + 1 });
+    selectMessage = (val) => {
+        if (!!this.state.isADMactive)
+            this.setState({ keyword: val, replaceKeyword: this.state.replaceKeyword + 1 });
     }
 
     activateDm = (e) => {
+        this.setState({ loading: true })
         const channelId = this.props.selectedChannel.id;
         const status = !this.state.isADMactive;
         return activateADM(channelId, status)
             .then((response) => {
-                this.setState({ isADMactive: status })
-                let message = this.state.isADMactive ? 'activated' : 'deactivated'
+                this.setState({ isADMactive: status, loading: false })
+                let message = !!this.state.isADMactive ? 'activated' : 'deactivated'
                 toastContainer.success(`Auto DM ${message} successfully.`, "Success", { closeButton: true });
+                this.fetchData()
                 return Promise.resolve(response)
             })
             .catch((error) => {
 
                 if (typeof error.response.statusText == "undefined") {
-                    console.log(error);
                     return;
                 }
-                console.log(error);
                 Promise.reject(error);
             });
     }
 
     saveMessage = () => {
-        console.log(this.props.selectedChannel, 'this.props.selectedChannel')
         const channelId = this.props.selectedChannel.id;
         const status = this.state.keyword;
+
         if (this.state.isADMactive) {
             this.setState({ loading: true })
             return saveAutoMessages(channelId, status)
@@ -106,8 +128,9 @@ class AutoDM extends React.Component {
                     toastContainer.success(`Auto DM response set successfully.`, "Success", { closeButton: true });
                     this.setState({
                         loading: false,
-                        keyword: ""
+                        keyword: status
                     });
+                    this.fetchData();
                     return Promise.resolve(response)
                 })
                 .catch((error) => {
@@ -123,7 +146,11 @@ class AutoDM extends React.Component {
     }
 
     updateDMState = (keyword = "") => {
-        this.setState({ letterCount: 10000 - keyword.length, keyword })
+        if (!!this.state.isADMactive) {
+            this.setState({ letterCount: 10000 - keyword.length, keyword })
+        } else {
+            this.setState({ replaceKeyword: 0, keyword: "" })
+        }
     };
 
     render() {
@@ -139,8 +166,8 @@ class AutoDM extends React.Component {
                     <div className="section-header">
                         <div className="section-header__first-row">
                             <h2>Auto DM
-                                <label className="switch round">
-                                    <input type="checkbox" defaultChecked={isADMactive != 0 ? 'checked' : ''} onChange={(e) => this.activateDm(e)} />
+                                <label className={`switch round ${!!isADMactive ? 'checked' : ''}`}>
+                                    <input type="checkbox" defaultChecked={!!isADMactive ? 'checked' : ''} onChange={(e) => this.activateDm(e)} />
                                     <span className="slider round"></span>
                                 </label>
                             </h2>
@@ -151,25 +178,26 @@ class AutoDM extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.state.loading && <Loader />}
+                {this.state.loading && <LoaderWithOverlay />}
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
                 <div className="aadm-cnt">
                     <div className="form-row">
                         <div className="relative-pos add-dm-message">
-                            <DraftEditor
-                                onChange={this.updateDMState}
-                                content={keyword}
-                                pictures={[]}
-                                ChangeAllContent={replaceKeyword}
-                                textBtn={true}
-                                showImagesIcon={false}
-                                showHashtagsIcon={false}
-                                inclisive={true}
-                                sendAction={this.saveMessage}
-                            />
-
+                            {!!isADMactive &&
+                                <DraftEditor
+                                    onChange={this.updateDMState}
+                                    content={keyword}
+                                    disabled={isADMactive != 0}
+                                    pictures={[]}
+                                    ChangeAllContent={replaceKeyword}
+                                    textBtn={true}
+                                    showImagesIcon={false}
+                                    showHashtagsIcon={false}
+                                    inclusive={false}
+                                    sendAction={this.saveMessage}
+                                />
+                            }
                         </div>
-
                     </div>
                     <div className="tab-cnt">
                         <h3 className="subsection-header">Predefined Messages</h3>
@@ -188,10 +216,13 @@ class AutoDM extends React.Component {
                                         predefinedMessages.map((predMessage, index) => (
                                             activeKeywords.includes(predMessage) ?
                                                 <li className="list-item active" key={index}>{predMessage}
-                                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
+                                                    <button className="blue-txt-btn add-message"
+                                                        onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
                                                 </li> :
-                                                <li className="list-item active" key={index}>{predMessage}
-                                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
+                                                <li className="list-item" key={index}>{predMessage}
+                                                    <button
+                                                        className={`blue-txt-btn add-message ${!!isADMactive ? "" : "disabled"}`}
+                                                        onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
                                                 </li>
                                         ))
                                     }
@@ -203,7 +234,8 @@ class AutoDM extends React.Component {
                                         activeKeywords.map((item, index) => (
                                             predefinedMessages.includes(item) ? '' :
                                                 <li className="list-item" key={index}>{item}
-                                                    <button className="blue-txt-btn add-message" onClick={() => this.selectMessage(`${item}`)}>Select</button>
+                                                    <button className={`blue-txt-btn add-message  ${isADMactive != 0 ? "" : "disabled"}`}
+                                                        onClick={() => this.selectMessage(`${item}`)}>Select</button>
                                                 </li>
                                         ))
                                     }

@@ -4571,6 +4571,9 @@ table.compare-plans-table {
 
         .default-button {
             background: $primary_blue;
+            &.disabled {
+                opacity: 0.8;
+            }
         }
     }
 
@@ -4616,7 +4619,7 @@ table.compare-plans-table {
         transition: .4s;
     }
 
-    input:checked+.slider {
+    &.checked .slider {
         background-color: $primary_blue;
     }
 
@@ -4624,7 +4627,7 @@ table.compare-plans-table {
         box-shadow: 0 0 1px $primary_blue;
     }
 
-    input:checked+.slider:before {
+    &.checked  .slider:before {
         content: '';
         -webkit-transform: translateX(30px);
         -ms-transform: translateX(30px);
