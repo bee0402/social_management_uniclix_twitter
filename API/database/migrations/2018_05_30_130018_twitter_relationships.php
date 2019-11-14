@@ -17,6 +17,7 @@ class TwitterRelationships extends Migration
             $table->increments('id');
             $table->integer("channel_id")->unsigned();
             $table->string('user_id');
+            $table->boolean('send_message');
             $table->timestamp('unfollowed_at')->nullable();
             $table->timestamp('unfollowed_you_at')->nullable();
             $table->timestamps();
