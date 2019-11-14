@@ -414,7 +414,7 @@ class UserItem extends React.Component {
                                 showImagesIcon={false}
                                 showHashtagsIcon={false}
                                 inclisive={true}
-                                sendAction={() => this.dm(userItem.screen_name)}
+                                sendAction={() => this.dm(userItem.id_str)}
                             />
                         </div>
                     </div>

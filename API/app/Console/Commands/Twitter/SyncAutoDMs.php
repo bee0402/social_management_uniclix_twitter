@@ -38,6 +38,7 @@ class SyncAutoDMs extends Command
      */
     public function handle()
     {
+        
         $channels = Channel::whereDoesntHave("processes", function ($q) {
             $q->where('process_name', 'SyncAutoDMs');
         })->get();

@@ -193,6 +193,7 @@ trait Tweetable
      */
     public function DMById($userId, $text)
     {
+        dd($userId);
         $this->setAsCurrentUser();
         return Twitter::postDm(["user_id" => $userId, "text" => $text, "screen_name" => "animemasters89"]);
     }
@@ -880,6 +881,7 @@ trait Tweetable
             ->where("active", true)
             ->where('channel_id',  $this->id)
             ->first();
+            dd($text);
 
         if (!$logCursor) {
             $cursor = -1;

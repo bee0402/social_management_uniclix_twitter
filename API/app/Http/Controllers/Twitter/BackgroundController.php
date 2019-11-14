@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Twitter;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 set_time_limit(0);
 
 class BackgroundController extends Controller
@@ -11,7 +12,7 @@ class BackgroundController extends Controller
 
     public function syncFollowerIds(Request $request)
     {
-        if(!($item = $request->input('item'))) return;
+        if (!($item = $request->input('item'))) return;
 
         $params = unserialize($request->input('params'));
 
@@ -21,9 +22,9 @@ class BackgroundController extends Controller
 
         $channel->startProcess("syncTwitterFollowerIds");
 
-        try{
+        try {
             $channel->syncFollowerIds($sleep);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             getErrorResponse($e, $channel->global);
         }
 
@@ -32,7 +33,8 @@ class BackgroundController extends Controller
 
     public function SyncAutoDMs(Request $request)
     {
-        if(!($item = $request->input('item'))) return;
+        dd( $request->all(''));
+        if (!($item = $request->input('item'))) return;
 
         $params = unserialize($request->input('params'));
 
@@ -42,9 +44,9 @@ class BackgroundController extends Controller
 
         $channel->startProcess("syncTwitterFollowerIds");
 
-        try{
+        try {
             $channel->SyncAutoDMs($sleep);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             getErrorResponse($e, $channel->global);
         }
 
@@ -54,7 +56,7 @@ class BackgroundController extends Controller
 
     public function syncFollowingIds(Request $request)
     {
-        if(!($item = $request->input('item'))) return;
+        if (!($item = $request->input('item'))) return;
 
         $params = unserialize($request->input('params'));
 
@@ -64,9 +66,9 @@ class BackgroundController extends Controller
 
         $channel->startProcess("syncTwitterFollowingIds");
 
-        try{
+        try {
             $channel->syncFollowingIds($sleep);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             getErrorResponse($e, $channel->global);
         }
 
@@ -75,15 +77,15 @@ class BackgroundController extends Controller
 
     public function syncTweets(Request $request)
     {
-        if(!($item = $request->input('item'))) return;
+        if (!($item = $request->input('item'))) return;
 
         $channel = unserialize($item);
 
         $channel->startProcess("syncTweets");
 
-        try{
+        try {
             $channel->syncTweets();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             getErrorResponse($e, $channel->global);
         }
 
@@ -92,15 +94,15 @@ class BackgroundController extends Controller
 
     public function syncRetweets(Request $request)
     {
-        if(!($item = $request->input('item'))) return;
+        if (!($item = $request->input('item'))) return;
 
         $channel = unserialize($item);
 
         $channel->startProcess("syncRetweets");
 
-        try{
+        try {
             $channel->syncRetweets();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             getErrorResponse($e, $channel->global);
         }
 
@@ -109,15 +111,15 @@ class BackgroundController extends Controller
 
     public function syncLikes(Request $request)
     {
-        if(!($item = $request->input('item'))) return;
+        if (!($item = $request->input('item'))) return;
 
         $channel = unserialize($item);
 
         $channel->startProcess("syncLikes");
 
-        try{
+        try {
             $channel->syncLikes();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             getErrorResponse($e, $channel->global);
         }
 
