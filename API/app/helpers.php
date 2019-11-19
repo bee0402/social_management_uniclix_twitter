@@ -185,9 +185,8 @@ function multiRequest($url, $payload, $params = [])
             $response[$identifier] = curl_multi_getcontent($request);
             curl_multi_remove_handle($mh, $request);
             curl_close($request);
-        }
+        } 
     }
+    // dd($response);
     return $response;
 }
-
-?>

@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TwitterLogin from 'react-twitter-auth';
 import SweetAlert from "sweetalert2-react";
+import { Prompt } from 'react-router';
+import { withRouter } from "react-router";
 import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api";
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
@@ -11,8 +13,6 @@ import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import ChannelItems from "./ChannelItems";
 import UpgradeAlert from "../UpgradeAlert";
-import { Prompt } from 'react-router'
-import { withRouter } from "react-router";
 
 class Twitter extends React.Component {
     constructor(props) {
@@ -128,6 +128,7 @@ class Twitter extends React.Component {
                 }
             });
     }
+
     render() {
         const { shouldBlockNavigation } = this.state
         const { profile } = this.props
@@ -192,7 +193,8 @@ class Twitter extends React.Component {
 
                                 <div className="accounts-container__content__wrapper__footer">
                                     <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                        onFailure={this.onFailure} onSuccess={this.onSuccess}
+                                        onFailure={this.onFailure}
+                                        onSuccess={this.onSuccess}
                                         requestTokenUrl={twitterRequestTokenUrl}
                                         showIcon={true}
                                         forceLogin={true}
@@ -264,9 +266,7 @@ class Twitter extends React.Component {
                             ) : ""
                         }
                     </div>
-
                 </div>
-
             </React.Fragment>
         );
     };

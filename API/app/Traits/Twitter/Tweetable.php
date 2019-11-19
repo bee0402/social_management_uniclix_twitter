@@ -193,7 +193,6 @@ trait Tweetable
      */
     public function DMById($userId, $text)
     {
-        dd($userId);
         $this->setAsCurrentUser();
         return Twitter::postDm(["user_id" => $userId, "text" => $text, "screen_name" => "animemasters89"]);
     }
@@ -231,7 +230,9 @@ trait Tweetable
 
         // Set the "auth" request option to "oauth" to sign using oauth
         $res = $client->post('direct_messages/events/new.json', ['auth' => 'oauth', 'json' => $dm]);
-
+        $this->followerIds()
+            ->where("user_id", $userId)
+            ->update(['send_message' => true]);
         return json_decode($res->getBody()->getContents());
     }
 
@@ -767,7 +768,6 @@ trait Tweetable
 
         $perPage = 5000;
         $followersCount = $this->getData()->followers_count; //Gets the twitter data for currently logged in user
-
         /*
          * If sleep is not enabled then only fetch 15 pages to prevent
          * rate limit, otherwise get as many pages as you have followers
@@ -809,9 +809,13 @@ trait Tweetable
                 /*
                  * In case someone follows you back, update the unfollow field to null
                  */
-                $this->followerIds()->whereIn("user_id", $ids)->whereNotNull("unfollowed_you_at")->update(["unfollowed_you_at" => null]);
+                $this->followerIds()
+                    ->whereIn("user_id", $ids)
+                    ->whereNotNull("unfollowed_you_at")
+                    ->update(["unfollowed_you_at" => null]);
 
-                $this->followerIds()->whereNotIn("user_id", $ids)
+                $this->followerIds()
+                    ->whereNotIn("user_id", $ids)
                     ->update(["unfollowed_you_at" => Carbon::now(), "updated_at" => Carbon::now()]);
             }
 
@@ -827,10 +831,13 @@ trait Tweetable
              * Prepare insert parameters for bulk inserting
              */
             $insert = [];
+            $isActvieADM = $this->auto_dm;
+
             foreach ($ids as $id) {
                 $insert[] = [
                     "channel_id" => $this->id,
                     "user_id" => $id,
+                    "send_message" => !$isActvieADM,
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ];
@@ -876,12 +883,11 @@ trait Tweetable
          * and continue to the next one in order
          */
 
-        $text = \DB::table('autoDMs')
+        $text = \DB::table('twitter_direct_messages')
             ->select("message", "active")
             ->where("active", true)
             ->where('channel_id',  $this->id)
             ->first();
-            dd($text);
 
         if (!$logCursor) {
             $cursor = -1;
@@ -926,8 +932,7 @@ trait Tweetable
                 ->followerIds()
                 ->whereIn("user_id", $ids)
                 ->where('send_message', false)
-                ->pulck('id')
-                ->get();
+                ->pluck('user_id');
             foreach ($followerIds as $followers) {
                 $this->DM($followers, $text->message);
             }

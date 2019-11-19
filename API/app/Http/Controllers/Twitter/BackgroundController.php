@@ -33,7 +33,6 @@ class BackgroundController extends Controller
 
     public function SyncAutoDMs(Request $request)
     {
-        dd( $request->all(''));
         if (!($item = $request->input('item'))) return;
 
         $params = unserialize($request->input('params'));
@@ -41,12 +40,12 @@ class BackgroundController extends Controller
         $sleep = isset($params['sleep']) ? $params['sleep'] : 60;
 
         $channel = unserialize($item);
-
         $channel->startProcess("syncTwitterFollowerIds");
 
         try {
             $channel->SyncAutoDMs($sleep);
         } catch (\Exception $e) {
+            return $e->getMessage();
             getErrorResponse($e, $channel->global);
         }
 

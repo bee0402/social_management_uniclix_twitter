@@ -26,7 +26,7 @@ class Channel extends Model
         "auto_dm"
     ];
 
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -136,7 +136,7 @@ class Channel extends Model
         }
     }
 
-    public function getAnalytics($days=1)
+    public function getAnalytics($days = 1)
     {
         $start_date = Carbon::now()->subDays($days);
         $end_date = Carbon::now();
@@ -148,7 +148,7 @@ class Channel extends Model
                 $data = [];
                 $startDate = Carbon::now();
 
-                $followers = $this->followerIds()->whereNull('unfollowed_you_at')->whereBetween('created_at', [$startDate->subDays($days), Carbon::now()])->whereNotBetween('created_at', [$this->created_at , $this->created_at->addMinutes(5)])->get();
+                $followers = $this->followerIds()->whereNull('unfollowed_you_at')->whereBetween('created_at', [$startDate->subDays($days), Carbon::now()])->whereNotBetween('created_at', [$this->created_at, $this->created_at->addMinutes(5)])->get();
                 $unfollowers = $this->followerIds()->whereNotNull('unfollowed_you_at')->whereBetween('unfollowed_you_at', [$startDate->subDays($days), Carbon::now()])->get();
                 $likes = $this->likes()->whereBetween('original_created_at', [$startDate->subDays($days), Carbon::now()])->get();
 
@@ -177,26 +177,25 @@ class Channel extends Model
         }
     }
 
-    public function pageInsightsByType($type, $startDate=null, $endDate=null)
+    public function pageInsightsByType($type, $startDate = null, $endDate = null)
     {
-        $sDate = is_integer($startDate) ? intval($startDate/1000) : null;
-        $eDate = is_integer($endDate) ? intval($endDate/1000) : null;
-
+        if ($startDate != "null" && $endDate != "null") {
+            $sDate = Carbon::now()->toDateString();
+            $eDate = Carbon::now()->subDays(7)->toDateString();
+        } else {
+            $sDate = is_integer($startDate) ? intval($startDate / 1000) : null;
+            $eDate = is_integer($endDate) ? intval($endDate / 1000) : null;
+        }
         try {
             $key = $this->id . "-$type-$startDate-$endDate";
             $minutes = 15;
-            $startDate = Carbon::now();
 
             return Cache::remember($key, $minutes, function () use ($sDate, $eDate, $type) {
-                $startDate = Carbon::now();
-
                 $data = [];
-                $startDate = Carbon::now();
 
                 $data = $this->{$type}($sDate, $eDate);
 
                 return $data;
-
             });
         } catch (\Exception $e) {
             throw $e;
@@ -235,15 +234,14 @@ class Channel extends Model
     {
         $tweets = $this->getTweets();
 
-        $groupedTweets = collect($tweets)->groupBy(function($tweets) {
+        $groupedTweets = collect($tweets)->groupBy(function ($tweets) {
             return Carbon::parse($tweets->created_at)->format('Y-m-d');
         });
 
         $data = [];
 
-        foreach($groupedTweets as $date => $tweets)
-        {
-            $data[] = [Carbon::parse($date)->timestamp*1000, count($tweets)];
+        foreach ($groupedTweets as $date => $tweets) {
+            $data[] = [Carbon::parse($date)->timestamp * 1000, count($tweets)];
         }
 
         return $data;
@@ -253,15 +251,14 @@ class Channel extends Model
     {
         $followers = $this->getFollowers();
 
-        $groupedFollowers = collect($followers)->groupBy(function($followers) {
+        $groupedFollowers = collect($followers)->groupBy(function ($followers) {
             return Carbon::parse($followers->created_at)->format('Y-m-d');
         })->sortKeysDesc();
 
         $data = [];
 
-        foreach($groupedFollowers as $date => $followers)
-        {
-            $data[] = [Carbon::parse($date)->timestamp*1000, count($followers)];
+        foreach ($groupedFollowers as $date => $followers) {
+            $data[] = [Carbon::parse($date)->timestamp * 1000, count($followers)];
         }
 
         return $data;
@@ -271,8 +268,7 @@ class Channel extends Model
     {
         $tweets = collect($this->getTweets());
 
-        foreach($tweets as $tweet)
-        {
+        foreach ($tweets as $tweet) {
             $tweet->date = Carbon::parse($tweet->created_at)->format('M d Y, H:i');
         }
 
@@ -285,5 +281,4 @@ class Channel extends Model
 
         return count($data);
     }
-
 }

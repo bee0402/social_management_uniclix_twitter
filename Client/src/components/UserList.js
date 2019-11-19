@@ -100,10 +100,6 @@ class UserList extends React.Component {
             reloadTargets = () => { },
             targetType = "account",
             targets = [],
-            showSortOption = false,
-            actionType = "follow",
-            actions = 0,
-            fetchData = (order = 'desc') => { },
             page,
             noData
         } = this.props;
@@ -125,9 +121,7 @@ class UserList extends React.Component {
         );
 
         return (
-
             <div>
-
                 <ToastContainer
                     ref={ref => toastContainer = ref}
                     className="toast-top-right"
@@ -141,15 +135,11 @@ class UserList extends React.Component {
                 />
 
                 {userItems.length < 1 ?
-
                     (loading ? <Loader />
                         :
                         (showTargetLink ?
-
                             targetSearchView
-
                             :
-
                             <SocialAccountsPrompt
                                 image="/images/no-data.svg"
                                 title={noData.title}
@@ -185,7 +175,6 @@ class UserList extends React.Component {
                     )
                 }
             </div>
-
         );
     }
 }

@@ -27,12 +27,12 @@ class TwitterOverviewCard extends React.Component {
     fetchAnalytics = () => {
         const { selectedAccount, type } = this.props
 
-        let endDate = new Date();
+        let endDate = new Date().getTime();;
         let startDate = new Date();
         startDate.setDate(startDate.getDate() - 7)
-
+        let startDateInt = startDate.getTime();
         try {
-            pageInsightsByType(selectedAccount, startDate, endDate, type)
+            pageInsightsByType(selectedAccount, startDateInt, endDate, type)
                 .then((response) => {
                     this.setState({
                         count: response,

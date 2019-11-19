@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer } from "react-toastr";
+import { withRouter } from "react-router";
+import { Prompt } from 'react-router';
 import { startSetChannels } from "../../../actions/channels";
 import { activateADM, saveAutoMessages, getAutoMessages } from '../../../requests/twitter/channels';
 import UpgradeAlert from '../../UpgradeAlert';
@@ -16,11 +18,14 @@ const predefinedMessages = [
 class AutoDM extends React.Component {
     state = {
         loading: true,
+        firstLoading: true,
         isTabActive: 'predefined',
         keyword: "",
+        keywordActive: "",
         replaceKeyword: 0,
         activeKeywords: [],
-        isADMactive: this.props.selectedChannel.details.auto_dm
+        isADMactive: this.props.selectedChannel.details.auto_dm,
+        shouldBlockNavigation: false
     }
     componentDidMount() {
         if (!this.props.channelsLoading) {
@@ -34,6 +39,12 @@ class AutoDM extends React.Component {
             this.setState({
                 isADMactive: this.props.selectedChannel.details.auto_dm
             })
+        }
+
+        if (this.state.shouldBlockNavigation) {
+            window.onbeforeunload = true
+        } else {
+            window.onbeforeunload = undefined
         }
     }
 
@@ -52,11 +63,13 @@ class AutoDM extends React.Component {
             this.setState({
                 activeKeywords: alldataArray,
                 isADMactive: this.state.isADMactive,
-                loading: false
+                loading: false,
+                firstLoading: false
             });
             if (activeResponse.length > 0 && !!this.state.isADMactive) {
                 this.setState({
                     keyword: activeResponse[0].message,
+                    keywordActive: activeResponse[0].message,
                     replaceKeyword: activeResponse[0].message.length
                 })
             } else {
@@ -151,102 +164,112 @@ class AutoDM extends React.Component {
         } else {
             this.setState({ replaceKeyword: 0, keyword: "" })
         }
+        if (keyword != this.state.keywordActive) {
+            this.setState({ shouldBlockNavigation: true })
+        } else {
+            this.setState({ shouldBlockNavigation: false })
+        }
+
     };
 
     render() {
-        const { isTabActive, isADMactive, keyword, replaceKeyword, activeKeywords } = this.state
+        const { isTabActive, isADMactive, keyword, replaceKeyword, activeKeywords, loading, firstLoading, shouldBlockNavigation } = this.state
         return (
-            <div>
-                <div>
-                    <ToastContainer
-                        ref={ref => toastContainer = ref}
-                        className="toast-top-right"
+            firstLoading ?
+                <LoaderWithOverlay />
+                :
+                <React.Fragment>
+                    <Prompt
+                        when={shouldBlockNavigation}
+                        message={`You haven't saved your message yet. Do you want to leave without finishing?`}
                     />
+                    <div>
+                        <div>
+                            <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
+                            <ToastContainer
+                                ref={ref => toastContainer = ref}
+                                className="toast-top-right"
+                            />
 
-                    <div className="section-header">
-                        <div className="section-header__first-row">
-                            <h2>Auto DM
-                                <label className={`switch round ${!!isADMactive ? 'checked' : ''}`}>
-                                    <input type="checkbox" defaultChecked={!!isADMactive ? 'checked' : ''} onChange={(e) => this.activateDm(e)} />
-                                    <span className="slider round"></span>
-                                </label>
-                            </h2>
-                        </div>
+                            <div className="section-header">
+                                <div className="section-header__first-row">
+                                    <h2>Auto DM
+                                    <label className={`switch round ${!!isADMactive ? 'checked' : ''}`}>
+                                            <input type="checkbox" defaultChecked={!!isADMactive ? 'checked' : ''} onChange={(e) => this.activateDm(e)} />
+                                            <span className="slider round"></span>
+                                            <p className={"off"}>Off</p>
+                                            <p className={"on"}>On</p>
+                                        </label>
+                                    </h2>
+                                </div>
 
-                        <div className="section-header__second-row">
-                            <p>This is your Auto direct message, you can choose and edit a predefined one or start writing your own.</p>
+                                <div className="section-header__second-row">
+                                    <p>This is your Auto direct message, you can choose and edit a predefined one or start writing your own.</p>
+                                </div>
+                            </div>
                         </div>
+                        {loading && <LoaderWithOverlay />}
+                        {!!isADMactive &&
+                            <div className="aadm-cnt">
+                                <div className="form-row">
+                                    <div className="relative-pos add-dm-message">
+                                        <DraftEditor
+                                            onChange={this.updateDMState}
+                                            content={keyword}
+                                            disabled={isADMactive != 0}
+                                            pictures={[]}
+                                            ChangeAllContent={replaceKeyword}
+                                            textBtn={true}
+                                            showImagesIcon={false}
+                                            showHashtagsIcon={false}
+                                            inclusive={false}
+                                            sendAction={this.saveMessage}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="tab-cnt">
+                                    <h3 className="subsection-header">Predefined Messages</h3>
+                                    <div className="tab-head">
+                                        <div className={`tab-nav-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
+                                            <button href="#personal-info" onClick={() => this.ChangeTab('predefined')}>Predefined</button>
+                                        </div>
+                                        <div className={`tab-nav-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
+                                            <button href="#company-info" onClick={() => this.ChangeTab('created-by-me')}>Created by me</button>
+                                        </div>
+                                    </div>
+                                    <div className="tab-body">
+                                        <div className={`cnt-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
+                                            <ul className="list-items">
+                                                {
+                                                    predefinedMessages.map((predMessage, index) => (
+                                                        <li className="list-item" key={index}>{predMessage}
+                                                            <button className="blue-txt-btn add-message"
+                                                                onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        </div >
+                                        <div className={`cnt-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
+                                            <ul className="list-items">
+                                                {
+                                                    activeKeywords.map((item, index) => (
+                                                        predefinedMessages.includes(item) ? '' :
+                                                            <li className="list-item" key={index}>{item}
+                                                                <button className={`blue-txt-btn add-message  ${isADMactive != 0 ? "" : "disabled"}`}
+                                                                    onClick={() => this.selectMessage(`${item}`)}>Select</button>
+                                                            </li>
+                                                    ))
+                                                }
+
+                                            </ul>
+                                        </div>
+                                    </div >
+                                </div >
+                            </div>
+                        }
                     </div>
-                </div>
-                {this.state.loading && <LoaderWithOverlay />}
-                <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
-                <div className="aadm-cnt">
-                    <div className="form-row">
-                        <div className="relative-pos add-dm-message">
-                            {!!isADMactive &&
-                                <DraftEditor
-                                    onChange={this.updateDMState}
-                                    content={keyword}
-                                    disabled={isADMactive != 0}
-                                    pictures={[]}
-                                    ChangeAllContent={replaceKeyword}
-                                    textBtn={true}
-                                    showImagesIcon={false}
-                                    showHashtagsIcon={false}
-                                    inclusive={false}
-                                    sendAction={this.saveMessage}
-                                />
-                            }
-                        </div>
-                    </div>
-                    <div className="tab-cnt">
-                        <h3 className="subsection-header">Predefined Messages</h3>
-                        <div className="tab-head">
-                            <div className={`tab-nav-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
-                                <button href="#personal-info" onClick={() => this.ChangeTab('predefined')}>Predefined</button>
-                            </div>
-                            <div className={`tab-nav-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
-                                <button href="#company-info" onClick={() => this.ChangeTab('created-by-me')}>Created by me</button>
-                            </div>
-                        </div>
-                        <div className="tab-body">
-                            <div className={`cnt-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
-                                <ul className="list-items">
-                                    {
-                                        predefinedMessages.map((predMessage, index) => (
-                                            activeKeywords.includes(predMessage) ?
-                                                <li className="list-item active" key={index}>{predMessage}
-                                                    <button className="blue-txt-btn add-message"
-                                                        onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
-                                                </li> :
-                                                <li className="list-item" key={index}>{predMessage}
-                                                    <button
-                                                        className={`blue-txt-btn add-message ${!!isADMactive ? "" : "disabled"}`}
-                                                        onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
-                                                </li>
-                                        ))
-                                    }
-                                </ul>
-                            </div >
-                            <div className={`cnt-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
-                                <ul className="list-items">
-                                    {
-                                        activeKeywords.map((item, index) => (
-                                            predefinedMessages.includes(item) ? '' :
-                                                <li className="list-item" key={index}>{item}
-                                                    <button className={`blue-txt-btn add-message  ${isADMactive != 0 ? "" : "disabled"}`}
-                                                        onClick={() => this.selectMessage(`${item}`)}>Select</button>
-                                                </li>
-                                        ))
-                                    }
-
-                                </ul>
-                            </div>
-                        </div >
-                    </div >
-
-                </div>
-            </div>
+                </React.Fragment>
         );
     }
 }
@@ -265,4 +288,4 @@ const mapDispatchToProps = (dispatch) => ({
     startSetChannels: () => dispatch(startSetChannels())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AutoDM);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AutoDM));

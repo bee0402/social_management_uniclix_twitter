@@ -733,9 +733,8 @@ a:link {
 
 .support {
     position: absolute;
-    bottom: 120px;
+    bottom: 0px;
     width: 100%;
-    // background: linear-gradient(to right, #48BBB8, #438AF1);
     background: white;
     border-top: 1px solid rgba(255, 255, 255, .3);
 }
@@ -3587,6 +3586,13 @@ aside .btn-group {
     margin: 0;
     font-weight: bold;
     font-size: 1.8rem;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    button {
+        font-size: 1.3rem;
+    }
 }
 
 .plan-content-description {
@@ -4571,6 +4577,7 @@ table.compare-plans-table {
 
         .default-button {
             background: $primary_blue;
+
             &.disabled {
                 opacity: 0.8;
             }
@@ -4627,7 +4634,7 @@ table.compare-plans-table {
         box-shadow: 0 0 1px $primary_blue;
     }
 
-    &.checked  .slider:before {
+    &.checked .slider:before {
         content: '';
         -webkit-transform: translateX(30px);
         -ms-transform: translateX(30px);
@@ -4641,6 +4648,35 @@ table.compare-plans-table {
 
     .slider.round:before {
         border-radius: 50%;
+    }
+
+    p {
+        position: absolute;
+        top: 4px;
+        color: $white;
+        font-size: 1.6rem;
+        line-height: 23px;
+
+        &.off {
+            right: 8px;
+        }
+
+        &.on {
+            left: 8px;
+            display: none;
+        }
+    }
+
+    &.checked {
+        p {
+            &.off {
+                display: none;
+            }
+
+            &.on {
+                display: block;
+            }
+        }
     }
 }
 

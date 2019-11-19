@@ -254,7 +254,6 @@ class KeywordTargetSearchList extends React.Component {
                                                     :
                                                     <button className="gradient-background-teal-blue white-button add-target disabled" disabled>+</button>
                                             }
-
                                         </div>
                                     </div>
 
@@ -281,7 +280,7 @@ class KeywordTargetSearchList extends React.Component {
                                                 #{target.keyword}
                                             </div>
                                             :
-                                            this.props.targets.map( (actualKey, e)  =>{
+                                            this.props.targets.map((actualKey, e) => {
                                                 if (actualKey.keyword == target.keyword) {
                                                     return (
                                                         <div key={e} onClick={(e) => this.removeTarget(actualKey.id)} className="keyword-item  added-keyword">
