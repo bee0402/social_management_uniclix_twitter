@@ -115,10 +115,11 @@ class AutoDM extends React.Component {
         const status = !this.state.isADMactive;
         return activateADM(channelId, status)
             .then((response) => {
+                this.props.startSetChannels();
                 this.setState({ isADMactive: status, loading: false })
                 let message = !!this.state.isADMactive ? 'activated' : 'deactivated'
                 toastContainer.success(`Auto DM ${message} successfully.`, "Success", { closeButton: true });
-                this.fetchData()
+                this.fetchData();
                 return Promise.resolve(response)
             })
             .catch((error) => {
