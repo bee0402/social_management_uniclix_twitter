@@ -20,7 +20,8 @@ class TwitterChannels extends Migration
             $table->string("username");
             $table->text("payload");
             $table->boolean("selected")->default(0);
-            $table->boolean("auto_dm")->default(0);
+            $table->boolean("auto_dm")->default(1);
+            $table->boolean("paid")->default(0);
             $table->string("access_token", 500);
             $table->timestamps();
 

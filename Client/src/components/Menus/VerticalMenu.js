@@ -24,8 +24,12 @@ class ProfileInfo extends React.Component {
         }));
     }
 
+    activeChannels = () => {
+        return (this.props.channels).filter(channel => channel.details.paid == 1)
+    }
+
     render() {
-        const { selectedChannel, channels, selectChannel } = this.props;
+        const { selectedChannel, selectChannel } = this.props;
 
         return (
             <div>
@@ -40,7 +44,7 @@ class ProfileInfo extends React.Component {
                 </div>
 
                 <ProfileSelectionDropDown
-                    channels={channels}
+                    channels={this.activeChannels}
                     selectChannel={selectChannel}
                     isOpen={this.state.channelMenu}
                 />

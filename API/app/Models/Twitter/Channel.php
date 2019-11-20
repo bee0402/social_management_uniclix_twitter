@@ -23,7 +23,8 @@ class Channel extends Model
         "payload",
         "access_token",
         "selected",
-        "auto_dm"
+        "auto_dm",
+        "paid",
     ];
 
 

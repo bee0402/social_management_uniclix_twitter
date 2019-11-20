@@ -33,12 +33,12 @@ class Checkout extends React.Component {
         loading: false,
         validClaasCvv: "",
         shouldBlockNavigation: true,
+        newAccounts: 0,
         form: {
             cardnumber: '',
             cvc: '',
             exp_month: '',
             exp_year: '',
-
             exp_date: '',
             name: '',
             last_name: '',
@@ -61,7 +61,9 @@ class Checkout extends React.Component {
             }
         })
     }
+
     componentDidMount() {
+        this.newAccountstoPay();
         this.activeYears();
         this.loadStripe();
     }
@@ -109,6 +111,7 @@ class Checkout extends React.Component {
             e.returnValue = true;
         }
     }
+
     onDateChange = (e) => {
 
     }
@@ -129,6 +132,7 @@ class Checkout extends React.Component {
         }
 
     }
+
     onLocationsFieldChange = (location) => {
         this.setState(() => ({
             form: {
@@ -148,6 +152,7 @@ class Checkout extends React.Component {
             }
         })
     };
+
     activeYears = () => {
         const todayDate = new Date();
         const year = todayDate.getFullYear();
@@ -160,9 +165,20 @@ class Checkout extends React.Component {
             loading: true
         })
     }
+
+    newAccountstoPay = () => {
+        this.setState({
+            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length
+        })
+    }
+
     handleClickMonthBox = (e) => {
         this.refs.pickAMonth.show()
     }
+    handleClickMonthBoxHidde = (e) => {
+        this.refs.pickAMonth.hidde()
+    }
+
     ConfirmOrder = (e) => {
         e.preventDefault();
 
@@ -194,8 +210,8 @@ class Checkout extends React.Component {
 
     onToken = (token) => {
         token.plan = "twitter-booster"
-        token.trialDays = 3
-        token.subType = "main"
+        token.trialDays =
+            token.subType = "main"
         createSubscription(token).then(response => {
             this.setState({
                 loading: true,
@@ -212,7 +228,7 @@ class Checkout extends React.Component {
     }
 
     render() {
-        const { validClaas, form, locations, years, loading, orderFinished } = this.state
+        const { validClaas, form, locations, years, loading, orderFinished, newAccounts } = this.state
         const location = form.location;
         const todayDate = new Date();
         const minumumYear = todayDate.getFullYear();
@@ -287,7 +303,10 @@ class Checkout extends React.Component {
                                                         onChange={(e) => this.onDateChange(e)}
                                                         value={form.exp_date}
                                                         onClick={this.handleClickMonthBox}
+                                                        onFocus={this.handleClickMonthBox}
+                                                        onBlur={this.handleClickMonthBoxHidde}
                                                         name="exp_date"
+                                                        autoComplete={"off"}
                                                         maxLength="9"
                                                         placeholder="MM/DD" />
                                                 </Picker>
@@ -309,6 +328,8 @@ class Checkout extends React.Component {
                                                 <label className="switch round">
                                                     <input type="checkbox" defaultChecked='checked' onChange={(e) => this.activateDm(e)} />
                                                     <span className="slider round"></span>
+                                                    <p className={"off"}>Off</p>
+                                                    <p className={"on"}>On</p>
                                                 </label>
                                             </p>
                                         </div>
@@ -383,10 +404,10 @@ class Checkout extends React.Component {
                                                 <br />
                                                 <div className="row-price new-accounts">
                                                     <div className="col-price">
-                                                        <p className="plan-content-accounts">x2 accounts</p>
+                                                        <p className="plan-content-accounts">x{newAccounts} accounts</p>
                                                     </div>
                                                     <div className="col-price">
-                                                        <p className="price">$20</p>
+                                                        <p className="price">${newAccounts * 20}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -424,9 +445,11 @@ const mapStateToProps = (state) => {
 
     const twitterChannelsFilter = { selected: undefined, provider: "twitter" };
     const channels = channelSelector(state.channels.list, twitterChannelsFilter);
+    const profile = state.profile
     return {
         channels,
-        loading: state.channels.loading
+        loading: state.channels.loading,
+        profile
     };
 };
 

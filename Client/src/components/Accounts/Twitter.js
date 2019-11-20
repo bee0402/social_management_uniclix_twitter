@@ -13,6 +13,7 @@ import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import ChannelItems from "./ChannelItems";
 import UpgradeAlert from "../UpgradeAlert";
+import { updateSubscription } from '../../requests/billing';
 
 class Twitter extends React.Component {
     constructor(props) {
@@ -27,8 +28,10 @@ class Twitter extends React.Component {
     state = {
         action: this.defaultAction,
         error: "",
+        newAccounts: 0,
         forbidden: false,
-        shouldBlockNavigation: true
+        actualUsers: 0,
+        shouldBlockNavigation: false
     }
 
     setAction = (action = this.defaultAction) => {
@@ -37,11 +40,32 @@ class Twitter extends React.Component {
         }));
     }
 
-    componentDidUpdate = () => {
-        if (this.state.shouldBlockNavigation) {
-            window.onbeforeunload = true
-        } else {
-            window.onbeforeunload = undefined
+    componentDidMount() {
+        this.accountsBilling();
+    }
+
+    accountsBilling = () => {
+        this.setState({
+            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+            actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+        })
+    }
+    componentDidUpdate = (prevProps) => {
+        let addedNewUsers = false
+        if ((this.props.channels !== prevProps.channels)) {
+            addedNewUsers = this.state.actualUsers < this.props.channels.length;
+            this.setState({
+                newAccounts: this.props.channels.length - this.state.actualUsers
+            })
+            this.setState({
+                shouldBlockNavigation: addedNewUsers
+            })
+
+            if (addedNewUsers) {
+                window.onbeforeunload = true
+            } else {
+                window.onbeforeunload = undefined
+            }
         }
     }
 
@@ -65,6 +89,7 @@ class Twitter extends React.Component {
         response.json().then(body => {
             this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
                 .catch(error => {
+                    console.log(error)
                     if (error.response.status === 403) {
                         this.setForbidden(true);
                         return;
@@ -85,9 +110,6 @@ class Twitter extends React.Component {
             .then((response) => {
                 this.props.startSetChannels()
                     .then((response) => {
-                        // if(response.length < 1){
-                        //     this.props.logout();
-                        // }
                         this.setState(() => ({
                             action: this.defaultAction
                         }));
@@ -109,12 +131,40 @@ class Twitter extends React.Component {
         }, 0)
     }
 
+    updateCheckout = () => {
+        this.setState({ shouldBlockNavigation: false });
+
+        this.setState({
+            loading: false
+        });
+        let token = {
+            plan: "twitter-booster",
+            trialDays: 0,
+            subType: "main"
+        }
+        updateSubscription(token).then(response => {
+            this.props.startSetChannels();
+            this.setState({
+                loading: true,
+                orderFinished: true,
+                newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+            });
+        }).catch(e => {
+            console.log(e)
+            this.setState({
+                loading: true,
+                message: ""
+            });
+        })
+
+    }
+
     cancelSubscription = () => {
         return cancelSubscription()
             .then((response) => {
                 this.props.startSetChannels()
                     .then((response) => {
-                        console.log(response)
                         this.setState(() => ({
                             action: this.defaultAction
                         }));
@@ -129,9 +179,15 @@ class Twitter extends React.Component {
             });
     }
 
+    calcTrialDays = (user) => {
+        let msDiff = new Date(user.trial_ends_at).getTime() - new Date().getTime();    //Future date - current date
+        var daysToTheEnd = Math.floor(msDiff / (1000 * 60 * 60 * 24));
+        return daysToTheEnd > 0 ? daysToTheEnd : 0
+    }
+
     render() {
-        const { shouldBlockNavigation } = this.state
-        const { profile } = this.props
+        const { shouldBlockNavigation, error, forbidden, action, newAccounts, actualUsers } = this.state
+        const { profile, channels } = this.props
         return (
             <React.Fragment>
                 <Prompt
@@ -139,18 +195,21 @@ class Twitter extends React.Component {
                     message='If you leave the page without proceeding to checkout all the accounts you linked will be lost.'
                 />
                 <div className="main-container">
-                    <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
+                    <UpgradeAlert
+                        isOpen={forbidden}
+                        text={"Your current plan does not support more accounts."}
+                        setForbidden={this.setForbidden} />
                     <SweetAlert
-                        show={!!this.state.action.id}
-                        title={`Do you wish to ${this.state.action.type} this item?`}
+                        show={!!action.id}
+                        title={`Do you wish to ${action.type} this item?`}
                         text="To confirm your decision, please click one of the buttons below."
                         showCancelButton
                         type="warning"
                         confirmButtonText="Yes"
                         cancelButtonText="No"
                         onConfirm={() => {
-                            if (this.state.action.type === 'delete') {
-                                this.remove(this.state.action.id);
+                            if (action.type === 'delete') {
+                                this.remove(action.id);
                             } else {
                                 console.log('something went wrong');
                             }
@@ -158,9 +217,9 @@ class Twitter extends React.Component {
                     />
 
                     <SweetAlert
-                        show={!!this.state.error}
+                        show={!!error}
                         title={`Error`}
-                        text={this.state.error}
+                        text={error}
                         type="error"
                         confirmButtonText="Ok"
                         cancelButtonText="No"
@@ -188,7 +247,7 @@ class Twitter extends React.Component {
                         <div className="col-md-7">
 
                             <div className="col-md-12">
-                                <ChannelItems channels={this.props.channels} setAction={this.setAction} />
+                                <ChannelItems channels={channels} setAction={this.setAction} />
                                 {!!this.props.loading && <Loader />}
 
                                 <div className="accounts-container__content__wrapper__footer">
@@ -213,8 +272,8 @@ class Twitter extends React.Component {
                                         <h3>Trial</h3>
 
                                         <div className="plan-content">
-                                            <p className="plan-content-description">3 days left trial</p>
-                                            <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                            <p className="plan-content-description">{this.calcTrialDays(profile.user)} days left trial</p>
+                                            <p className="plan-content-accounts">x{channels.length} accounts</p>
                                         </div>
 
                                         <button className="btn-blue" onClick={() => { this.startCheckout() }}>Start subscription</button>
@@ -233,21 +292,23 @@ class Twitter extends React.Component {
                                             <div className="row-price">
                                                 <div className="col-price">
                                                     <p className="plan-content-description">Current price</p>
-                                                    <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                                    <p className="plan-content-accounts">x{actualUsers} accounts</p>
                                                 </div>
                                                 <div className="col-price">
-                                                    <p className="price">$10</p>
+                                                    <p className="price">${actualUsers * 10}</p>
                                                 </div>
                                             </div>
                                             <br />
-                                            <div className="row-price new-accounts">
-                                                <div className="col-price">
-                                                    <p className="plan-content-accounts">x2 accounts</p>
+                                            {newAccounts > 0 &&
+                                                <div className="row-price new-accounts">
+                                                    <div className="col-price">
+                                                        <p className="plan-content-accounts">x{newAccounts} accounts</p>
+                                                    </div>
+                                                    <div className="col-price">
+                                                        <p className="price">${newAccounts * 10}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="col-price">
-                                                    <p className="price">$20</p>
-                                                </div>
-                                            </div>
+                                            }
                                         </div>
                                         <div className="order-total table">
                                             <div className="row-price">
@@ -256,11 +317,13 @@ class Twitter extends React.Component {
                                                     <p className="plan-content-accounts">Monthly</p>
                                                 </div>
                                                 <div className="col-price">
-                                                    <p className="price">$30</p>
+                                                    <p className="price">${(newAccounts + actualUsers) * 10}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className="btn-blue" onClick={() => { this.startCheckout() }}>Go to checkout</button>
+                                        {newAccounts > 0 &&
+                                            <button className="btn-blue" onClick={() => { this.updateCheckout() }}>Update subscription</button>
+                                        }
                                     </div>
                                 </div>
                             ) : ""

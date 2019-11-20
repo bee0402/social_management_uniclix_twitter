@@ -9,8 +9,7 @@ import { withRouter } from "react-router";
 const calcTrialDays = (user) => {
     let msDiff = new Date(user.trial_ends_at).getTime() - new Date().getTime();    //Future date - current date
     var daysToTheEnd = Math.floor(msDiff / (1000 * 60 * 60 * 24));
-    console.log(daysToTheEnd, "daysToTheEnd")
-    return daysToTheEnd > 0 ? daysToTheEnd : 0
+    return daysToTheEnd >= 0 ? daysToTheEnd + 1 : 0
 }
 
 const TopMenu = ({ logout, profile, props }) => (
