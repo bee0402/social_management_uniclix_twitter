@@ -210,8 +210,9 @@ class Checkout extends React.Component {
 
     onToken = (token) => {
         token.plan = "twitter-booster"
-        token.trialDays =
-            token.subType = "main"
+        token.trialDays = 0
+        token.created = new Date().getTime();
+        token.subType = "main"
         createSubscription(token).then(response => {
             this.setState({
                 loading: true,

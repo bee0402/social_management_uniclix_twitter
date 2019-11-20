@@ -417,13 +417,13 @@ class UserItem extends React.Component {
 const UserActionButtons = ({ actionButton, perform, replyState, setReplyState, setDMState, DMState, userItem, page }) => (
     <div className="item-actions pull-right">
 
-        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/reply-regular.svg`} onClick={() => { setReplyState({ disabled: !replyState.disabled, content: `@${userItem.screen_name} ` }); close(); }} />}
-        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/envelope-regular.svg`} onClick={() => { setDMState({ disabled: !DMState.disabled, content: `` }); close(); }} />}
+        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/reply-regular.svg`} onClick={() => { setReplyState({ disabled: !replyState.disabled, content: `@${userItem.screen_name} ` }); }} />}
+        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/envelope-regular.svg`} onClick={() => { setDMState({ disabled: !DMState.disabled, content: `` }); }} />}
         {!!actionButton &&
             actionButton.action == "add" ?
-            <img onClick={() => { perform(); close(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
+            <img onClick={() => { perform(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
             :
-            <img onClick={() => { perform(); close(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
+            <img onClick={() => { perform(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
         }
     </div>
 );

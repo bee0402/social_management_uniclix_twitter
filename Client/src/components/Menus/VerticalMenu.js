@@ -30,19 +30,18 @@ class ProfileInfo extends React.Component {
     }
 
     activeChannels = (channels) => {
-        let allChannels = this.props.channels 
-        console.log(allChannels, 'allChannels')
-        let activeChannels = allChannels.filter(channel => {
+        console.log(channels, 'allChannels')
+        let activeChannels = channels.filter(channel => {
             if (channel.details.paid == 1)
                 return channel;
-        })
-        this.setState({
-            activeChannels: activeChannels
-        })
+        });
+
+        console.log(activeChannels, 'activeChannels')
+        return activeChannels;
     }
 
     render() {
-        const { selectedChannel, selectChannel } = this.props;
+        const { selectedChannel, selectChannel, channels } = this.props;
 
         return (
             <div>
@@ -57,23 +56,13 @@ class ProfileInfo extends React.Component {
                 </div>
 
                 <ProfileSelectionDropDown
-                    channels={this.state.activeChannels}
+                    channels={this.activeChannels(channels)}
                     selectChannel={selectChannel}
                     isOpen={this.state.channelMenu}
                 />
             </div>
 
         );
-    }
-
-    componentDidMount() {
-        this.activeChannels()
-    }
-
-    componentDidUpdate = (prevProps) => {
-        if ((this.props.channels !== prevProps.channels)) {
-            this.activeChannels()
-        }
     }
 }
 
