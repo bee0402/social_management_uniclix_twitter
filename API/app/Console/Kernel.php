@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
             ->everyThirtyMinutes();
 
         $schedule->command('sync:autodm.ids')
-            ->everyThirtyMinutes();
+            ->hourly();
 
         $schedule->command('sync:following.ids')
             ->everyThirtyMinutes();
