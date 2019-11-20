@@ -128,6 +128,7 @@ class BillingController extends Controller
             $user = $this->user;
 
             $user->subscription('main')->cancel();
+            Channel::where('user_id', $user->id)->update(["paid"=> false]);
 
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
@@ -140,7 +141,8 @@ class BillingController extends Controller
         try {
             $user = $this->user;
 
-            $user->subscription($request->input('type'))->resume();
+            $user->subscription('main')->resume();
+            Channel::where('user_id', $user->id)->update(["paid"=> true]);
 
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {

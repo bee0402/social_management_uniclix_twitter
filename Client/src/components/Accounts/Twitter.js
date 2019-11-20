@@ -8,7 +8,7 @@ import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api"
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
 import { destroyChannel } from "../../requests/channels";
-import { cancelSubscription } from "../../requests/billing";
+import { cancelSubscription, resumeSubscription } from "../../requests/billing";
 import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import ChannelItems from "./ChannelItems";
@@ -166,18 +166,55 @@ class Twitter extends React.Component {
     }
 
     cancelSubscription = () => {
+        this.setState({
+            loading: true
+        });
         return cancelSubscription()
             .then((response) => {
                 this.props.startSetChannels()
                     .then((response) => {
-                        this.setState(() => ({
-                            action: this.defaultAction
-                        }));
+                        this.props.startSetChannels().then(res => {
+                            this.setState({
+                                loading: false,
+                                action: this.defaultAction,
+                                newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                                actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                            });
+                        })
                     });
             }).catch((e) => {
                 if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
                     this.setState(() => ({
-                        error: e.response.data.error
+                        error: e.response.data.error,
+                        loading: false,
+                    }));
+                    return;
+                }
+            });
+    }
+
+    resumeCheckout = () => {
+        this.setState({
+            loading: true
+        });
+        return resumeSubscription()
+            .then((response) => {
+                this.props.startSetChannels()
+                    .then((response) => {
+                        this.props.startSetChannels().then(res => {
+                            this.setState({
+                                loading: false,
+                                action: this.defaultAction,
+                                newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                                actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                            });
+                        })
+                    });
+            }).catch((e) => {
+                if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
+                    this.setState(() => ({
+                        error: e.response.data.error,
+                        loading: false,
                     }));
                     return;
                 }
@@ -288,21 +325,25 @@ class Twitter extends React.Component {
                                 <div className="col-md-5">
                                     <div className=" plan-info-container">
                                         <h3>My Plan
-                                            <button
-                                                className="btn-text-pink"
-                                                onClick={() => this.cancelSubscription}
-                                            >Cancel subscription</button></h3>
+                                            {!profile.subscription.onGracePeriod &&
+                                                <button
+                                                    className="btn-text-pink"
+                                                    onClick={() => this.cancelSubscription()}
+                                                >Cancel subscription</button>
+                                            }</h3>
 
                                         <div className="plan-content table">
-                                            <div className="row-price">
-                                                <div className="col-price">
-                                                    <p className="plan-content-description">Current price</p>
-                                                    <p className="plan-content-accounts">x{actualUsers} accounts</p>
+                                            {actualUsers > 0 &&
+                                                <div className="row-price">
+                                                    <div className="col-price">
+                                                        <p className="plan-content-description">Current price</p>
+                                                        <p className="plan-content-accounts">x{actualUsers} accounts</p>
+                                                    </div>
+                                                    <div className="col-price">
+                                                        <p className="price">${actualUsers * 10}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="col-price">
-                                                    <p className="price">${actualUsers * 10}</p>
-                                                </div>
-                                            </div>
+                                            }
                                             <br />
                                             {newAccounts > 0 &&
                                                 <div className="row-price new-accounts">
@@ -326,8 +367,12 @@ class Twitter extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        {newAccounts > 0 &&
+                                        {newAccounts > 0 && !profile.subscription.onGracePeriod ?
                                             <button className="btn-blue" onClick={() => { this.updateCheckout() }}>Update subscription</button>
+                                            : ""
+                                        }
+                                        {!!profile.subscription.onGracePeriod &&
+                                            <button className="btn-blue" onClick={() => { this.resumeCheckout() }}>Resume subscription</button>
                                         }
                                     </div>
                                 </div>

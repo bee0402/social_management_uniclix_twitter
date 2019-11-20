@@ -30,13 +30,11 @@ class ProfileInfo extends React.Component {
     }
 
     activeChannels = (channels) => {
-        console.log(channels, 'allChannels')
         let activeChannels = channels.filter(channel => {
             if (channel.details.paid == 1)
                 return channel;
         });
 
-        console.log(activeChannels, 'activeChannels')
         return activeChannels;
     }
 

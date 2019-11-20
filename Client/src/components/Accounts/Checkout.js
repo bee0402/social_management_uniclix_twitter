@@ -34,6 +34,7 @@ class Checkout extends React.Component {
         validClaasCvv: "",
         shouldBlockNavigation: true,
         newAccounts: 0,
+        actualUsers: 0,
         form: {
             cardnumber: '',
             cvc: '',
@@ -63,11 +64,18 @@ class Checkout extends React.Component {
     }
 
     componentDidMount() {
-        this.newAccountstoPay();
         this.activeYears();
         this.loadStripe();
+        this.accountsBilling();
     }
 
+    accountsBilling = () => {
+        this.setState({ loading: true })
+        this.setState({
+            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+            actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+        })
+    }
     loadStripe = () => {
         if (!window.document.getElementById('stripe-script')) {
             var s = window.document.createElement("script");
@@ -166,12 +174,6 @@ class Checkout extends React.Component {
         })
     }
 
-    newAccountstoPay = () => {
-        this.setState({
-            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length
-        })
-    }
-
     handleClickMonthBox = (e) => {
         this.refs.pickAMonth.show()
     }
@@ -214,11 +216,12 @@ class Checkout extends React.Component {
         token.created = new Date().getTime();
         token.subType = "main"
         createSubscription(token).then(response => {
-            this.setState({
-                loading: true,
-                orderFinished: true
-            });
-            console.log(response)
+            this.props.startSetChannels().then(res => {
+                this.setState({
+                    loading: true,
+                    orderFinished: true
+                });
+            })
         }).catch(e => {
             console.log(e)
             this.setState({
@@ -229,7 +232,7 @@ class Checkout extends React.Component {
     }
 
     render() {
-        const { validClaas, form, locations, years, loading, orderFinished, newAccounts } = this.state
+        const { validClaas, form, locations, years, loading, orderFinished, newAccounts, actualUsers } = this.state
         const location = form.location;
         const todayDate = new Date();
         const minumumYear = todayDate.getFullYear();
@@ -393,24 +396,28 @@ class Checkout extends React.Component {
                                             <h3>Order summary</h3>
 
                                             <div className="plan-content table">
-                                                <div className="row-price">
-                                                    <div className="col-price">
-                                                        <p className="plan-content-description">Current price</p>
-                                                        <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                                {actualUsers > 0 &&
+                                                    <div className="row-price">
+                                                        <div className="col-price">
+                                                            <p className="plan-content-description">Current price</p>
+                                                            <p className="plan-content-accounts">x{actualUsers} accounts</p>
+                                                        </div>
+                                                        <div className="col-price">
+                                                            <p className="price">$10</p>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-price">
-                                                        <p className="price">$10</p>
-                                                    </div>
-                                                </div>
+                                                }
                                                 <br />
-                                                <div className="row-price new-accounts">
-                                                    <div className="col-price">
-                                                        <p className="plan-content-accounts">x{newAccounts} accounts</p>
+                                                {newAccounts > 0 &&
+                                                    <div className="row-price new-accounts">
+                                                        <div className="col-price">
+                                                            <p className="plan-content-accounts">x{newAccounts} accounts</p>
+                                                        </div>
+                                                        <div className="col-price">
+                                                            <p className="price">${newAccounts * 10}</p>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-price">
-                                                        <p className="price">${newAccounts * 20}</p>
-                                                    </div>
-                                                </div>
+                                                }
                                             </div>
                                             <div className="order-total table">
                                                 <div className="row-price">
@@ -419,7 +426,7 @@ class Checkout extends React.Component {
                                                         <p className="plan-content-accounts">Monthly</p>
                                                     </div>
                                                     <div className="col-price">
-                                                        <p className="price">$30</p>
+                                                        <p className="price">${(newAccounts + actualUsers) * 10}</p>
                                                     </div>
                                                 </div>
                                             </div>
