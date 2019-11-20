@@ -29,6 +29,7 @@ class Twitter extends React.Component {
         action: this.defaultAction,
         error: "",
         newAccounts: 0,
+        loading: true,
         forbidden: false,
         actualUsers: 0,
         shouldBlockNavigation: false
@@ -45,6 +46,7 @@ class Twitter extends React.Component {
     }
 
     accountsBilling = () => {
+        this.setState({ loading: false })
         this.setState({
             newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
             actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
@@ -111,7 +113,9 @@ class Twitter extends React.Component {
                 this.props.startSetChannels()
                     .then((response) => {
                         this.setState(() => ({
-                            action: this.defaultAction
+                            action: this.defaultAction,
+                            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                            actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
                         }));
                     });
             }).catch((e) => {
@@ -135,7 +139,7 @@ class Twitter extends React.Component {
         this.setState({ shouldBlockNavigation: false });
 
         this.setState({
-            loading: false
+            loading: true
         });
         let token = {
             plan: "twitter-booster",
@@ -143,17 +147,18 @@ class Twitter extends React.Component {
             subType: "main"
         }
         updateSubscription(token).then(response => {
-            this.props.startSetChannels();
-            this.setState({
-                loading: true,
-                orderFinished: true,
-                newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
-                actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
-            });
+            this.props.startSetChannels().then(res => {
+                this.setState({
+                    loading: false,
+                    orderFinished: true,
+                    newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                    actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                });
+            })
         }).catch(e => {
             console.log(e)
             this.setState({
-                loading: true,
+                loading: false,
                 message: ""
             });
         })
@@ -241,7 +246,7 @@ class Twitter extends React.Component {
                             </div>
                         </div>
                     </div>
-
+                    {!!this.state.loading && <Loader />}
 
                     <div className="row mt20">
                         <div className="col-md-7">
