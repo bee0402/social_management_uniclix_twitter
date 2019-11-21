@@ -232,8 +232,8 @@ class Checkout extends React.Component {
     }
 
     render() {
-        const { validClaas, form, locations, years, loading, orderFinished, newAccounts, actualUsers } = this.state
-        const location = form.location;
+        const { validClaas, form, years, loading, orderFinished, newAccounts, actualUsers } = this.state
+        // const location = form.location;
         const todayDate = new Date();
         const minumumYear = todayDate.getFullYear();
         const minumumMonth = todayDate.getMonth();
@@ -367,7 +367,7 @@ class Checkout extends React.Component {
                                                     placeholder="City" />
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
-                                                <GeoSuggest
+                                                {/* <GeoSuggest
                                                     types={['(regions)']}
                                                     className="col-12"
                                                     inputClassName="form-control whiteBg"
@@ -375,11 +375,15 @@ class Checkout extends React.Component {
                                                     onSuggestSelect={this.onLocationsFieldChange}
                                                     initialValue={location && location.label}
                                                     disabled={locations.length >= 5 ? true : false}
-                                                />
-                                                <input type="hidden" id="website" readOnly={true}
-                                                    value={this.state.locations.map(location => ` ${location.label}`)}
-                                                    onClick={this.toggleLocationsModal}
-                                                    placeholder="New York City, Amsterdam, Venice..." />
+                                                /> */}
+                                                <input
+                                                    className={'form-control whiteBg '}
+                                                    id="location"
+                                                    name="location"
+                                                    onChange={(e) => this.onFieldChange(e)}
+                                                    value={form.location}
+                                                    // onClick={this.toggleLocationsModal}
+                                                    placeholder="Country" />
 
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
