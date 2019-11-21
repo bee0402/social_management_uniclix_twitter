@@ -368,6 +368,7 @@ class Checkout extends React.Component {
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
                                                 <GeoSuggest
+                                                    types={['(regions)']}
                                                     className="col-12"
                                                     inputClassName="form-control whiteBg"
                                                     placeholder="Country"

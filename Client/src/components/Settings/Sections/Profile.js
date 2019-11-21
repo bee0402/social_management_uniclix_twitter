@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import GeoSuggest from "react-geosuggest";
 import { updateProfile } from "../../../requests/profile";
 import momentTz from "moment-timezone";
@@ -279,6 +279,7 @@ class Profile extends React.Component {
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="website">Country</label>
                                         <GeoSuggest
+                                            types={['country']}
                                             className="col-12"
                                             inputClassName="form-control whiteBg"
                                             placeholder="Write your country name"

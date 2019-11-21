@@ -194,9 +194,9 @@ class UserItem extends React.Component {
                     <div className="item-actions pull-right">
                         {!!buttonState &&
                             buttonState.action == "add" ?
-                            <img onClick={() => { this.perform(); close(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
+                            <img onClick={() => { this.perform(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
                             :
-                            <img onClick={() => { this.perform(); close(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
+                            <img onClick={() => { this.perform(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
                         }
                     </div>
                 </div>

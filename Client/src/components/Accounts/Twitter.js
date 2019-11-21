@@ -4,6 +4,7 @@ import TwitterLogin from 'react-twitter-auth';
 import SweetAlert from "sweetalert2-react";
 import { Prompt } from 'react-router';
 import { withRouter } from "react-router";
+import { startSetProfile } from "../../actions/profile";
 import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api";
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
@@ -52,6 +53,7 @@ class Twitter extends React.Component {
             actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
         })
     }
+
     componentDidUpdate = (prevProps) => {
         let addedNewUsers = false
         if ((this.props.channels !== prevProps.channels)) {
@@ -91,7 +93,6 @@ class Twitter extends React.Component {
         response.json().then(body => {
             this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
                 .catch(error => {
-                    console.log(error)
                     if (error.response.status === 403) {
                         this.setForbidden(true);
                         return;
@@ -147,14 +148,17 @@ class Twitter extends React.Component {
             subType: "main"
         }
         updateSubscription(token).then(response => {
-            this.props.startSetChannels().then(res => {
-                this.setState({
-                    loading: false,
-                    orderFinished: true,
-                    newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
-                    actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
-                });
-            })
+            this.props.startSetChannels()
+                .then((response) => {
+                    this.props.startSetProfile().then(res => {
+                        this.setState({
+                            loading: false,
+                            orderFinished: true,
+                            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                            actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                        });
+                    });
+                })
         }).catch(e => {
             console.log(e)
             this.setState({
@@ -173,14 +177,14 @@ class Twitter extends React.Component {
             .then((response) => {
                 this.props.startSetChannels()
                     .then((response) => {
-                        this.props.startSetChannels().then(res => {
+                        this.props.startSetProfile().then(res => {
                             this.setState({
                                 loading: false,
                                 action: this.defaultAction,
                                 newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
                                 actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
                             });
-                        })
+                        });
                     });
             }).catch((e) => {
                 if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
@@ -199,17 +203,17 @@ class Twitter extends React.Component {
         });
         return resumeSubscription()
             .then((response) => {
-                this.props.startSetChannels()
-                    .then((response) => {
-                        this.props.startSetChannels().then(res => {
-                            this.setState({
-                                loading: false,
-                                action: this.defaultAction,
-                                newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
-                                actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
-                            });
-                        })
+                this.props.startSetChannels().then(res => {
+                    this.props.startSetProfile().then(res => {
+                        this.setState({
+                            loading: false,
+                            action: this.defaultAction,
+
+                            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                            actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                        });
                     });
+                });
             }).catch((e) => {
                 if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
                     this.setState(() => ({
@@ -400,7 +404,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     startAddTwitterChannel: (accessToken, accessTokenSecret) => dispatch(startAddTwitterChannel(accessToken, accessTokenSecret)),
     startSetChannels: () => dispatch(startSetChannels()),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    startSetProfile: () => dispatch(startSetProfile())
 });
 
 
