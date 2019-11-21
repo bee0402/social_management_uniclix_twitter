@@ -4,16 +4,16 @@ import TwitterLogin from 'react-twitter-auth';
 import SweetAlert from "sweetalert2-react";
 import { Prompt } from 'react-router';
 import { withRouter } from "react-router";
+import ChannelItems from "./ChannelItems";
+import UpgradeAlert from "../UpgradeAlert";
 import { startSetProfile } from "../../actions/profile";
-import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api";
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
+import { twitterRequestTokenUrl, twitterAccessTokenUrl } from "../../config/api";
 import channelSelector from "../../selectors/channels";
 import { destroyChannel } from "../../requests/channels";
 import { cancelSubscription, resumeSubscription } from "../../requests/billing";
 import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
-import ChannelItems from "./ChannelItems";
-import UpgradeAlert from "../UpgradeAlert";
 import { updateSubscription } from '../../requests/billing';
 
 class Twitter extends React.Component {

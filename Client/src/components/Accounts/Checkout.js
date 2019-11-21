@@ -4,6 +4,7 @@ import { isValid } from 'cc-validate';
 import Picker from 'react-month-picker'
 import GeoSuggest from "react-geosuggest";
 import SweetAlert from "sweetalert2-react";
+import { startSetProfile } from "../../actions/profile";
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
 import { logout } from "../../actions/auth";
@@ -217,9 +218,11 @@ class Checkout extends React.Component {
         token.subType = "main"
         createSubscription(token).then(response => {
             this.props.startSetChannels().then(res => {
-                this.setState({
-                    loading: true,
-                    orderFinished: true
+                this.props.startSetProfile().then(res => {
+                    this.setState({
+                        loading: true,
+                        orderFinished: true
+                    });
                 });
             })
         }).catch(e => {
@@ -469,6 +472,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     startAddTwitterChannel: (accessToken, accessTokenSecret) => dispatch(startAddTwitterChannel(accessToken, accessTokenSecret)),
     startSetChannels: () => dispatch(startSetChannels()),
+    startSetProfile: () => dispatch(startSetProfile()),
     logout: () => dispatch(logout())
 });
 
