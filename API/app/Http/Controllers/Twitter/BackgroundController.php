@@ -45,7 +45,7 @@ class BackgroundController extends Controller
         try {
             $channel->SyncAutoDMs($sleep);
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
+            return $e->getMessage();
             getErrorResponse($e, $channel->global);
         }
 
