@@ -19,130 +19,131 @@ class KeywordTargetSearchList extends React.Component {
         suggestedTargets: [
             { keyword: "NEWS", location: "" },
             { keyword: "BUSINESS", location: "" },
-            { keyword: "SOCIALMEDIAMANAGEMENT", location: "" },
-            { keyword: "TWITTERGROWTH", location: "" },
+            { keyword: "SOCIAL MEDIA MANAGEMENT", location: "" },
+            { keyword: "TWITTER GROWTH", location: "" },
             { keyword: "TECHNOLOGY", location: "" },
             { keyword: "SPORTS", location: "" },
             { keyword: "TRAVEL", location: "" },
             { keyword: "POLITICS", location: "" },
-            { keyword: "CONSERVATIVEVIEW", location: "" },
-            { keyword: "LIBERALVIEW", location: "" },
+            { keyword: "CONSERVATIVE VIEW", location: "" },
+            { keyword: "LIBERAL VIEW", location: "" },
             { keyword: "SCIENCE", location: "" },
             { keyword: "CELEBRITY", location: "" },
             { keyword: "RECIPES", location: "" },
             { keyword: "DESIGN", location: "" },
             { keyword: "STYLE", location: "" },
-            { keyword: "COMPUTERSCIENCE", location: "" },
+            { keyword: "COMPUTER SCIENCE", location: "" },
             { keyword: "PHOTOGRAPHY", location: "" },
-            { keyword: "HEALTHYEATING", location: "" },
-            { keyword: "WOMENSNEWS", location: "" },
+            { keyword: "HEALTHY EATING", location: "" },
+            { keyword: "WOMEN'S NEWS", location: "" },
             { keyword: "BEAUTY", location: "" },
             { keyword: "MINDFULNESS", location: "" },
-            { keyword: "WORLDECONOMY", location: "" },
+            { keyword: "WORLD ECONOMY", location: "" },
             { keyword: "SUSTAINABILITY", location: "" },
-            { keyword: "STREETART", location: "" },
+            { keyword: "STREET ART", location: "" },
             { keyword: "SKATEBOARDING", location: "" },
             { keyword: "MUSIC", location: "" },
             { keyword: "TV", location: "" },
             { keyword: "MOVIES", location: "" },
-            { keyword: "COOLSTUFF", location: "" },
+            { keyword: "COOL STUFF", location: "" },
             { keyword: "WORKOUTS", location: "" },
             { keyword: "HOME", location: "" },
-            { keyword: "CLASSICALMUSIC", location: "" },
+            { keyword: "CLASSICAL MUSIC", location: "" },
             { keyword: "GAMING", location: "" },
-            { keyword: "ELECTRICVEHICLES", location: "" },
+            { keyword: "ELECTRIC VEHICLES", location: "" },
             { keyword: "LEADERSHIP", location: "" },
-            { keyword: "FOOD&DINING", location: "" },
-            { keyword: "NATIONALPARKS", location: "" },
+            { keyword: "FOOD & DINING", location: "" },
+            { keyword: "NATIONAL PARKS", location: "" },
             { keyword: "STARTUPS", location: "" },
-            { keyword: "MUSICFESTIVALS", location: "" },
+            { keyword: "MUSIC FESTIVALS", location: "" },
             { keyword: "HEALTH", location: "" },
-            { keyword: "DIGITALPHOTOGRAPHY", location: "" },
+            { keyword: "DIGITAL PHOTOGRAPHY", location: "" },
             { keyword: "BREAKTHROUGHS", location: "" },
             { keyword: "AUTOS", location: "" },
             { keyword: "ADVERTISING", location: "" },
             { keyword: "MARKETING", location: "" },
-            { keyword: "ROADTRIPS", location: "" },
+            { keyword: "ROAD TRIPS", location: "" },
             { keyword: "BOOKS", location: "" },
             { keyword: "RUNNING", location: "" },
-            { keyword: "FOREIGNPOLICY", location: "" },
+            { keyword: "FOREIGN POLICY", location: "" },
             { keyword: "EDUCATION", location: "" },
-            { keyword: "NEWYORKCITY", location: "" },
+            { keyword: "NEW YORK CITY", location: "" },
             { keyword: "ARCHITECTURE", location: "" },
             { keyword: "YOGA", location: "" },
             { keyword: "DOGS", location: "" },
             { keyword: "PARENTING", location: "" },
             { keyword: "BASKETBALL", location: "" },
             { keyword: "ENTREPRENEURSHIP", location: "" },
-            { keyword: "TINYHOUSEMOVEMENT", location: "" },
-            { keyword: "SELFIMPROVEMENT", location: "" },
+            { keyword: "TINY HOUSE MOVEMENT", location: "" },
+            { keyword: "SELF-IMPROVEMENT", location: "" },
             { keyword: "CYCLING", location: "" },
             { keyword: "APPS", location: "" },
-            { keyword: "STARWARS", location: "" },
-            { keyword: "PERSONALFINANCE", location: "" },
+            { keyword: "STAR WARS", location: "" },
+            { keyword: "PERSONAL FINANCE", location: "" },
             { keyword: "DIY", location: "" },
             { keyword: "SLEEP", location: "" },
-            { keyword: "GREENLIVING", location: "" },
+            { keyword: "GREEN LIVING", location: "" },
             { keyword: "NFL", location: "" },
             { keyword: "SPACE", location: "" },
             { keyword: "COFFEE", location: "" },
             { keyword: "OUTDOORS", location: "" },
-            { keyword: "GAMEOFTHRONES", location: "" },
+            { keyword: "GAME OF THRONES", location: "" },
             { keyword: "GARDENING", location: "" },
-            { keyword: "HOWTOS", location: "" },
+            { keyword: "HOW-TO'S", location: "" },
             { keyword: "WRITING", location: "" },
             { keyword: "CRAFTING", location: "" },
             { keyword: "MOTORSPORT", location: "" },
             { keyword: "WEDDINGS", location: "" },
-            { keyword: "INTERIORDESIGN", location: "" },
+            { keyword: "INTERIOR DESIGN", location: "" },
             { keyword: "MEMES", location: "" },
             { keyword: "CRYPTOCURRENCY", location: "" },
-            { keyword: "WORKLIFEBALANCE", location: "" },
+            { keyword: "WORK-LIFE BALANCE", location: "" },
             { keyword: "PSYCHOLOGY", location: "" },
             { keyword: "PRODUCTIVITY", location: "" },
             { keyword: "EQUALITY", location: "" },
             { keyword: "LITERATURE", location: "" },
-            { keyword: "CUTEANIMALS", location: "" },
-            { keyword: "CLIMATECHANGE", location: "" },
+            { keyword: "CUTE ANIMALS", location: "" },
+            { keyword: "CLIMATE CHANGE", location: "" },
             { keyword: "CREATIVITY", location: "" },
             { keyword: "HIKING", location: "" },
-            { keyword: "MENTALHEALTH", location: "" },
-            { keyword: "COUNTRYMUSIC", location: "" },
+            { keyword: "MENTAL HEALTH", location: "" },
+            { keyword: "COUNTRY MUSIC", location: "" },
             { keyword: "COMICS", location: "" },
-            { keyword: "RENEWABLEENERGY", location: "" },
+            { keyword: "LGBTQI", location: "" },
+            { keyword: "RENEWABLE ENERGY", location: "" },
             { keyword: "PODCASTING", location: "" },
             { keyword: "WINE", location: "" },
-            { keyword: "THEARTS", location: "" },
+            { keyword: "THE ARTS", location: "" },
             { keyword: "GENEALOGY", location: "" },
             { keyword: "MUSEUMS", location: "" },
             { keyword: "AUGMENTED REALITY", location: "" },
-            { keyword: "TIMELAPSEPHOTOGRAPHY", location: "" },
-            { keyword: "ALTERNATIVEMEDICINE", location: "" },
+            { keyword: "TIME-LAPSE PHOTOGRAPHY", location: "" },
+            { keyword: "ALTERNATIVE MEDICINE", location: "" },
             { keyword: "BASEBALL", location: "" },
-            { keyword: "SOCIALMEDIA", location: "" },
+            { keyword: "SOCIAL MEDIA", location: "" },
             { keyword: "NEUROSCIENCE", location: "" },
-            { keyword: "TRAVELGEAR", location: "" },
+            { keyword: "TRAVEL GEAR", location: "" },
             { keyword: "ACTIVISM", location: "" },
             { keyword: "RELATIONSHIPS", location: "" },
-            { keyword: "VINYLRECORDS", location: "" },
-            { keyword: "LISTWORTHY", location: "" },
+            { keyword: "VINYL RECORDS", location: "" },
+            { keyword: "LIST-WORTHY", location: "" },
             { keyword: "CITIES", location: "" },
             { keyword: "BIOTECHNOLOGY", location: "" },
-            { keyword: "HOMEIMPROVEMENT", location: "" },
-            { keyword: "NORTHKOREA", location: "" },
-            { keyword: "NETNEUTRALITY", location: "" },
-            { keyword: "EXTREMESPORTS", location: "" },
-            { keyword: "VENTURECAPITAL", location: "" },
+            { keyword: "HOME IMPROVEMENT", location: "" },
+            { keyword: "NORTH KOREA", location: "" },
+            { keyword: "NET NEUTRALITY", location: "" },
+            { keyword: "EXTREME SPORTS", location: "" },
+            { keyword: "VENTURE CAPITAL", location: "" },
             { keyword: "SAILING", location: "" },
             { keyword: "ROBOTICS", location: "" },
-            { keyword: "GENERATIONZ", location: "" },
+            { keyword: "GENERATION Z", location: "" },
             { keyword: "INVESTING", location: "" },
-            { keyword: "UXDESIGN", location: "" },
+            { keyword: "UX DESIGN", location: "" },
             { keyword: "RELIGION", location: "" },
             { keyword: "MOTORCYCLES", location: "" },
             { keyword: "WOODWORKING", location: "" },
             { keyword: "MANAGEMENT", location: "" },
-            { keyword: "REALESTATE", location: "" },
+            { keyword: "REAL ESTATE", location: "" },
             { keyword: "COMEDY", location: "" },
             { keyword: "MACHINE LEARNING", location: "" },
             { keyword: "KNITTING", location: "" },
@@ -262,61 +263,61 @@ class KeywordTargetSearchList extends React.Component {
                         </div>
 
                         <div className="added">
-                            <div>
-                                <div className={`section-header no-border mt20 mb20`}>
-                                    <div className="section-header__first-row">
-                                    </div>
 
-                                    <div className="section-header__second-row">
-                                        <h3>Trending Hashtags</h3>
-                                    </div>
-                                </div>
-                                <div className="added-items">
-                                    {this.state.suggestedTargets.slice(1, 20).map((target, index) => (
-                                        this.props.targets.map(function (keyw, e) {
-                                            return keyw.keyword
-                                        }).indexOf(target.keyword) == -1 ?
-                                            <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
-                                                #{target.keyword}
-                                            </div>
-                                            :
-                                            this.props.targets.map((actualKey, e) => {
-                                                if (actualKey.keyword == target.keyword) {
-                                                    return (
-                                                        <div key={e} onClick={(e) => this.removeTarget(actualKey.id)} className="keyword-item  added-keyword">
-                                                            #{actualKey.keyword}
-                                                        </div>
-                                                    )
-                                                }
-                                            })
-
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="seperator mt20 mb20"></div>
                             {!!this.props.targets.length ?
                                 <div>
+                                    <div>
+                                        <div className={`section-header no-border mt20 mb20`}>
+                                            <div className="section-header__first-row">
+                                            </div>
 
-                                    <div className={`section-header no-border mt20 mb20`}>
-                                        <div className="section-header__first-row">
+                                            <div className="section-header__second-row">
+                                                <h3>Added by you</h3>
+                                            </div>
                                         </div>
-
-                                        <div className="section-header__second-row">
-                                            <h3>Added by you</h3>
+                                        <div className="added-items">
+                                            {this.props.targets.map((target, index) => (
+                                                this.state.suggestedTargets.map(function (keyU, e) {
+                                                    return keyU.keyword
+                                                }).indexOf(target.keyword) < 0 ?
+                                                    <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />
+                                                    :
+                                                    ''
+                                            ))}
                                         </div>
                                     </div>
-                                    <div className="added-items">
 
-                                        {this.props.targets.map((target, index) => (
-                                            this.state.suggestedTargets.slice(1, 20).map(function (keyU, e) {
-                                                return keyU.keyword
-                                            }).indexOf(target.keyword) < 0 ?
-                                                <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />
-                                                :
-                                                ''
-                                        ))}
+                                    <div className="seperator mt20 mb20"></div>
+                                    <div>
+                                        <div className={`section-header no-border mt20 mb20`}>
+                                            <div className="section-header__first-row">
+                                            </div>
 
+                                            <div className="section-header__second-row">
+                                                <h3>Trending Hashtags</h3>
+                                            </div>
+                                        </div>
+                                        <div className="added-items">
+                                            {this.state.suggestedTargets.map((target, index) => (
+                                                this.props.targets.map(function (keyw, e) {
+                                                    return keyw.keyword
+                                                }).indexOf(target.keyword) == -1 ?
+                                                    <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
+                                                        #{target.keyword}
+                                                    </div>
+                                                    :
+                                                    this.props.targets.map((actualKey, e) => {
+                                                        if (actualKey.keyword == target.keyword) {
+                                                            return (
+                                                                <div key={e} onClick={(e) => this.removeTarget(actualKey.id)} className="keyword-item  added-keyword">
+                                                                    #{actualKey.keyword}
+                                                                </div>
+                                                            )
+                                                        }
+                                                    })
+
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                                 :

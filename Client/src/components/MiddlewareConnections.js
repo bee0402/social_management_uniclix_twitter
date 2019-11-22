@@ -174,7 +174,7 @@ class UserItem extends React.Component {
         const { userItem, index } = this.props
         const { buttonState } = this.state;
         return (
-            <div className={`item-row clearfix`} key={index}>
+            <div className={`item-row clearfix ${buttonState.disabled ? 'disabled-btn' : ''}`} key={index}>
                 <div className="profile-info">
                     <div className="user-info">
                         <img src={userItem.profile_image_url} />
