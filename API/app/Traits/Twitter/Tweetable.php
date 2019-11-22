@@ -931,7 +931,7 @@ trait Tweetable
             $followerIds = $this
                 ->followerIds()
                 ->whereIn("user_id", $ids)
-                ->where("channel_id", 14)
+                ->where("channel_id", 9)
                 ->where('send_message', false)
                 ->pluck('user_id');
             foreach ($followerIds as $followers) {
