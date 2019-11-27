@@ -93,6 +93,7 @@ class Twitter extends React.Component {
         response.json().then(body => {
             this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
                 .catch(error => {
+                    console.log(error)
                     if (error.response.status === 403) {
                         this.setForbidden(true);
                         return;
