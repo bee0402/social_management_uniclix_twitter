@@ -114,7 +114,6 @@ class Twitter extends React.Component {
                 this.props.startSetChannels()
                     .then((response) => {
                         this.setState(() => ({
-                            action: this.defaultAction,
                             newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
                             actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
                         }));

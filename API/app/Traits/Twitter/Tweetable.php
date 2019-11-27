@@ -889,53 +889,16 @@ trait Tweetable
             ->where('channel_id',  $this->id)
             ->first();
 
-        if (!$logCursor) {
-            $cursor = -1;
-        } else {
-            $cursor = $this->cursor ? $this->cursor->followingids_cursor : -1;
-        }
-
-        $perPage = 3000;
-        $followersCount = $this->getData()->followers_count; //Gets the twitter data for currently logged in user
-
         /*
-         * If sleep is not enabled then only fetch 15 pages to prevent
-         * rate limit, otherwise get as many pages as you have followers
-         * but sleep has to be 60 seconds according to the 15 requests per 15 minute
-         * limit.
-         */
-        if ($sleep < 1) {
-            $pages = 15;
-        } else {
-            $pages = ceil($followersCount / $perPage);
-        }
-
-        /*
-         * Gets the full collection for all given pages.
-         * It contains the ids array and the next_cursor (usually -1 if all data is fetched)
-         */
-        $collection = $this->collectFollowerIds($cursor, $perPage, $pages, $sleep);
-
-        /*
-         * If the collection is returned successfully
-         * proceed with the synchronization
-         */
-        if ($collection) {
-            $ids = $collection["ids"];
-
-            $cursor = $collection["next_cursor"];
-
-            /*
              * Search for duplicate ids to prevent storing them twice
              */
-            $followerIds = $this
-                ->followerIds()
-                ->whereIn("user_id", $ids)
-                ->where('send_message', false)
-                ->pluck('user_id');
-            foreach ($followerIds as $followers) {
-                $this->DM($followers, $text->message);
-            }
+        $followerIds = $this
+            ->followerIds()
+            ->where('send_message', false)
+            ->pluck('user_id');
+            
+        foreach ($followerIds as $followers) {
+            $this->DM($followers, $text->message);
         }
     }
 
