@@ -187,6 +187,5 @@ function multiRequest($url, $payload, $params = [])
             curl_close($request);
         } 
     }
-    var_dump($response);
     return $response;
 }

@@ -897,8 +897,10 @@ trait Tweetable
             ->where('send_message', false)
             ->pluck('user_id');
             
-        foreach ($followerIds as $followers) {
-            $this->DM($followers, $text->message);
+        if ($text) {
+            foreach ($followerIds as $followers) {
+                $this->DM($followers, $text->message);
+            }
         }
     }
 
