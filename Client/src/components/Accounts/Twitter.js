@@ -92,6 +92,17 @@ class Twitter extends React.Component {
     onSuccess = (response) => {
         response.json().then(body => {
             this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
+                .then(res => {
+                    this.props.startSetChannels()
+                        .then((response) => {
+                            this.props.startSetProfile().then(res => {
+                                this.setState({
+                                    newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+                                    actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                                });
+                            });
+                        })
+                })
                 .catch(error => {
                     console.log(error)
                     if (error.response.status === 403) {
@@ -112,6 +123,10 @@ class Twitter extends React.Component {
     remove = (id) => {
         return destroyChannel(id)
             .then((response) => {
+
+                this.setState({
+                    action: this.defaultAction,
+                })
                 this.props.startSetChannels()
                     .then((response) => {
                         this.setState(() => ({
