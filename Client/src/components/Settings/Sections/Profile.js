@@ -21,7 +21,7 @@ class Profile extends React.Component {
         companyPhone: "",
         type: "",
         organizationName: "",
-        country:"",
+        country: "",
         reason: "",
         topics: [],
         openCountry: false,
@@ -79,6 +79,11 @@ class Profile extends React.Component {
             stateCopy["name"] = user.name ? user.name : "";
             stateCopy["email"] = user.email ? user.email : "";
             stateCopy["website"] = user.website ? user.website : "";
+            stateCopy["addresse"] = user.addresse ? user.addresse : "";
+            stateCopy["companyEmail"] = user.companyEmail ? user.companyEmail : "";
+            stateCopy["companyPhone"] = user.companyPhone ? user.companyPhone : "";
+            stateCopy["location"] = user.location ? user.location : "";
+            stateCopy["type"] = user.type ? user.type : "";
             stateCopy["organizationName"] = user.organization_name ? user.organization_name : "";
             stateCopy["reason"] = user.usage_reason ? user.usage_reason : "Myself";
             stateCopy["topics"] = topics.map((topic) => topic.topic);
@@ -158,7 +163,6 @@ class Profile extends React.Component {
             reason: this.state.reason,
             addresse: this.state.addresse,
             companyEmail: this.state.companyEmail,
-            country: this.state.country,
             companyPhone: this.state.companyPhone,
             type: this.state.type
         }).then((response) => {
