@@ -13,16 +13,20 @@ class Profile extends React.Component {
 
     state = {
         name: "",
-        countries: Countries,
+        addresse: "",
+        countries: [],
         email: "",
         website: "",
+        companyEmail: "",
+        companyPhone: "",
         type: "",
         organizationName: "",
+        country:"",
         reason: "",
         topics: [],
+        openCountry: false,
         targets: [],
         topic: "",
-        locations: [],
         location: "",
         timezone: "",
         isTopicsModalOpen: false,
@@ -44,7 +48,8 @@ class Profile extends React.Component {
                 if (typeof (response.items) === "undefined") return;
 
                 this.setState(() => ({
-                    targets: response.targets
+                    targets: response.targets,
+                    countries: Countries
                 }));
             }).catch(error => {
                 this.setLoading(false);
@@ -148,8 +153,14 @@ class Profile extends React.Component {
             organization_name: this.state.organizationName,
             topics: this.state.topics,
             locations: this.state.locations,
+            location: this.state.location,
             timezone: this.state.timezone,
-            reason: this.state.reason
+            reason: this.state.reason,
+            addresse: this.state.addresse,
+            companyEmail: this.state.companyEmail,
+            country: this.state.country,
+            companyPhone: this.state.companyPhone,
+            type: this.state.type
         }).then((response) => {
             this.props.startSetProfile();
             this.setState(() => ({
@@ -178,9 +189,15 @@ class Profile extends React.Component {
             isTabActive: newIndex
         }));
     }
-
+    setLocation = (val) => {
+        console.log(val)
+        this.setState({ location: val, openCountry: false })
+    }
     render() {
-        const { isTabActive, success, error, countries, targets } = this.state;
+        const { isTabActive, success, error, countries, targets, openCountry, location } = this.state;
+        const items = countries.map((item) => {
+            return <li onClick={() => this.setLocation(item)}> {item} </li>;
+        });
         return (
             <div>
                 {this.state.loading && <LoaderWithOverlay />}
@@ -274,27 +291,28 @@ class Profile extends React.Component {
                                         <label htmlFor="topics">Company Name</label>
                                         <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="Company" />
                                     </div>
-                                    <div className="col-12 col-md-8 form-field">
+                                    <div className="col-12 col-md-8 form-field form-country">
                                         <label htmlFor="country">Country</label>
                                         <input
                                             className="form-control whiteBg"
                                             type="text"
-                                            id="country"
-                                            autoComplete={false}
-                                            value={this.state.locations.map(location => ` ${location.label}`)}
-                                            onClick={this.toggleLocationsModal}
-                                            placeholder="New York City, Amsterdam, Venice..." />
-
-                                        <ul>
-                                            {countries.map((item) => {
-                                                <li onClick={() => "item"}>{item}</li>
-                                            })}
-                                        </ul>
+                                            id="location"
+                                            onFocus={() => this.setState({ openCountry: true })}
+                                            onBlur={() => { setTimeout(() => { this.setState({ openCountry: false }) }, 600) }}
+                                            autoComplete="false"
+                                            value={location}
+                                            onChange={(e) => this.onFieldChange(e)}
+                                            placeholder="Select Country" />
+                                        {openCountry &&
+                                            <ul className="country-list">
+                                                {items}
+                                            </ul>
+                                        }
                                     </div>
 
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Addresse</label>
-                                        <input type="text" className="form-control whiteBg" id="Addresse" name="addresse" onChange={(e) => this.onFieldChange(e)} value={this.state.addresse} placeholder="Example: 22 E 22Th St, New York, NY 10033" />
+                                        <input type="text" className="form-control whiteBg" id="addresse" name="addresse" onChange={(e) => this.onFieldChange(e)} value={this.state.addresse} placeholder="Example: 22 E 22Th St, New York, NY 10033" />
                                     </div>
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Company Email</label>

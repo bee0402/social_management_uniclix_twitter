@@ -4736,3 +4736,21 @@ table.compare-plans-table {
     margin-bottom: 1.1rem;
     color: $primary_black;
 }
+.form-country{
+    position: relative;
+    z-index: 999;
+    .country-list{
+        background: $white;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        max-height: 240px;
+        overflow: auto;
+        li{
+            cursor: pointer;
+            padding: 1rem 1.4rem;
+            border-bottom: 1px solid $gray;
+        }
+    }
+}

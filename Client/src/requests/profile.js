@@ -10,6 +10,7 @@ export const getProfile = (data) => {
 };
 
 export const updateProfile = (data) => {
+    console.log(data)
     return axios.post(`${apiUrl}/profile`, {data})
             .then((response) => {
                 return response.data;

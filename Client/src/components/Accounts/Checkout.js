@@ -29,13 +29,15 @@ class Checkout extends React.Component {
         error: "",
         forbidden: false,
         validClaas: "",
-        locations: [],
         years: [],
         loading: false,
         validClaasCvv: "",
         shouldBlockNavigation: true,
         newAccounts: 0,
         actualUsers: 0,
+        countries: [],
+        targets: [],
+        openCountry: false,
         form: {
             cardnumber: '',
             cvc: '',
@@ -235,8 +237,12 @@ class Checkout extends React.Component {
     }
 
     render() {
-        const { validClaas, form, years, loading, orderFinished, newAccounts, actualUsers } = this.state
-        // const location = form.location;
+
+
+        const { validClaas, form, years, loading, orderFinished, newAccounts, actualUsers, countries, location, targets, openCountry } = this.state
+        const items = countries.map(function (item) {
+            return <li onClick={() => { this.setState({ form: { ...this.state.form, location: item } }) }}> {item} </li>;
+        });
         const todayDate = new Date();
         const minumumYear = todayDate.getFullYear();
         const minumumMonth = todayDate.getMonth();
@@ -254,7 +260,6 @@ class Checkout extends React.Component {
                             <CongratsPayment /> :
                             <div>
                                 <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
-
 
                                 <SweetAlert
                                     show={!!this.state.error}
@@ -370,23 +375,20 @@ class Checkout extends React.Component {
                                                     placeholder="City" />
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
-                                                {/* <GeoSuggest
-                                                    types={['(regions)']}
-                                                    className="col-12"
-                                                    inputClassName="form-control whiteBg"
-                                                    placeholder="Country"
-                                                    onSuggestSelect={this.onLocationsFieldChange}
-                                                    initialValue={location && location.label}
-                                                    disabled={locations.length >= 5 ? true : false}
-                                                /> */}
                                                 <input
-                                                    className={'form-control whiteBg '}
-                                                    id="location"
-                                                    name="location"
-                                                    onChange={(e) => this.onFieldChange(e)}
-                                                    value={form.location}
-                                                    // onClick={this.toggleLocationsModal}
-                                                    placeholder="Country" />
+                                                    className="form-control whiteBg"
+                                                    type="text"
+                                                    id="country"
+                                                    onFocus={() => this.setState({ openCountry: true })}
+                                                    onBlur={() => this.setState({ openCountry: false })}
+                                                    autoComplete="false" 
+                                                    value={this.state.location}
+                                                    placeholder="Select Country" />
+                                                {openCountry &&
+                                                    <ul className="country-list">
+                                                        {items}
+                                                    </ul>
+                                                }
 
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
