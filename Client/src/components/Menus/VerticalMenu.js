@@ -1,6 +1,10 @@
 import React from 'react';
 import { NavLink, Link } from "react-router-dom";
 import Popup from "reactjs-popup";
+import { supportEmail } from "../../requests/profile";
+import { ToastContainer } from "react-toastr";
+
+let toastContainer;
 
 const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) => {
     return (
@@ -43,6 +47,7 @@ class ProfileInfo extends React.Component {
         const { selectedChannel, selectChannel, channels } = this.props;
 
         return (
+
             <div>
                 <div className="profile-info" onClick={this.toggleDropdown}>
                     <span className="pull-left profile-img-container">
@@ -113,10 +118,34 @@ class SupportSection extends React.Component {
         name: "",
         email: "",
         subject: "",
-        message: ""
+        message: "",
+        open: false,
     }
-    onSubmit = () => {
 
+    openModal = () => {
+        this.setState({ open: true });
+    }
+    closeModal = () => {
+        this.setState({ open: false });
+    }
+    onSubmit = (e) => {
+        e.preventDefault();
+        console.log(this.state.name)
+        supportEmail({
+            ...this.state
+        }).then((response) => {
+            console.log(response, 'response')
+            this.resetState();
+            this.closeModal();
+            toastContainer.success('', "Success", { closeButton: true });
+        }).catch((error) => {
+            console.log(error);
+            this.setState(() => ({
+                error: "Something went wrong.",
+                loading: false
+            }));
+        });
+        console.log(this.state, 'modeal')
     }
 
     onFieldChange = (e) => {
@@ -126,65 +155,79 @@ class SupportSection extends React.Component {
         this.setState(() => (state));
     };
 
+    resetState() {
+        this.state.name = "";
+        this.state.email = "";
+        this.state.subject = "";
+        this.state.message = "";
+    }
+
     render() {
         return (
             <div className="support">
-                <Popup trigger={<button className="button"> <i className="fa fa-comment"></i> Support </button>} modal>
-                    {close => (
-                        <div className="modal">
-                            <a className="close" onClick={close}>
-                                &times;
+                <ToastContainer
+                    ref={ref => toastContainer = ref}
+                    className="toast-top-right"
+                />
+                <button className="button" onClick={this.openModal}>
+                    Support
+                </button>
+                <Popup
+                    open={this.state.open}
+                    closeOnDocumentClick
+                    onClose={this.closeModal}
+                >
+                    <div className="modal">
+                        <a className="close" onClick={this.closeModal}>
+                            &times;
                     </a>
-                            <div className="content">
-                                <form onSubmit={(e) => this.onSubmit(e)}>
-                                    <div className="form-group">
-                                        <div className="column-container">
-                                            <div className="col-12 form-field">
-                                                <label htmlFor="name">Full Name</label>
-                                                <input type="text"
-                                                    className="form-control whiteBg"
-                                                    onChange={(e) => this.onFieldChange(e)}
-                                                    id="name"
-                                                    value={this.state.name} />
-                                            </div>
-
-                                            <div className="col-12 form-field">
-                                                <label htmlFor="email">Email addresse</label>
-                                                <input type="email"
-                                                    className="form-control whiteBg"
-                                                    id="email"
-                                                    onChange={(e) => this.onFieldChange(e)}
-                                                    value={this.state.email} />
-                                            </div>
-                                            <div className="col-12 form-field">
-                                                <label htmlFor="subject">Subject</label>
-                                                <input type="text"
-                                                    className="form-control whiteBg"
-                                                    value={this.state.subject}
-                                                    onChange={(e) => this.onFieldChange(e)}
-                                                    name="website"
-                                                    id="subject" />
-                                            </div>
-                                            <div className="col-12 form-field">
-                                                <label htmlFor="message">Message</label>
-                                                <textarea
-                                                    className="form-control whiteBg"
-                                                    value={this.state.message}
-                                                    onChange={(e) => this.onFieldChange(e)}
-                                                    name="message" id="message"></textarea>
-                                            </div>
-
-
-                                            <div className="col-12">
-                                                <button className="magento-btn">Send</button>
-                                            </div>
+                        <div className="content">
+                            <form onSubmit={(e) => this.onSubmit(e)}>
+                                <div className="form-group">
+                                    <div className="column-container">
+                                        <div className="col-12 form-field">
+                                            <label htmlFor="name">Full Name</label>
+                                            <input type="text"
+                                                className="form-control whiteBg"
+                                                onChange={(e) => this.onFieldChange(e)}
+                                                id="name"
+                                                value={this.state.name} />
                                         </div>
 
+                                        <div className="col-12 form-field">
+                                            <label htmlFor="email">Email addresse</label>
+                                            <input type="email"
+                                                className="form-control whiteBg"
+                                                id="email"
+                                                onChange={(e) => this.onFieldChange(e)}
+                                                value={this.state.email} />
+                                        </div>
+                                        <div className="col-12 form-field">
+                                            <label htmlFor="subject">Subject</label>
+                                            <input type="text"
+                                                className="form-control whiteBg"
+                                                value={this.state.subject}
+                                                onChange={(e) => this.onFieldChange(e)}
+                                                name="website"
+                                                id="subject" />
+                                        </div>
+                                        <div className="col-12 form-field">
+                                            <label htmlFor="message">Message</label>
+                                            <textarea
+                                                className="form-control whiteBg"
+                                                value={this.state.message}
+                                                onChange={(e) => this.onFieldChange(e)}
+                                                name="message" id="message"></textarea>
+                                        </div>
+                                        <div className="col-12">
+                                            <button className="magento-btn">Send</button>
+                                        </div>
                                     </div>
-                                </form>
-                            </div>
+
+                                </div>
+                            </form>
                         </div>
-                    )}
+                    </div>
                 </Popup>
             </div>
         );

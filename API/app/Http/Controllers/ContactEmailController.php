@@ -20,9 +20,9 @@ class ContactEmailController extends Controller
                 'email' => 'required|max:255',
                 'name' => 'required|max:255',
                 'subject' => 'required|max:255',
-                'subject' => 'required|max:255',
                 'message' => 'required',
             ]);
+
 
             if ($validation->fails()) {
                 $errors = $validation->errors();

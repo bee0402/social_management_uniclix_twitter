@@ -19,9 +19,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'role_id', 'username', 'password', 
+        'name', 'email', 'role_id', 'username', 'password',
         'on_board_step',
         'website', 'timezone', 'usage_reason', 'trial_ends_at', 'ends_at',
+        'addresse', 'companyEmail', 'companyPhone', 'location', 'type'
     ];
 
     /**
@@ -68,9 +69,9 @@ class User extends Authenticatable
 
     public function hasPublishPermission($channel)
     {
-        if(!$channel) return false;
+        if (!$channel) return false;
 
-        if($this->id === $channel->user_id) return true;
+        if ($this->id === $channel->user_id) return true;
 
         return $this->memberChannels()->where("channel_id", $channel->id)->where("role", "publisher")->exists();
     }
@@ -79,86 +80,89 @@ class User extends Authenticatable
     {
         $channel = $this->channels()->find($id);
 
-        if(!$channel) {
+        if (!$channel) {
             $channel = $this->memberChannels()->where("channel_id", $id)->first();
-            if($channel) $channel = $channel->channel;
+            if ($channel) $channel = $channel->channel;
         }
 
-        if(!$channel) {
+        if (!$channel) {
             $channel = $this->approverChannels()->where("channel_id", $id)->first();
-            if($channel) $channel = $channel->channel;
+            if ($channel) $channel = $channel->channel;
         }
 
         return $channel;
     }
 
-    public function formattedChannels(){
+    public function formattedChannels()
+    {
 
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
 
-        if($channels = $this->channels()->get()){
+        if ($channels = $this->channels()->get()) {
 
-            return collect($channels)->map(function($channel) use ($selectedChannel, $selectedTwitterChannel) {
+            return collect($channels)->map(function ($channel) use ($selectedChannel, $selectedTwitterChannel) {
 
-                    $channel->details = @$channel->details;
-                    $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
-                    if($channel->details){
-                        if($channel->details->account_type != "page" && $channel->type != "linkedin"){
-                            $avatar = @$channel->details->getAvatar();
-                        }
-                        $channel->details->payload = @unserialize($channel->details->payload);
-                        $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
-                        $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
-                        $channel->name = @$channel->details->payload->name;
-                        $channel->username = @$channel->details->payload->nickname;
+                $channel->details = @$channel->details;
+                $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
+                if ($channel->details) {
+                    if ($channel->details->account_type != "page" && $channel->type != "linkedin") {
+                        $avatar = @$channel->details->getAvatar();
                     }
+                    $channel->details->payload = @unserialize($channel->details->payload);
+                    $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
+                    $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
+                    $channel->name = @$channel->details->payload->name;
+                    $channel->username = @$channel->details->payload->nickname;
+                }
 
-                    return $channel;
-                });
+                return $channel;
+            });
         }
 
         return [];
     }
 
-    public function formattedMemberChannels($markSelected = false){
+    public function formattedMemberChannels($markSelected = false)
+    {
         $selectedChannel = $this->selectedChannel();
         $selectedTwitterChannel = $this->selectedTwitterChannel();
-        if($channels = $this->memberChannels()->get()){
+        if ($channels = $this->memberChannels()->get()) {
 
-            return collect($channels)->map(function($channel) use ($markSelected, $selectedChannel, $selectedTwitterChannel){
-                    $permissionLevel = $channel->role;
-                    $teamId = $channel->team_id;
-                    $approverId = $channel->approver_id;
+            return collect($channels)->map(function ($channel) use ($markSelected, $selectedChannel, $selectedTwitterChannel) {
+                $permissionLevel = $channel->role;
+                $teamId = $channel->team_id;
+                $approverId = $channel->approver_id;
 
-                    $channel = $channel->channel;
-                    $channel->details = @$channel->details;
-                    $channel->permissionLevel = $permissionLevel;
-                    $channel->teamId = $teamId;
-                    $channel->approverId = $approverId;
-                    $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
+                $channel = $channel->channel;
+                $channel->details = @$channel->details;
+                $channel->permissionLevel = $permissionLevel;
+                $channel->teamId = $teamId;
+                $channel->approverId = $approverId;
+                $channel->selected = $selectedChannel && $selectedChannel->id == $channel->id ? 1 : 0;
 
-                    if($markSelected) $channel->selected = 1;
+                if ($markSelected) $channel->selected = 1;
 
-                    if($channel->details){
-                        if($channel->details->account_type != "page" && $channel->type != "linkedin"){
-                            $avatar = @$channel->details->getAvatar();
-                        }
-                        $channel->details->payload = @unserialize($channel->details->payload);
-                        $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
-                        $channel->name = @$channel->details->payload->name;
-                        $channel->username = @$channel->details->payload->nickname;
-                        $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
+                if ($channel->details) {
+                    if ($channel->details->account_type != "page" && $channel->type != "linkedin") {
+                        $avatar = @$channel->details->getAvatar();
                     }
+                    $channel->details->payload = @unserialize($channel->details->payload);
+                    $channel->avatar = @$avatar ? @$avatar : @$channel->details->payload->avatar;
+                    $channel->name = @$channel->details->payload->name;
+                    $channel->username = @$channel->details->payload->nickname;
+                    $channel->details->selected = $channel->type == "twitter" && $selectedTwitterChannel->channel_id == $channel->id ? 1 : $channel->details->selected;
+                }
 
-                    return $channel;
-                });
+                return $channel;
+            });
         }
 
         return [];
     }
 
-    public function allFormattedChannels(){
+    public function allFormattedChannels()
+    {
         return $this->formattedChannels()->merge($this->formattedMemberChannels());
     }
 
@@ -169,9 +173,9 @@ class User extends Authenticatable
 
     public function selectedChannel()
     {
-        if($selectedChannelModel = $this->selectedChannelModel()->where("network", "global")->first()){
+        if ($selectedChannelModel = $this->selectedChannelModel()->where("network", "global")->first()) {
             $channel = $this->getChannel($selectedChannelModel->channel_id);
-            if($channel) return $channel;
+            if ($channel) return $channel;
         }
 
         $channelIds = $this->memberChannels()->pluck("channel_id")->merge($this->channels()->pluck("id"));
@@ -204,10 +208,10 @@ class User extends Authenticatable
 
     public function selectedTwitterChannel()
     {
-        if($selectedChannelModel = $this->selectedChannelModel()->where("network", "twitter")->first()){
+        if ($selectedChannelModel = $this->selectedChannelModel()->where("network", "twitter")->first()) {
             $channel = $this->getChannel($selectedChannelModel->channel_id);
 
-            if($channel) return $channel->details;
+            if ($channel) return $channel->details;
         }
 
         return $this->twitterChannels()->first();
@@ -215,10 +219,10 @@ class User extends Authenticatable
 
     public function selectedFacebookChannel()
     {
-        if($selectedChannelModel = $this->selectedChannelModel()->where("network", "facebook")->first()){
+        if ($selectedChannelModel = $this->selectedChannelModel()->where("network", "facebook")->first()) {
             $channel = $this->getChannel($selectedChannelModel->channel_id);
 
-            if($channel) return $channel->details;
+            if ($channel) return $channel->details;
         }
 
         return $this->facebookChannels()->first();
@@ -226,10 +230,10 @@ class User extends Authenticatable
 
     public function selectedLinkedinChannel()
     {
-        if($selectedChannelModel = $this->selectedChannelModel()->where("network", "linkedin")->first()){
+        if ($selectedChannelModel = $this->selectedChannelModel()->where("network", "linkedin")->first()) {
             $channel = $this->getChannel($selectedChannelModel->channel_id);
 
-            if($channel) return $channel->details;
+            if ($channel) return $channel->details;
         }
 
         return $this->linkedinChannels()->first();
@@ -237,10 +241,10 @@ class User extends Authenticatable
 
     public function selectedPinterestChannel()
     {
-        if($selectedChannelModel = $this->selectedChannelModel()->where("network", "pinterest")->first()){
+        if ($selectedChannelModel = $this->selectedChannelModel()->where("network", "pinterest")->first()) {
             $channel = $this->getChannel($selectedChannelModel->channel_id);
 
-            if($channel) return $channel->details;
+            if ($channel) return $channel->details;
         }
 
         return $this->pinterestChannels()->first();

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <p><strong>From,{{$data['name']}} </strong></p>
+    <p><strong>From : {{$data['name']}} </strong></p>
     <br><br>
     <p>{{$data['message']}}</p>
 </body>

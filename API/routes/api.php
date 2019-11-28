@@ -67,7 +67,7 @@ Route::post('/oauth/password/login', 'Auth\OAuthController@login')->name('create
 Route::post('/publish', 'PublishController@publish')->name('publish');
 Route::post('/articles/sync', 'ArticlesController@sync')->name('articles.sync');
 
-Route::post('/send/contact/email', 'ContactEmailController@login');
+Route::post('/send/contact/email', 'ContactEmailController@sendEmail');
 
 Route::prefix("twitter")->group(function () {
 
