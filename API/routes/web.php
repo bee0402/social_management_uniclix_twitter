@@ -119,6 +119,7 @@ Route::middleware(["auth"])->group(function(){
 Route::prefix("sync")->group(function(){
     Route::post('twitter/follower/ids', ['as' => 'sync.follower.ids', 'uses' => 'Twitter\BackgroundController@syncFollowerIds']);
     Route::post('twitter/following/ids', ['as' => 'sync.following.ids', 'uses' => 'Twitter\BackgroundController@syncFollowingIds']);
+    Route::post('twitter/autodm/ids', ['as' => 'sync.autodm.ids', 'uses' => 'Twitter\BackgroundController@SyncAutoDMs']);
     Route::post('/twitter/tweets', ['as' => 'sync.tweets', 'uses' => 'Twitter\BackgroundController@syncTweets']);
     Route::post('/twitter/retweets', ['as' => 'sync.retweets', 'uses' => 'Twitter\BackgroundController@syncRetweets']);
     Route::post('/twitter/likes', ['as' => 'sync.likes', 'uses' => 'Twitter\BackgroundController@syncLikes']);

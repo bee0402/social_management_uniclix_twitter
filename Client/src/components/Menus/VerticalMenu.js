@@ -14,8 +14,13 @@ const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) =
 };
 
 class ProfileInfo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     state = {
-        channelMenu: false
+        channelMenu: false,
+        activeChannels: []
     }
 
     toggleDropdown = () => {
@@ -24,8 +29,17 @@ class ProfileInfo extends React.Component {
         }));
     }
 
+    activeChannels = (channels) => {
+        let activeChannels = channels.filter(channel => {
+            if (channel.details.paid == 1)
+                return channel;
+        });
+
+        return activeChannels;
+    }
+
     render() {
-        const { selectedChannel, channels, selectChannel } = this.props;
+        const { selectedChannel, selectChannel, channels } = this.props;
 
         return (
             <div>
@@ -40,7 +54,7 @@ class ProfileInfo extends React.Component {
                 </div>
 
                 <ProfileSelectionDropDown
-                    channels={channels}
+                    channels={this.activeChannels(channels)}
                     selectChannel={selectChannel}
                     isOpen={this.state.channelMenu}
                 />
@@ -80,7 +94,6 @@ const ProfileSelectionItem = ({ channel, selectChannel }) => (
 );
 
 class MenuItems extends React.Component {
-
     render() {
         const { menuItems } = this.props;
 

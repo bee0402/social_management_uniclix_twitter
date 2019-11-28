@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\Twitter\SyncFollowerIds::class,
+        Commands\Twitter\SyncAutoDMs::class,
         Commands\Twitter\SyncFollowingIds::class,
         Commands\Twitter\SyncTweets::class,
         Commands\Twitter\SyncRetweets::class,
@@ -35,7 +36,7 @@ class Kernel extends ConsoleKernel
             ->everyThirtyMinutes();
 
         $schedule->command('sync:autodm.ids')
-            ->everyThirtyMinutes();
+            ->hourly();
 
         $schedule->command('sync:following.ids')
             ->everyThirtyMinutes();

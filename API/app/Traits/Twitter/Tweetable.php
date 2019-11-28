@@ -63,11 +63,11 @@ trait Tweetable
             return Cache::remember($key, $minutes, function () {
                 $data = $this->getData();
 
-                if($data){
+                if ($data) {
                     return $data->profile_image_url;
                 }
 
-                return public_path()."/images/dummy_profile.png";
+                return public_path() . "/images/dummy_profile.png";
             });
         } catch (\Exception $e) {
             getErrorResponse($e, $this->global);
@@ -128,14 +128,14 @@ trait Tweetable
      */
     public function publishScheduledPost($scheduledPost)
     {
-        try{
+        try {
             $payload = unserialize($scheduledPost->payload);
             $images = $payload['images'];
             $timezone = $payload['scheduled']['publishTimezone'];
 
             $mediaIds = [];
 
-            foreach($images as $image){
+            foreach ($images as $image) {
                 $relativePath = str_replace('storage', 'public', $image['relativePath']);
 
                 $media = ["media" => \Storage::get($relativePath)];
@@ -156,8 +156,7 @@ trait Tweetable
             $scheduledPost->scheduled_at = $now;
             $scheduledPost->scheduled_at_original = Carbon::parse($now)->setTimezone($timezone);
             $scheduledPost->save();
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
 
             $scheduledPost->posted = 0;
             $scheduledPost->status = -1;
@@ -195,7 +194,7 @@ trait Tweetable
     public function DMById($userId, $text)
     {
         $this->setAsCurrentUser();
-        return Twitter::postDm(["user_id" => $userId, "text" => $text, "screen_name"=>"animemasters89"]);
+        return Twitter::postDm(["user_id" => $userId, "text" => $text, "screen_name" => "animemasters89"]);
     }
 
 
@@ -231,7 +230,9 @@ trait Tweetable
 
         // Set the "auth" request option to "oauth" to sign using oauth
         $res = $client->post('direct_messages/events/new.json', ['auth' => 'oauth', 'json' => $dm]);
-
+        $this->followerIds()
+            ->where("user_id", $userId)
+            ->update(['send_message' => true]);
         return json_decode($res->getBody()->getContents());
     }
 
@@ -276,7 +277,7 @@ trait Tweetable
         $this->setAsCurrentUser();
         $params = ["count" => $count, "cursor" => $cursor];
 
-        if($uname){
+        if ($uname) {
             $params["screen_name"] = $uname;
         }
 
@@ -298,7 +299,7 @@ trait Tweetable
 
         $params = ["count" => $count, "cursor" => $cursor];
 
-        if($uname){
+        if ($uname) {
             $params["screen_name"] = $uname;
         }
 
@@ -375,7 +376,7 @@ trait Tweetable
         try {
             $key = $this->id . "-userTimeline-$maxId";
             $minutes = 1;
-            return Cache::remember($key, $minutes, function () use ($params){
+            return Cache::remember($key, $minutes, function () use ($params) {
                 $this->setAsCurrentUser();
                 return Twitter::getUserTimeline($params);
             });
@@ -396,7 +397,7 @@ trait Tweetable
         try {
             $key = $this->id . "-homeTimeline-$maxId";
             $minutes = 1;
-            return Cache::remember($key, $minutes, function () use ($params){
+            return Cache::remember($key, $minutes, function () use ($params) {
                 $this->setAsCurrentUser();
                 return Twitter::getHomeTimeline($params);
             });
@@ -416,7 +417,7 @@ trait Tweetable
         try {
             $key = $this->id . "-mentionsTimeline-$maxId";
             $minutes = 1;
-            return Cache::remember($key, $minutes, function () use ($params){
+            return Cache::remember($key, $minutes, function () use ($params) {
                 $this->setAsCurrentUser();
                 return Twitter::getMentionsTimeline($params);
             });
@@ -425,7 +426,7 @@ trait Tweetable
         }
     }
 
-        /**
+    /**
      * @param array $params
      * @return array
      */
@@ -436,7 +437,7 @@ trait Tweetable
         try {
             $key = $this->id . "-rtsTimeline-$maxId";
             $minutes = 1;
-            return Cache::remember($key, $minutes, function () use ($params){
+            return Cache::remember($key, $minutes, function () use ($params) {
                 $this->setAsCurrentUser();
                 return Twitter::getRtsTimeline($params);
             });
@@ -456,11 +457,11 @@ trait Tweetable
         try {
             $key = $this->id . "-followersTimeline-$maxId";
             $minutes = 1;
-            return Cache::remember($key, $minutes, function () use ($params){
+            return Cache::remember($key, $minutes, function () use ($params) {
                 $this->setAsCurrentUser();
                 $result = Twitter::getFollowers($params);
 
-                if(!property_exists($result, "users")) return [];
+                if (!property_exists($result, "users")) return [];
 
                 return $result->users;
             });
@@ -480,7 +481,7 @@ trait Tweetable
         try {
             $key = $this->id . "-likesTimeline-$maxId";
             $minutes = 1;
-            return Cache::remember($key, $minutes, function () use ($params){
+            return Cache::remember($key, $minutes, function () use ($params) {
                 $this->setAsCurrentUser();
                 return Twitter::getFavorites($params);
             });
@@ -494,31 +495,32 @@ trait Tweetable
      * @param array $params
      * @return array
      */
-    public function getSearch($params = []){
+    public function getSearch($params = [])
+    {
 
-        if(!isset($params["q"])) return [];
+        if (!isset($params["q"])) return [];
         $sinceId = isset($params["since_id"]) ? $params["since_id"] : "";
 
         try {
             $key = $this->id . "-search-{$params['q']}-{$sinceId}-Timeline";
             $minutes = 1;
-            return Cache::remember($key, $minutes, function () use ($params){
+            return Cache::remember($key, $minutes, function () use ($params) {
                 $this->setAsCurrentUser();
                 $result = Twitter::getSearch($params);
 
-                if(!property_exists($result, "statuses")) return [];
+                if (!property_exists($result, "statuses")) return [];
 
                 return $result->statuses;
             });
-
         } catch (\Exception $e) {
             throw $e;
         }
     }
 
-    public function getStatusReplies($username, $tweetId){
-        $results = $this->getSearch(["q"=>"@$username", "since_id"=>$tweetId, "count"=>100]);
-        if(count($results) < 1) return [];
+    public function getStatusReplies($username, $tweetId)
+    {
+        $results = $this->getSearch(["q" => "@$username", "since_id" => $tweetId, "count" => 100]);
+        if (count($results) < 1) return [];
         $results = collect($results)->where("in_reply_to_status_id_str", $tweetId)->values()->toArray();
 
         return $results;
@@ -554,7 +556,8 @@ trait Tweetable
      * @param array $params
      * @return array
      */
-    public function getGeoSearch($params = []){
+    public function getGeoSearch($params = [])
+    {
 
         try {
             $this->setAsCurrentUser();
@@ -568,7 +571,8 @@ trait Tweetable
      * @param array $params
      * @return array
      */
-    public function getGeo($id){
+    public function getGeo($id)
+    {
 
         try {
             $this->setAsCurrentUser();
@@ -764,7 +768,6 @@ trait Tweetable
 
         $perPage = 5000;
         $followersCount = $this->getData()->followers_count; //Gets the twitter data for currently logged in user
-
         /*
          * If sleep is not enabled then only fetch 15 pages to prevent
          * rate limit, otherwise get as many pages as you have followers
@@ -806,9 +809,13 @@ trait Tweetable
                 /*
                  * In case someone follows you back, update the unfollow field to null
                  */
-                $this->followerIds()->whereIn("user_id", $ids)->whereNotNull("unfollowed_you_at")->update(["unfollowed_you_at" => null]);
+                $this->followerIds()
+                    ->whereIn("user_id", $ids)
+                    ->whereNotNull("unfollowed_you_at")
+                    ->update(["unfollowed_you_at" => null]);
 
-                $this->followerIds()->whereNotIn("user_id", $ids)
+                $this->followerIds()
+                    ->whereNotIn("user_id", $ids)
                     ->update(["unfollowed_you_at" => Carbon::now(), "updated_at" => Carbon::now()]);
             }
 
@@ -824,10 +831,13 @@ trait Tweetable
              * Prepare insert parameters for bulk inserting
              */
             $insert = [];
+            $isActvieADM = $this->auto_dm;
+
             foreach ($ids as $id) {
                 $insert[] = [
                     "channel_id" => $this->id,
                     "user_id" => $id,
+                    "send_message" => !$isActvieADM,
                     "created_at" => Carbon::now(),
                     "updated_at" => Carbon::now(),
                 ];
@@ -856,6 +866,44 @@ trait Tweetable
             }
         }
     }
+
+
+
+
+    /**
+     * Compares and synchronizes ids stored in the database
+     * against the ids that are fetched out.
+     * @param int $sleep
+     * @param bool $logCursor
+     */
+    public function SyncAutoDMs($sleep = 60, $logCursor = false)
+    {
+        /*
+         * If $logCursor is not enabled, it will always start from the first page
+         * and continue to the next one in order
+         */
+
+        $text = \DB::table('twitter_direct_messages')
+            ->select("message", "active")
+            ->where("active", true)
+            ->where('channel_id',  $this->id)
+            ->first();
+
+        /*
+             * Search for duplicate ids to prevent storing them twice
+             */
+        $followerIds = $this
+            ->followerIds()
+            ->where('send_message', false)
+            ->pluck('user_id');
+            
+        if ($text) {
+            foreach ($followerIds as $followers) {
+                $this->DM($followers, $text->message);
+            }
+        }
+    }
+
 
 
     /**
@@ -977,14 +1025,14 @@ trait Tweetable
      */
     public function syncTweets()
     {
-        $lookUpTweets = \DB::table('twitter_tweets')->where('channel_id',$this->id)->take(300)->pluck('tweet_id')->toArray();
+        $lookUpTweets = \DB::table('twitter_tweets')->where('channel_id', $this->id)->take(300)->pluck('tweet_id')->toArray();
 
         $deletedIds = [];
 
         foreach (array_chunk($lookUpTweets, 100) as $chunk) {
             $results = $this->tweetLookup(["id" => $chunk]);
 
-            if(!$results) continue;
+            if (!$results) continue;
 
             $lookUpIds = collect($results)->pluck('id')->toArray();
 
@@ -993,26 +1041,24 @@ trait Tweetable
             $deletedIds = array_merge($deletedIds, $diffIds);
         }
 
-        if($deletedIds)
-        {
-            \DB::table('twitter_tweets')->whereIn('tweet_id',$deletedIds)->delete();
+        if ($deletedIds) {
+            \DB::table('twitter_tweets')->whereIn('tweet_id', $deletedIds)->delete();
             die();
         }
 
         $tweets = $this->getTweets();
 
-        if(!$tweets) return;
+        if (!$tweets) return;
 
         $ids = collect($tweets)->pluck('id');
 
-        $existingIds = \DB::table('twitter_tweets')->whereIn('tweet_id',$ids)->pluck('tweet_id');
+        $existingIds = \DB::table('twitter_tweets')->whereIn('tweet_id', $ids)->pluck('tweet_id');
 
-        $filterTweets = collect($tweets)->whereNotIn('id',$existingIds);
+        $filterTweets = collect($tweets)->whereNotIn('id', $existingIds);
 
         $data = [];
 
-        foreach($filterTweets as $tweet)
-        {
+        foreach ($filterTweets as $tweet) {
             $data[] = [
                 'channel_id' => $this->id,
                 'tweet_id' => $tweet->id,
@@ -1022,11 +1068,9 @@ trait Tweetable
             ];
         }
 
-        if($filterTweets)
-        {
+        if ($filterTweets) {
             \DB::table('twitter_tweets')->insert($data);
         }
-
     }
 
     /**
@@ -1037,14 +1081,14 @@ trait Tweetable
      */
     public function syncRetweets()
     {
-        $lookUpTweets = \DB::table('twitter_retweets')->where('channel_id',$this->id)->take(300)->pluck('tweet_id')->toArray();
+        $lookUpTweets = \DB::table('twitter_retweets')->where('channel_id', $this->id)->take(300)->pluck('tweet_id')->toArray();
 
         $deletedIds = [];
 
         foreach (array_chunk($lookUpTweets, 100) as $chunk) {
             $results = $this->tweetLookup(["id" => $chunk]);
 
-            if(!$results) continue;
+            if (!$results) continue;
 
             $lookUpIds = collect($results)->pluck('id')->toArray();
 
@@ -1053,26 +1097,24 @@ trait Tweetable
             $deletedIds = array_merge($deletedIds, $diffIds);
         }
 
-        if($deletedIds)
-        {
-            \DB::table('twitter_retweets')->whereIn('tweet_id',$deletedIds)->delete();
+        if ($deletedIds) {
+            \DB::table('twitter_retweets')->whereIn('tweet_id', $deletedIds)->delete();
             die();
         }
 
         $retweets = $this->getRetweets();
 
-        if(!$retweets) return;
+        if (!$retweets) return;
 
         $ids = collect($retweets)->pluck('id');
 
-        $existingIds = \DB::table('twitter_retweets')->whereIn('tweet_id',$ids)->pluck('tweet_id');
+        $existingIds = \DB::table('twitter_retweets')->whereIn('tweet_id', $ids)->pluck('tweet_id');
 
-        $filterTweets = collect($retweets)->whereNotIn('id',$existingIds);
+        $filterTweets = collect($retweets)->whereNotIn('id', $existingIds);
 
         $data = [];
 
-        foreach($filterTweets as $tweet)
-        {
+        foreach ($filterTweets as $tweet) {
             $data[] = [
                 'channel_id' => $this->id,
                 'tweet_id' => $tweet->id,
@@ -1082,11 +1124,9 @@ trait Tweetable
             ];
         }
 
-        if($filterTweets)
-        {
+        if ($filterTweets) {
             \DB::table('twitter_retweets')->insert($data);
         }
-
     }
 
     /**
@@ -1097,43 +1137,40 @@ trait Tweetable
      */
     public function syncLikes()
     {
-        $lookUpTweets = \DB::table('twitter_likes')->where('channel_id',$this->id)->take(300)->pluck('tweet_id')->toArray();
+        $lookUpTweets = \DB::table('twitter_likes')->where('channel_id', $this->id)->take(300)->pluck('tweet_id')->toArray();
 
         $deletedIds = [];
 
         foreach (array_chunk($lookUpTweets, 100) as $chunk) {
             $results = $this->tweetLookup(["id" => $chunk]);
 
-            if(!$results) continue;
+            if (!$results) continue;
 
-            $lookUpIds = collect($results)->where('favorited',true)->pluck('id')->toArray();
+            $lookUpIds = collect($results)->where('favorited', true)->pluck('id')->toArray();
 
             $diffIds = array_diff($chunk, $lookUpIds);
 
             $deletedIds = array_merge($deletedIds, $diffIds);
-
         }
 
-        if($deletedIds)
-        {
-            \DB::table('twitter_likes')->whereIn('tweet_id',$deletedIds)->delete();
+        if ($deletedIds) {
+            \DB::table('twitter_likes')->whereIn('tweet_id', $deletedIds)->delete();
             die();
         }
 
         $tweets = $this->getLikes();
 
-        if(!$tweets) return;
+        if (!$tweets) return;
 
         $ids = collect($tweets)->pluck('id');
 
-        $existingIds = \DB::table('twitter_likes')->whereIn('tweet_id',$ids)->pluck('tweet_id');
+        $existingIds = \DB::table('twitter_likes')->whereIn('tweet_id', $ids)->pluck('tweet_id');
 
-        $filterTweets = collect($tweets)->whereNotIn('id',$existingIds);
+        $filterTweets = collect($tweets)->whereNotIn('id', $existingIds);
 
         $data = [];
 
-        foreach($filterTweets as $tweet)
-        {
+        foreach ($filterTweets as $tweet) {
             $data[] = [
                 'channel_id' => $this->id,
                 'tweet_id' => $tweet->id,
@@ -1143,10 +1180,8 @@ trait Tweetable
             ];
         }
 
-        if($filterTweets)
-        {
+        if ($filterTweets) {
             \DB::table('twitter_likes')->insert($data);
         }
-
     }
 }

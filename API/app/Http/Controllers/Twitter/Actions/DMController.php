@@ -93,8 +93,14 @@ class DMController extends Controller
             $message = $request->input('message');
 
             if ($channel) {
+                try {
+                    AutoDM::where('channel_id', $channelId)->update(['active' => 0]);
+                } catch (\Exception $e) {
+                    //throw $th;
+                }
                 $autoDm = new AutoDM();
                 $autoDm->channel_id = $channelId;
+                $autoDm->active = true;
                 $autoDm->message = $message;
                 $autoDm->save();
                 return response()->json(["success" => true, "message" => "Auto response message is saved successfully!"]);
@@ -106,13 +112,14 @@ class DMController extends Controller
         }
     }
 
-    public function getMyAutoDm(Request $request)
+    public function getMyAutoDm()
     {
         try {
             $channel = $this->selectedChannel;
             $date = $channel->autoDMs($channel->id)
-                ->pluck("message")
-                ->toArray();
+                ->select("message", "active", "id")
+                ->orderBy('id', 'desc')
+                ->get();
 
             return response()->json(["success" => true, "data" => $date]);
         } catch (\Exception $e) {

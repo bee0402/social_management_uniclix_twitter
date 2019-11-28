@@ -10,6 +10,7 @@ class FollowerId extends Model
     protected $fillable = [
         "channel_id",
         "user_id",
+        "send_message",
         "unfollowed_at",
         "unfollowed_you_at",
         "created_at",

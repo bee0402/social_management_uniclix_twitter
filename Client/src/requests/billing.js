@@ -29,6 +29,13 @@ export const createSubscription = (token) => {
         });
 }
 
+export const updateSubscription = (token) => {
+    return axios.post(`${apiUrl}/billing/subscription/update`, { token })
+        .then((response) => {
+            return response.data;
+        });
+}
+
 export const getPlans = () => {
     return axios.get(`${apiUrl}/billing/plans`)
         .then((response) => {

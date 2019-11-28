@@ -30,10 +30,11 @@ export const selectChannel = (id) => {
         });
 };
 
-export const addChannel = (accessToken, accessTokenSecret) => {
+export const addChannel = (accessToken, accessTokenSecret, permanent) => {
     return axios.post(`${apiUrl}/twitter/channels/add`, {
         oauth_token: accessToken,
-        oauth_token_secret: accessTokenSecret
+        oauth_token_secret: accessTokenSecret,
+        permanent: permanent
     }).then((response) => {
         return response.data;
     });

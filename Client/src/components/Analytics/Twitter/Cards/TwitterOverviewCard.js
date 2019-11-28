@@ -27,12 +27,12 @@ class TwitterOverviewCard extends React.Component {
     fetchAnalytics = () => {
         const { selectedAccount, type } = this.props
 
-        let endDate = new Date();
+        let endDate = new Date().getTime();;
         let startDate = new Date();
         startDate.setDate(startDate.getDate() - 7)
-
+        let startDateInt = startDate.getTime();
         try {
-            pageInsightsByType(selectedAccount, startDate, endDate, type)
+            pageInsightsByType(selectedAccount, startDateInt, endDate, type)
                 .then((response) => {
                     this.setState({
                         count: response,
@@ -80,7 +80,7 @@ class TwitterOverviewCard extends React.Component {
         return (
             <div className="overview-card analytics-card">
                 <div className="analytic-card-body">
-                    <div className="analytic-column col-md-6">
+                    <div className="analytic-column col-md-12">
                         <div className="analytic-stats">
                             {
                                 iconPath ? <img src={iconPath} /> :
@@ -96,13 +96,13 @@ class TwitterOverviewCard extends React.Component {
                     </div>
 
 
-                    <div className="analytic-column col-md-6">
+                    {/* <div className="analytic-column col-md-6">
                         <div>
                             <img src={`/images/stat-line.svg`} />
                         </div>
 
                         <p><span>+{this.state.count}</span> this week</p>
-                    </div>
+                    </div> */}
                     <NavLink to={link}>
                         {description}
                     </NavLink>

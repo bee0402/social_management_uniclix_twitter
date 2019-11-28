@@ -64,10 +64,10 @@ class Middleware extends React.Component {
                 if (this.props.channels.length < 1) {
                     this.props.setMiddleware("channels");
                     return;
+                }else{
+                    this.props.setMiddleware('hashtag');
+                    this.setState({loading: false})
                 }
-
-                this.props.setMiddleware('hashtag');
-                this.setState({loading: false})
             }
         }
     }
@@ -116,7 +116,6 @@ class Middleware extends React.Component {
         }
 
         if (addon) {
-            console.log(addon, 'addon');
             activateAddon(addon).then(response => {
                 this.props.startSetProfile();
             });
@@ -133,17 +132,22 @@ class Middleware extends React.Component {
 
     onTwitterSuccess = (response) => {
         this.setState(() => ({ loading: true }));
-
         try {
             response.json().then(body => {
                 this.props.startAddTwitterChannel(body.oauth_token, body.oauth_token_secret)
                     .then(response => {
                         this.setState(() => ({ loading: false }));
-                    }).catch(error => {
-                        this.setState(() => ({ loading: false }));
+                    })
+                    .catch(error => {
                         if (error.response.status === 403) {
                             this.setForbidden(true);
-                        } else {
+                            return;
+                        }
+    
+                        if (error.response.status === 409) {
+                            this.setError("This twitter account is already registered from another uniclix account.");
+                        }
+                        else {
                             this.setError("Something went wrong!");
                         }
                     });
@@ -197,7 +201,6 @@ class Middleware extends React.Component {
 
                 <div className="col-md-7 col-xs-12 text-center">
                     <div className="col-xs-12 text-center">
-
                         {middleware == "channels" &&
                             <div className="box channels-box">
                                 {middleware !== "loading" && <h2>Connect your Twitter account</h2>}
@@ -226,7 +229,8 @@ class Middleware extends React.Component {
                                     }
 
                                     <TwitterLogin loginUrl={twitterAccessTokenUrl}
-                                        onFailure={this.onFailure} onSuccess={this.onTwitterSuccess}
+                                        onFailure={this.onFailure} 
+                                        onSuccess={this.onTwitterSuccess}
                                         requestTokenUrl={twitterRequestTokenUrl}
                                         showIcon={false}
                                         forceLogin={true}

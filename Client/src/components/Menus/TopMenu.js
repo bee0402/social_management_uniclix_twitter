@@ -6,12 +6,16 @@ import { setComposerModal } from "../../actions/composer";
 import { startLogout } from "../../actions/auth";
 import { withRouter } from "react-router";
 
-const TopMenu = ({ logout, profile, props }) => (
+const calcTrialDays = (user) => {
+    let msDiff = new Date(user.trial_ends_at).getTime() - new Date().getTime();    //Future date - current date
+    var daysToTheEnd = Math.floor(msDiff / (1000 * 60 * 60 * 24));
+    return daysToTheEnd >= 0 ? daysToTheEnd + 1 : 0
+}
 
+const TopMenu = ({ logout, profile, props }) => (
     <div className="navbar-wrap">
         <div className="navbar-uniclix">
             <a href={backendUrl} className="brand"><img src="/images/uniclix.png" /></a>
-
             <ul className="top-menu">
                 <li>
                     <NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink>
@@ -42,12 +46,13 @@ const TopMenu = ({ logout, profile, props }) => (
             </div>
         </div>
         {!!profile.subscription ?
-            (profile.subscription.activeSubscription ?
-                <div className="top-alert"><span>You have {profile.role.trial_days} days remaining on your Twitter Booster trial.</span>
+            (!profile.subscription.activeSubscription &&
+                <div className="top-alert"><span>You have {calcTrialDays(profile.user)} days remaining on your Twitter Booster trial.</span>
                     Add your billing information now to start your subscription.
-         <button className="btn-text-pink" onClick={() => props.history.push('/twitter-booster/manage-accounts')}>Start subscription</button>
+         <button className="btn-text-pink" onClick={() => props.history.push('/twitter-booster/manage-accounts')}>
+                        {calcTrialDays(profile.user) > 0 ? 'Start subscription' : "Upgrade Account"}
+             </button>
                 </div>
-                : ""
             ) : ""
         }
     </div>

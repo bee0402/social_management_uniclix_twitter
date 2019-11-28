@@ -4,6 +4,7 @@ import { isValid } from 'cc-validate';
 import Picker from 'react-month-picker'
 import GeoSuggest from "react-geosuggest";
 import SweetAlert from "sweetalert2-react";
+import { startSetProfile } from "../../actions/profile";
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
 import channelSelector from "../../selectors/channels";
 import { logout } from "../../actions/auth";
@@ -33,12 +34,13 @@ class Checkout extends React.Component {
         loading: false,
         validClaasCvv: "",
         shouldBlockNavigation: true,
+        newAccounts: 0,
+        actualUsers: 0,
         form: {
             cardnumber: '',
             cvc: '',
             exp_month: '',
             exp_year: '',
-
             exp_date: '',
             name: '',
             last_name: '',
@@ -61,11 +63,20 @@ class Checkout extends React.Component {
             }
         })
     }
+
     componentDidMount() {
         this.activeYears();
         this.loadStripe();
+        this.accountsBilling();
     }
 
+    accountsBilling = () => {
+        this.setState({ loading: true })
+        this.setState({
+            newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
+            actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+        })
+    }
     loadStripe = () => {
         if (!window.document.getElementById('stripe-script')) {
             var s = window.document.createElement("script");
@@ -109,6 +120,7 @@ class Checkout extends React.Component {
             e.returnValue = true;
         }
     }
+
     onDateChange = (e) => {
 
     }
@@ -129,6 +141,7 @@ class Checkout extends React.Component {
         }
 
     }
+
     onLocationsFieldChange = (location) => {
         this.setState(() => ({
             form: {
@@ -148,6 +161,7 @@ class Checkout extends React.Component {
             }
         })
     };
+
     activeYears = () => {
         const todayDate = new Date();
         const year = todayDate.getFullYear();
@@ -160,9 +174,14 @@ class Checkout extends React.Component {
             loading: true
         })
     }
+
     handleClickMonthBox = (e) => {
         this.refs.pickAMonth.show()
     }
+    handleClickMonthBoxHidde = (e) => {
+        this.refs.pickAMonth.hidde()
+    }
+
     ConfirmOrder = (e) => {
         e.preventDefault();
 
@@ -194,14 +213,18 @@ class Checkout extends React.Component {
 
     onToken = (token) => {
         token.plan = "twitter-booster"
-        token.trialDays = 3
+        token.trialDays = 0
+        token.created = new Date().getTime();
         token.subType = "main"
         createSubscription(token).then(response => {
-            this.setState({
-                loading: true,
-                orderFinished: true
-            });
-            console.log(response)
+            this.props.startSetChannels().then(res => {
+                this.props.startSetProfile().then(res => {
+                    this.setState({
+                        loading: true,
+                        orderFinished: true
+                    });
+                });
+            })
         }).catch(e => {
             console.log(e)
             this.setState({
@@ -212,8 +235,8 @@ class Checkout extends React.Component {
     }
 
     render() {
-        const { validClaas, form, locations, years, loading, orderFinished } = this.state
-        const location = form.location;
+        const { validClaas, form, years, loading, orderFinished, newAccounts, actualUsers } = this.state
+        // const location = form.location;
         const todayDate = new Date();
         const minumumYear = todayDate.getFullYear();
         const minumumMonth = todayDate.getMonth();
@@ -287,7 +310,10 @@ class Checkout extends React.Component {
                                                         onChange={(e) => this.onDateChange(e)}
                                                         value={form.exp_date}
                                                         onClick={this.handleClickMonthBox}
+                                                        onFocus={this.handleClickMonthBox}
+                                                        onBlur={this.handleClickMonthBoxHidde}
                                                         name="exp_date"
+                                                        autoComplete={"off"}
                                                         maxLength="9"
                                                         placeholder="MM/DD" />
                                                 </Picker>
@@ -309,6 +335,8 @@ class Checkout extends React.Component {
                                                 <label className="switch round">
                                                     <input type="checkbox" defaultChecked='checked' onChange={(e) => this.activateDm(e)} />
                                                     <span className="slider round"></span>
+                                                    <p className={"off"}>Off</p>
+                                                    <p className={"on"}>On</p>
                                                 </label>
                                             </p>
                                         </div>
@@ -342,18 +370,23 @@ class Checkout extends React.Component {
                                                     placeholder="City" />
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
-                                                <GeoSuggest
+                                                {/* <GeoSuggest
+                                                    types={['(regions)']}
                                                     className="col-12"
                                                     inputClassName="form-control whiteBg"
                                                     placeholder="Country"
                                                     onSuggestSelect={this.onLocationsFieldChange}
                                                     initialValue={location && location.label}
                                                     disabled={locations.length >= 5 ? true : false}
-                                                />
-                                                <input type="hidden" id="website" readOnly={true}
-                                                    value={this.state.locations.map(location => ` ${location.label}`)}
-                                                    onClick={this.toggleLocationsModal}
-                                                    placeholder="New York City, Amsterdam, Venice..." />
+                                                /> */}
+                                                <input
+                                                    className={'form-control whiteBg '}
+                                                    id="location"
+                                                    name="location"
+                                                    onChange={(e) => this.onFieldChange(e)}
+                                                    value={form.location}
+                                                    // onClick={this.toggleLocationsModal}
+                                                    placeholder="Country" />
 
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
@@ -371,24 +404,28 @@ class Checkout extends React.Component {
                                             <h3>Order summary</h3>
 
                                             <div className="plan-content table">
-                                                <div className="row-price">
-                                                    <div className="col-price">
-                                                        <p className="plan-content-description">Current price</p>
-                                                        <p className="plan-content-accounts">x{this.props.channels.length} accounts</p>
+                                                {actualUsers > 0 &&
+                                                    <div className="row-price">
+                                                        <div className="col-price">
+                                                            <p className="plan-content-description">Current price</p>
+                                                            <p className="plan-content-accounts">x{actualUsers} accounts</p>
+                                                        </div>
+                                                        <div className="col-price">
+                                                            <p className="price">$10</p>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-price">
-                                                        <p className="price">$10</p>
-                                                    </div>
-                                                </div>
+                                                }
                                                 <br />
-                                                <div className="row-price new-accounts">
-                                                    <div className="col-price">
-                                                        <p className="plan-content-accounts">x2 accounts</p>
+                                                {newAccounts > 0 &&
+                                                    <div className="row-price new-accounts">
+                                                        <div className="col-price">
+                                                            <p className="plan-content-accounts">x{newAccounts} accounts</p>
+                                                        </div>
+                                                        <div className="col-price">
+                                                            <p className="price">${newAccounts * 10}</p>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-price">
-                                                        <p className="price">$20</p>
-                                                    </div>
-                                                </div>
+                                                }
                                             </div>
                                             <div className="order-total table">
                                                 <div className="row-price">
@@ -397,7 +434,7 @@ class Checkout extends React.Component {
                                                         <p className="plan-content-accounts">Monthly</p>
                                                     </div>
                                                     <div className="col-price">
-                                                        <p className="price">$30</p>
+                                                        <p className="price">${(newAccounts + actualUsers) * 10}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -424,15 +461,18 @@ const mapStateToProps = (state) => {
 
     const twitterChannelsFilter = { selected: undefined, provider: "twitter" };
     const channels = channelSelector(state.channels.list, twitterChannelsFilter);
+    const profile = state.profile
     return {
         channels,
-        loading: state.channels.loading
+        loading: state.channels.loading,
+        profile
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
     startAddTwitterChannel: (accessToken, accessTokenSecret) => dispatch(startAddTwitterChannel(accessToken, accessTokenSecret)),
     startSetChannels: () => dispatch(startSetChannels()),
+    startSetProfile: () => dispatch(startSetProfile()),
     logout: () => dispatch(logout())
 });
 

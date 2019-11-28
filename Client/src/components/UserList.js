@@ -100,10 +100,6 @@ class UserList extends React.Component {
             reloadTargets = () => { },
             targetType = "account",
             targets = [],
-            showSortOption = false,
-            actionType = "follow",
-            actions = 0,
-            fetchData = (order = 'desc') => { },
             page,
             noData
         } = this.props;
@@ -125,9 +121,7 @@ class UserList extends React.Component {
         );
 
         return (
-
             <div>
-
                 <ToastContainer
                     ref={ref => toastContainer = ref}
                     className="toast-top-right"
@@ -141,15 +135,11 @@ class UserList extends React.Component {
                 />
 
                 {userItems.length < 1 ?
-
                     (loading ? <Loader />
                         :
                         (showTargetLink ?
-
                             targetSearchView
-
                             :
-
                             <SocialAccountsPrompt
                                 image="/images/no-data.svg"
                                 title={noData.title}
@@ -185,7 +175,6 @@ class UserList extends React.Component {
                     )
                 }
             </div>
-
         );
     }
 }
@@ -414,7 +403,7 @@ class UserItem extends React.Component {
                                 showImagesIcon={false}
                                 showHashtagsIcon={false}
                                 inclisive={true}
-                                sendAction={() => this.dm(userItem.screen_name)}
+                                sendAction={() => this.dm(userItem.id_str)}
                             />
                         </div>
                     </div>
@@ -428,13 +417,13 @@ class UserItem extends React.Component {
 const UserActionButtons = ({ actionButton, perform, replyState, setReplyState, setDMState, DMState, userItem, page }) => (
     <div className="item-actions pull-right">
 
-        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/reply-regular.svg`} onClick={() => { setReplyState({ disabled: !replyState.disabled, content: `@${userItem.screen_name} ` }); close(); }} />}
-        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/envelope-regular.svg`} onClick={() => { setDMState({ disabled: !DMState.disabled, content: `` }); close(); }} />}
+        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/reply-regular.svg`} onClick={() => { setReplyState({ disabled: !replyState.disabled, content: `@${userItem.screen_name} ` }); }} />}
+        {(actionButton.action == "add" || page == "following") && <img className="user-action" src={`/images/envelope-regular.svg`} onClick={() => { setDMState({ disabled: !DMState.disabled, content: `` }); }} />}
         {!!actionButton &&
             actionButton.action == "add" ?
-            <img onClick={() => { perform(); close(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
+            <img onClick={() => { perform(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
             :
-            <img onClick={() => { perform(); close(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
+            <img onClick={() => { perform(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${actionButton.disabled ? 'disabled-btn' : ''}`} />
         }
     </div>
 );

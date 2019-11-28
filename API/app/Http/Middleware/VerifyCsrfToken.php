@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'sync/twitter/following/ids',
         'sync/twitter/follower/ids',
+        'sync/twitter/autodm/ids',
         'sync/twitter/tweets',
         'sync/twitter/retweets',
         'sync/twitter/likes',

@@ -174,7 +174,7 @@ class UserItem extends React.Component {
         const { userItem, index } = this.props
         const { buttonState } = this.state;
         return (
-            <div className={`item-row clearfix`} key={index}>
+            <div className={`item-row clearfix ${buttonState.disabled ? 'disabled-btn' : ''}`} key={index}>
                 <div className="profile-info">
                     <div className="user-info">
                         <img src={userItem.profile_image_url} />
@@ -194,9 +194,9 @@ class UserItem extends React.Component {
                     <div className="item-actions pull-right">
                         {!!buttonState &&
                             buttonState.action == "add" ?
-                            <img onClick={() => { this.perform(); close(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
+                            <img onClick={() => { this.perform(); }} src={`/images/user-plus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
                             :
-                            <img onClick={() => { this.perform(); close(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
+                            <img onClick={() => { this.perform(); }} src={`/images/user-minus-regular.svg`} className={`user-action ${buttonState.disabled ? 'disabled-btn' : ''}`} />
                         }
                     </div>
                 </div>

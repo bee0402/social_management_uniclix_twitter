@@ -36,8 +36,8 @@ class Channel extends Model
         return $this->details()->first()->getData();
     }
 
-    public function scheduledPosts(){
-        
+    public function scheduledPosts()
+    {
         return $this->hasMany(ScheduledPost::class);
     }
 }
