@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->group(function(){
+
+Route::middleware('auth:api')->group(function () {
     Route::post('/profile', 'ProfileController@update');
     Route::get('/profile', 'ProfileController@profile');
 
@@ -65,14 +66,16 @@ Route::post('/oauth/password/login', 'Auth\OAuthController@login')->name('create
 Route::post('/publish', 'PublishController@publish')->name('publish');
 Route::post('/articles/sync', 'ArticlesController@sync')->name('articles.sync');
 
-Route::prefix("twitter")->group(function(){
+Route::post('/send/contact/email', 'ContactEmailController@login');
+
+Route::prefix("twitter")->group(function () {
 
     //Twitter login
     Route::get("login", "Twitter\AuthController@login")->name("api.twitter.login");
     Route::post("access", "Twitter\AuthController@access")->name("api.twitter.access");
     Route::post("reverse", "Twitter\AuthController@reverse")->name("api.twitter.reverse");
 
-    Route::middleware('auth:api')->group(function(){
+    Route::middleware('auth:api')->group(function () {
         Route::get('dashboard', 'Twitter\DashboardController@index');
         Route::get('analytics', 'Twitter\AnalyticsController@index');
         Route::patch('channels/select/{id}', 'Twitter\ChannelController@select');
@@ -119,9 +122,9 @@ Route::prefix("twitter")->group(function(){
     });
 });
 
-Route::prefix("facebook")->group(function(){
+Route::prefix("facebook")->group(function () {
 
-    Route::middleware('auth:api')->group(function(){
+    Route::middleware('auth:api')->group(function () {
         Route::post('channels/add', 'Facebook\ChannelController@add');
         Route::get('channels/accounts', 'Facebook\ChannelController@getAccounts');
         Route::post('channels/accounts/save', 'Facebook\ChannelController@saveAccounts');
@@ -147,10 +150,10 @@ Route::prefix("facebook")->group(function(){
     });
 });
 
-Route::prefix("linkedin")->group(function(){
+Route::prefix("linkedin")->group(function () {
     Route::get('callback', 'Linkedin\AuthController@accessToken');
 
-    Route::middleware('auth:api')->group(function(){
+    Route::middleware('auth:api')->group(function () {
         Route::post('channels/add', 'Linkedin\ChannelController@add');
         Route::get('channels/pages', 'Linkedin\ChannelController@getPages');
         Route::post('channels/pages/save', 'Linkedin\ChannelController@savePages');
@@ -158,10 +161,10 @@ Route::prefix("linkedin")->group(function(){
     });
 });
 
-Route::prefix("pinterest")->group(function(){
+Route::prefix("pinterest")->group(function () {
     Route::get('callback', 'Pinterest\AuthController@accessToken');
 
-    Route::middleware('auth:api')->group(function(){
+    Route::middleware('auth:api')->group(function () {
         Route::post('channels/add', 'Pinterest\ChannelController@add');
         Route::get('channels/boards', 'Pinterest\ChannelController@getBoards');
     });
