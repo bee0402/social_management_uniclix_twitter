@@ -13,6 +13,8 @@ import UpgradeAlert from "../UpgradeAlert";
 import CongratsPayment from "./CongratsPayment";
 import { createSubscription } from '../../requests/billing';
 import { stripePublishableKey } from '../../config/api';
+import Countries from "../../fixtures/country";
+import { getKeywordTargets } from '../../requests/twitter/channels';
 
 class Checkout extends React.Component {
     constructor(props) {
@@ -26,18 +28,19 @@ class Checkout extends React.Component {
 
     state = {
         action: this.defaultAction,
+        countries: [],
         error: "",
         forbidden: false,
         validClaas: "",
+        openCountry: false,
+        locations: [],
+        location: "",
         years: [],
         loading: false,
         validClaasCvv: "",
         shouldBlockNavigation: true,
         newAccounts: 0,
         actualUsers: 0,
-        countries: [],
-        targets: [],
-        openCountry: false,
         form: {
             cardnumber: '',
             cvc: '',
@@ -52,6 +55,30 @@ class Checkout extends React.Component {
             postal: ''
         }
     }
+
+    
+    fetchTargets = () => {
+        getKeywordTargets()
+            .then((response) => {
+                if (typeof (response.items) === "undefined") return;
+
+                this.setState(() => ({
+                    countries: Countries
+                }));
+            }).catch(error => {
+                this.setLoading(false);
+
+                if (error.response.status === 401) {
+
+                }
+
+                if (error.response.status === 403) {
+                    this.setForbidden(true);
+                }
+
+                return Promise.reject(error);
+            });
+    };
 
     handleAMonthChange = (value, text) => {
         let valueTxt = text + " / " + value
@@ -70,6 +97,11 @@ class Checkout extends React.Component {
         this.activeYears();
         this.loadStripe();
         this.accountsBilling();
+        this.fetchTargets();
+    }
+    setLocation = (val) => {
+        console.log(val)
+        this.setState({ location: val, openCountry: false })
     }
 
     accountsBilling = () => {
@@ -237,11 +269,10 @@ class Checkout extends React.Component {
     }
 
     render() {
-
-
-        const { validClaas, form, years, loading, orderFinished, newAccounts, actualUsers, countries, location, targets, openCountry } = this.state
-        const items = countries.map(function (item) {
-            return <li onClick={() => { this.setState({ form: { ...this.state.form, location: item } }) }}> {item} </li>;
+        const { validClaas, form, years, loading, orderFinished, countries, newAccounts, actualUsers , openCountry, location} = this.state
+        // const location = form.location;
+        const items = countries.map((item) => {
+            return <li onClick={() => this.setLocation(item)}> {item} </li>;
         });
         const todayDate = new Date();
         const minumumYear = todayDate.getFullYear();
@@ -260,6 +291,7 @@ class Checkout extends React.Component {
                             <CongratsPayment /> :
                             <div>
                                 <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
+
 
                                 <SweetAlert
                                     show={!!this.state.error}
@@ -374,22 +406,23 @@ class Checkout extends React.Component {
                                                     name="address_city"
                                                     placeholder="City" />
                                             </div>
-                                            <div className="form-field col-12 col-md-6 mb1">
+                                            <div className="form-field col-12 col-md-6 mb1 form-field form-country">
+                                                {/* <label htmlFor="country">Country</label> */}
                                                 <input
                                                     className="form-control whiteBg"
                                                     type="text"
-                                                    id="country"
+                                                    id="location"
                                                     onFocus={() => this.setState({ openCountry: true })}
-                                                    onBlur={() => this.setState({ openCountry: false })}
-                                                    autoComplete="false" 
-                                                    value={this.state.location}
+                                                    onBlur={() => { setTimeout(() => { this.setState({ openCountry: false }) }, 600) }}
+                                                    autoComplete="false"
+                                                    value={location}
+                                                    onChange={(e) => this.onFieldChange(e)}
                                                     placeholder="Select Country" />
                                                 {openCountry &&
                                                     <ul className="country-list">
                                                         {items}
                                                     </ul>
                                                 }
-
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
                                                 <input className={'form-control whiteBg '}
