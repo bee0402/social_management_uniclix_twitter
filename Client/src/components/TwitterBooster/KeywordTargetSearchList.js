@@ -5,7 +5,6 @@ import { startSetChannels } from '../../actions/channels';
 import channelSelector from "../../selectors/channels";
 import { addKeywordTarget, destroyKeywordTarget } from '../../requests/twitter/channels';
 import Loader from '../../components/Loader';
-import InfoModal from '../InfoModal';
 
 class KeywordTargetSearchList extends React.Component {
     constructor(props) {
@@ -148,8 +147,7 @@ class KeywordTargetSearchList extends React.Component {
             { keyword: "MACHINE LEARNING", location: "" },
             { keyword: "KNITTING", location: "" },
             { keyword: "INNOVATION", location: "" },
-        ],
-        infoModal: localStorage.getItem('twitterBoosterInfoModal') !== 'seen'
+        ]
     };
 
     onChange = (e) => {
@@ -205,11 +203,6 @@ class KeywordTargetSearchList extends React.Component {
         }));
     }
 
-    rememberInfoModal = () => {
-        localStorage.setItem('twitterBoosterInfoModal', 'seen');
-        this.setState(() => ({ infoModal: false }));
-    };
-
     removeTarget = (target) => {
         this.setLoading(true);
         destroyKeywordTarget(target)
@@ -233,14 +226,6 @@ class KeywordTargetSearchList extends React.Component {
     render() {
         return (
             <div className="row">
-
-                <InfoModal
-                    isOpen={this.state.infoModal}
-                    title={"Welcome to Uniclix Twitter Booster"}
-                    body={"Start by setting up your targeted audience"}
-                    action={this.rememberInfoModal}
-                />
-
                 <div className="col-xs-12">
                     <div className="item-list shadow-box">
                         <div className="search-bar mt20">
@@ -263,70 +248,59 @@ class KeywordTargetSearchList extends React.Component {
                         </div>
 
                         <div className="added">
-
-                            {!!this.props.targets.length ?
-                                <div>
-                                    <div>
-                                        <div className={`section-header no-border mt20 mb20`}>
-                                            <div className="section-header__first-row">
-                                            </div>
-
-                                            <div className="section-header__second-row">
-                                                <h3>Added by you</h3>
-                                            </div>
-                                        </div>
-                                        <div className="added-items">
-                                            {this.props.targets.map((target, index) => (
-                                                this.state.suggestedTargets.map(function (keyU, e) {
-                                                    return keyU.keyword
-                                                }).indexOf(target.keyword) < 0 ?
-                                                    <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />
-                                                    :
-                                                    ''
-                                            ))}
-                                        </div>
+                            <div>
+                                <div className={`section-header no-border mt20 mb20`}>
+                                    <div className="section-header__first-row">
                                     </div>
 
-                                    <div className="seperator mt20 mb20"></div>
-                                    <div>
-                                        <div className={`section-header no-border mt20 mb20`}>
-                                            <div className="section-header__first-row">
-                                            </div>
-
-                                            <div className="section-header__second-row">
-                                                <h3>Trending Hashtags</h3>
-                                            </div>
-                                        </div>
-                                        <div className="added-items">
-                                            {this.state.suggestedTargets.map((target, index) => (
-                                                this.props.targets.map(function (keyw, e) {
-                                                    return keyw.keyword
-                                                }).indexOf(target.keyword) == -1 ?
-                                                    <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
-                                                        #{target.keyword}
-                                                    </div>
-                                                    :
-                                                    this.props.targets.map((actualKey, e) => {
-                                                        if (actualKey.keyword == target.keyword) {
-                                                            return (
-                                                                <div key={e} onClick={(e) => this.removeTarget(actualKey.id)} className="keyword-item  added-keyword">
-                                                                    #{actualKey.keyword}
-                                                                </div>
-                                                            )
-                                                        }
-                                                    })
-
-                                            ))}
-                                        </div>
+                                    <div className="section-header__second-row">
+                                        <h3>Added by you</h3>
                                     </div>
                                 </div>
-                                :
-                                <div className="mt20 mb20 text-center no-hashtags">
-                                    <img src="/images/hashtag-girl.svg" />
-                                    <h3>Whoops!</h3>
-                                    <p>You don't have any configured hashtags yet.</p>
+                                <div className="added-items">
+                                    {this.props.targets.map((target, index) => (
+                                        this.state.suggestedTargets.map(function (keyU, e) {
+                                            return keyU.keyword
+                                        }).indexOf(target.keyword) < 0 ?
+                                            <KeywordItem key={target.id} target={target} removeTarget={this.removeTarget} />
+                                            :
+                                            ''
+                                    ))}
                                 </div>
-                            }
+                            </div>
+
+                            <div className="seperator mt20 mb20"></div>
+                            <div>
+                                <div className={`section-header no-border mt20 mb20`}>
+                                    <div className="section-header__first-row">
+                                    </div>
+
+                                    <div className="section-header__second-row">
+                                        <h3>Trending Hashtags</h3>
+                                    </div>
+                                </div>
+                                <div className="added-items">
+                                    {this.state.suggestedTargets.map((target, index) => (
+                                        this.props.targets.map(function (keyw, e) {
+                                            return keyw.keyword
+                                        }).indexOf(target.keyword) == -1 ?
+                                            <div key={index} onClick={(e) => this.onSubmit(false, target.keyword)} className="keyword-item">
+                                                #{target.keyword}
+                                            </div>
+                                            :
+                                            this.props.targets.map((actualKey, e) => {
+                                                if (actualKey.keyword == target.keyword) {
+                                                    return (
+                                                        <div key={e} onClick={(e) => this.removeTarget(actualKey.id)} className="keyword-item  added-keyword">
+                                                            #{actualKey.keyword}
+                                                        </div>
+                                                    )
+                                                }
+                                            })
+
+                                    ))}
+                                </div>
+                            </div>
 
                             {this.props.targets.length >= 3 && <button onClick={() => this.props.showSearchView(false)} className="btn-blue">Show me accounts to follow</button>}
                             {this.state.loading && <Loader />}

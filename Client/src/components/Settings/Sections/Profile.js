@@ -1,18 +1,19 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import GeoSuggest from "react-geosuggest";
 import { updateProfile } from "../../../requests/profile";
 import momentTz from "moment-timezone";
 import { validateEmail, validateUrl } from "../../../utils/validator";
 import { getKeywordTargets } from '../../../requests/twitter/channels';
 import { startSetProfile } from "../../../actions/profile";
 import { LoaderWithOverlay } from "../../Loader";
+import Countries from "../../../fixtures/country";
 
 class Profile extends React.Component {
 
     state = {
         name: "",
+        countries: Countries,
         email: "",
         website: "",
         type: "",
@@ -36,6 +37,7 @@ class Profile extends React.Component {
         this.initializeProfileData();
         this.fetchTargets();
     }
+
     fetchTargets = () => {
         getKeywordTargets()
             .then((response) => {
@@ -178,7 +180,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        const { isTabActive, success, error, locations, targets } = this.state;
+        const { isTabActive, success, error, countries, targets } = this.state;
         return (
             <div>
                 {this.state.loading && <LoaderWithOverlay />}
@@ -267,27 +269,27 @@ class Profile extends React.Component {
                         </div >
                         <div className={`cnt-item ${isTabActive == 'company-info' ? 'active' : ''}`}>
                             <form onSubmit={(e) => this.onSubmit(e)} className="profile-form">
-
-
                                 <div className="form-group shadow-box main-content-style">
-
-
                                     <div className="col-12 col-md-8 form-field">
                                         <label htmlFor="topics">Company Name</label>
                                         <input type="text" className="form-control whiteBg" id="organizationName" onChange={(e) => this.onFieldChange(e)} value={this.state.organizationName} placeholder="Company" />
                                     </div>
                                     <div className="col-12 col-md-8 form-field">
-                                        <label htmlFor="website">Country</label>
-                                        <GeoSuggest
-                                            types={['country']}
-                                            className="col-12"
-                                            inputClassName="form-control whiteBg"
-                                            placeholder="Write your country name"
-                                            onSuggestSelect={this.onLocationsFieldChange}
-                                            initialValue={this.state.location && this.state.location.label}
-                                            disabled={this.state.locations.length >= 5 ? true : false}
-                                        />
-                                        <input type="hidden" id="website" readOnly={true} value={this.state.locations.map(location => ` ${location.label}`)} onClick={this.toggleLocationsModal} placeholder="New York City, Amsterdam, Venice..." />
+                                        <label htmlFor="country">Country</label>
+                                        <input
+                                            className="form-control whiteBg"
+                                            type="text"
+                                            id="country"
+                                            autoComplete={false}
+                                            value={this.state.locations.map(location => ` ${location.label}`)}
+                                            onClick={this.toggleLocationsModal}
+                                            placeholder="New York City, Amsterdam, Venice..." />
+
+                                        <ul>
+                                            {countries.map((item) => {
+                                                <li onClick={() => "item"}>{item}</li>
+                                            })}
+                                        </ul>
                                     </div>
 
                                     <div className="col-12 col-md-8 form-field">

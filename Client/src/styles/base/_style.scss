@@ -731,13 +731,6 @@ a:link {
     width: 100px !important;
 }
 
-.support {
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    background: white;
-    border-top: 1px solid rgba(255, 255, 255, .3);
-}
 
 .nav-buttons {
     float: right;
@@ -1724,18 +1717,72 @@ button.streammaker-btn:hover {
     transition: background .3s;
 }
 
-.support div>a {
-    display: block;
-    color: #363636;
-    background: #ffffff;
-    text-decoration: none;
-    width: 120px;
-    padding: 10px 0px;
-    text-align: center;
-    border-radius: 20px;
-    margin: 15px auto;
-    font-weight: normal;
-    font-size: 1.6rem;
+.support {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background: white;
+    border-top: 1px solid rgba(255, 255, 255, .3);
+
+    .button {
+        display: block;
+        color: #363636;
+        background: #ffffff;
+        text-decoration: none;
+        width: 120px;
+        padding: 10px 0px;
+        text-align: center;
+        margin: 15px auto;
+        font-weight: normal;
+        font-size: 1.6rem;
+        outline: none;
+        border: none;
+    }
+
+    .popup-content {
+        max-width: 720px;
+        min-width: 320px;
+        width: 100% !important;
+
+        .modal {
+            position: relative;
+            overflow: visible;
+            display: block;
+            text-align: left;
+            border-radius: 3px;
+            padding: 20px 2rem 10px 2rem;
+            color: $primary_black;
+
+            .form-field {
+                margin-bottom: 1.8rem;
+            }
+
+            >.content {
+                width: 100% !important;
+                padding: 10px 5px !important;
+            }
+
+            >.actions {
+                width: 100%;
+                margin: auto;
+                text-align: center;
+            }
+
+            >.close {
+                cursor: pointer;
+                position: absolute;
+                display: block;
+                padding: 2px 5px;
+                line-height: 20px;
+                right: -10px;
+                top: -10px;
+                font-size: 24px;
+                background: #ffffff;
+                border-radius: 18px;
+                border: 1px solid #cfcece;
+            }
+        }
+    }
 }
 
 .logout-btn a {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from "react-router-dom";
+import Popup from "reactjs-popup";
 
 const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) => {
     return (
@@ -107,12 +108,87 @@ class MenuItems extends React.Component {
     }
 }
 
-const SupportSection = () => (
-    <div className="support">
-        <div>
-            <a href="mailto:info@uniclixapp.com?Subject=The%20sky%20is%20falling!"><i className="fa fa-comment"></i> Support</a>
-        </div>
-    </div>
-);
+class SupportSection extends React.Component {
+    state = {
+        name: "",
+        email: "",
+        subject: "",
+        message: ""
+    }
+    onSubmit = () => {
+
+    }
+
+    onFieldChange = (e) => {
+        const id = e.target.id;
+        let state = Object.assign({}, this.state);
+        state[id] = e.target.value;
+        this.setState(() => (state));
+    };
+
+    render() {
+        return (
+            <div className="support">
+                <Popup trigger={<button className="button"> <i className="fa fa-comment"></i> Support </button>} modal>
+                    {close => (
+                        <div className="modal">
+                            <a className="close" onClick={close}>
+                                &times;
+                    </a>
+                            <div className="content">
+                                <form onSubmit={(e) => this.onSubmit(e)}>
+                                    <div className="form-group">
+                                        <div className="column-container">
+                                            <div className="col-12 form-field">
+                                                <label htmlFor="name">Full Name</label>
+                                                <input type="text"
+                                                    className="form-control whiteBg"
+                                                    onChange={(e) => this.onFieldChange(e)}
+                                                    id="name"
+                                                    value={this.state.name} />
+                                            </div>
+
+                                            <div className="col-12 form-field">
+                                                <label htmlFor="email">Email addresse</label>
+                                                <input type="email"
+                                                    className="form-control whiteBg"
+                                                    id="email"
+                                                    onChange={(e) => this.onFieldChange(e)}
+                                                    value={this.state.email} />
+                                            </div>
+                                            <div className="col-12 form-field">
+                                                <label htmlFor="subject">Subject</label>
+                                                <input type="text"
+                                                    className="form-control whiteBg"
+                                                    value={this.state.subject}
+                                                    onChange={(e) => this.onFieldChange(e)}
+                                                    name="website"
+                                                    id="subject" />
+                                            </div>
+                                            <div className="col-12 form-field">
+                                                <label htmlFor="message">Message</label>
+                                                <textarea
+                                                    className="form-control whiteBg"
+                                                    value={this.state.message}
+                                                    onChange={(e) => this.onFieldChange(e)}
+                                                    name="message" id="message"></textarea>
+                                            </div>
+
+
+                                            <div className="col-12">
+                                                <button className="magento-btn">Send</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+                </Popup>
+            </div>
+        );
+    }
+}
 
 export default VerticalMenu;
