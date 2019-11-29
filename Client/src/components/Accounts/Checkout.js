@@ -56,7 +56,6 @@ class Checkout extends React.Component {
         }
     }
 
-    
     fetchTargets = () => {
         getKeywordTargets()
             .then((response) => {
@@ -102,6 +101,15 @@ class Checkout extends React.Component {
     setLocation = (val) => {
         console.log(val)
         this.setState({ location: val, openCountry: false })
+    }
+
+    filterCountry = (e) => {
+        let val = e.target.value;
+        let countries = Countries.filter(item => item.includes(val))
+        this.setState({
+            countries: countries,
+            location: val
+        })
     }
 
     accountsBilling = () => {
@@ -175,16 +183,6 @@ class Checkout extends React.Component {
         }
 
     }
-
-    onLocationsFieldChange = (location) => {
-        this.setState(() => ({
-            form: {
-                ...this.state.form,
-                location: location
-            }
-        }));
-    };
-
     onFieldChange = (e) => {
         const id = e.target.name;
         let form = Object.assign({}, this.state.form);
@@ -269,7 +267,7 @@ class Checkout extends React.Component {
     }
 
     render() {
-        const { validClaas, form, years, loading, orderFinished, countries, newAccounts, actualUsers , openCountry, location} = this.state
+        const { validClaas, form, years, loading, orderFinished, countries, newAccounts, actualUsers, openCountry, location } = this.state
         // const location = form.location;
         const items = countries.map((item) => {
             return <li onClick={() => this.setLocation(item)}> {item} </li>;
@@ -351,6 +349,7 @@ class Checkout extends React.Component {
                                                         onBlur={this.handleClickMonthBoxHidde}
                                                         name="exp_date"
                                                         autoComplete={"off"}
+                                                        autoComplete="new-password"
                                                         maxLength="9"
                                                         placeholder="MM/DD" />
                                                 </Picker>
@@ -416,7 +415,8 @@ class Checkout extends React.Component {
                                                     onBlur={() => { setTimeout(() => { this.setState({ openCountry: false }) }, 600) }}
                                                     autoComplete="false"
                                                     value={location}
-                                                    onChange={(e) => this.onFieldChange(e)}
+                                                    autoComplete="new-password"
+                                                    onChange={(e) => this.filterCountry(e)}
                                                     placeholder="Select Country" />
                                                 {openCountry &&
                                                     <ul className="country-list">

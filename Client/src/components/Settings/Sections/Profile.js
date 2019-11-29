@@ -100,18 +100,22 @@ class Profile extends React.Component {
         }
     };
 
-    onLocationsFieldChange = (location) => {
-        this.setState(() => ({
-            location
-        }));
-    };
-
     onFieldChange = (e) => {
         const id = e.target.id;
         let state = Object.assign({}, this.state);
         state[id] = e.target.value;
         this.setState(() => (state));
     };
+
+
+    filterCountry = (e) => {
+        let val = e.target.value;
+        let countries = Countries.filter(item => item.includes(val))
+        this.setState({
+            countries: countries,
+            location: val
+        })
+    }
 
     onSubmit = (e) => {
         e.preventDefault();
@@ -305,7 +309,8 @@ class Profile extends React.Component {
                                             onBlur={() => { setTimeout(() => { this.setState({ openCountry: false }) }, 600) }}
                                             autoComplete="false"
                                             value={location}
-                                            onChange={(e) => this.onFieldChange(e)}
+                                            autoComplete="new-password"
+                                            onChange={(e) => this.filterCountry(e)}
                                             placeholder="Select Country" />
                                         {openCountry &&
                                             <ul className="country-list">

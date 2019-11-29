@@ -31,10 +31,10 @@ class ContactEmailController extends Controller
 
             $mailer = app()['mailer'];
             $templatename = 'email.contactEmail';
-            $from = $request->input('email') ?  $request->input('email') : 'ardi.krasniqi99@gmail.com';
+            $from = $request->input('email') ?  $request->input('email') : 'info@uniclixapp.com';
             $name = $request->input('name') != null ? $request->input('name') : '';
             $data = array(
-                'email' => 'ardi.krasniqi99@gmail.com',
+                'email' => 'info@uniclixapp.com',
                 'from' => $from,
                 'subject' => $request->input('subject'),
                 'name' => $name,
@@ -44,7 +44,7 @@ class ContactEmailController extends Controller
             $send_mail = $mailer->send(['html' => $templatename], ['data' => $data], function ($msg) use ($data) {
                 $msg->to($data['email']);
                 $msg->subject($data['subject']);
-                $msg->from($data['from'], 'Test');
+                $msg->from($data['from'], 'Uniclix');
             });
 
             return response()->json(["message" => "Success"], 200);
