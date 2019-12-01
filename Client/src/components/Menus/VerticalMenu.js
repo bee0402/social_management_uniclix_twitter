@@ -170,7 +170,7 @@ class SupportSection extends React.Component {
                     className="toast-top-right"
                 />
                 <button className="button" onClick={this.openModal}>
-                    Support
+                <i className="fa fa-comment"></i> Support
                 </button>
                 <Popup
                     open={this.state.open}
