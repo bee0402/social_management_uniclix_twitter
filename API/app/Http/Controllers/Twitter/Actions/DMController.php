@@ -116,7 +116,7 @@ class DMController extends Controller
     {
         try {
             $channel = $this->selectedChannel;
-            $date = $channel->autoDMs($channel->channel_id)
+            $date = $channel->autoDMs($channel->id)
                 ->select("message", "active", "id")
                 ->orderBy('id', 'desc')
                 ->get();

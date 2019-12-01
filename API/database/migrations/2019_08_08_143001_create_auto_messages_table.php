@@ -17,7 +17,6 @@ class CreateAutoMessagesTable extends Migration
         Schema::create("twitter_direct_messages", function (Blueprint $table) {
             $table->increments("id");
             $table->integer("channel_id")->unsigned();
-            $table->string("source");
             $table->string("message");
             $table->boolean("active");
             $table->timestamps();
