@@ -123,7 +123,7 @@ class DMController extends Controller
                 ->orderBy('id', 'desc')
                 ->get();
 
-            return response()->json(["success" => true, "data" => $date]);
+            return response()->json(["success" => $channel->channel_id, "data" => $date]);
         } catch (\Exception $e) {
             return response()->json(["success" => false, "message" => "You can not save auto response in this account."], 400);
         }
