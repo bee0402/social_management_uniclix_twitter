@@ -108,7 +108,7 @@ class DMController extends Controller
 
             return response()->json(["success" => false, "message" => "No status or wrong channel id provided"], 400);
         } catch (\Exception $e) {
-            return response()->json(["success" => false, "message" => "You can not save auto response in this account."], 400);
+            return response()->json(["success" => false, "message" => $e->getMessage()], 400);
         }
     }
 
