@@ -78,8 +78,9 @@ class DMController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 "success" => false,
-             "message" => "You can not activated Auto DM in this account.",
-            "errorMessage" => $e->getMessage()], 400);
+                "message" => "You can not activated Auto DM in this account.",
+                "errorMessage" => $e->getMessage()
+            ], 400);
         }
     }
 
@@ -108,7 +109,7 @@ class DMController extends Controller
 
             return response()->json(["success" => false, "message" => "No status or wrong channel id provided"], 400);
         } catch (\Exception $e) {
-            return response()->json(["success" => false, "message" => "You can not save auto response in this account."], 400);
+            return response()->json(["success" => false, "message" => $e->getMessage()], 400);
         }
     }
 
@@ -116,7 +117,8 @@ class DMController extends Controller
     {
         try {
             $channel = $this->selectedChannel;
-            $date = $channel->autoDMs($channel->id)
+            $date = $channel->autoDMs()
+                ->where("channel_id", $channel->channel_id)
                 ->select("message", "active", "id")
                 ->orderBy('id', 'desc')
                 ->get();
