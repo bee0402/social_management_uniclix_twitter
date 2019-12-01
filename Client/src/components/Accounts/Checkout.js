@@ -105,7 +105,8 @@ class Checkout extends React.Component {
 
     filterCountry = (e) => {
         let val = e.target.value;
-        let countries = Countries.filter(item => item.includes(val))
+        let countries = Countries.filter(item => item.toLowerCase().includes(val.toLowerCase()))
+
         this.setState({
             countries: countries,
             location: val
