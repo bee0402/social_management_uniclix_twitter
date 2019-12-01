@@ -22,7 +22,7 @@ class CreateAutoMessagesTable extends Migration
             $table->boolean("active");
             $table->timestamps();
 
-            $table->foreign("channel_id")->references("id")->on("twitter_channels")->onDelete("cascade");
+            $table->foreign("channel_id")->references("channel_id")->on("twitter_channels")->onDelete("cascade");
         });
 
     }
