@@ -226,7 +226,7 @@ trait Tweetable
             $res = $client->get('users/show.json?user_id=' . $userId, ['auth' => 'oauth', 'decode_content' => false]);
             $unserialize = json_decode($res->getBody()->getContents());
             
-            $text = str_replace('username', $unserialize->screen_name, $text);
+            $text = str_replace('@username', $unserialize->screen_name, $text);
         }
 
         $dm = [
@@ -915,7 +915,7 @@ trait Tweetable
             if ($activeSubscription) {
                 $text = $text->message;
             } else {
-                $text = $text->message . "\n\r Send from @UniClix";
+                $text = $text->message . "\n\r (Send DM's to new followers via https://uniclixapp.com/twitter-booster-app )  ";
             }
 
             foreach ($followerIds as $followers) {
