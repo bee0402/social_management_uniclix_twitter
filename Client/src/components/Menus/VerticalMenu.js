@@ -40,15 +40,16 @@ class ProfileInfo extends React.Component {
 
     activeChannels = (channels) => {
         let msDiff = new Date(this.props.trialEnded).getTime() - new Date().getTime();
-        if (Math.floor(msDiff / (1000 * 60 * 60 * 24)) > 0)
+        if (Math.floor(msDiff / (1000 * 60 * 60 * 24)) >= 0) {
             return channels
+        } else {
+            let activeChannels = channels.filter(channel => {
+                if (channel.details.paid == 1)
+                    return channel;
+            });
 
-        let activeChannels = channels.filter(channel => {
-            if (channel.details.paid == 1)
-                return channel;
-        });
-
-        return activeChannels;
+            return activeChannels;
+        }
     }
 
     render() {
