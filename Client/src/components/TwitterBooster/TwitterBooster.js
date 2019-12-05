@@ -7,7 +7,7 @@ import channelSelector from "../../selectors/channels";
 import { setTwitterChannel } from '../../actions/channels';
 import SocialAccountsPrompt from '../SocialAccountsPrompt';
 
-const Manage = ({channels, selectedChannel, selectChannel}) => { 
+const Manage = ({channels, selectedChannel, selectChannel, profile}) => { 
     const hasChannel = typeof(selectedChannel.username) !== "undefined"; 
     return (
         <div className="body-wrap">
@@ -15,6 +15,7 @@ const Manage = ({channels, selectedChannel, selectChannel}) => {
                 <VerticalMenu 
                     menuItems={MenuItems} 
                     channels={channels} 
+                    trialEnded={profile.user.trial_ends_at} 
                     selectedChannel={selectedChannel}
                     selectChannel={selectChannel}
                     />
@@ -46,9 +47,11 @@ const mapStateToProps = (state) => {
 
     const channels = channelSelector(state.channels.list, unselectedTwitterChannels);
     const selectedChannel = channelSelector(state.channels.list, selectedTwitterChannel);
+    const profile = state.profile
 
     return {
         channels,
+        profile,
         selectedChannel: selectedChannel.length ? selectedChannel[0] : {}
     };
 };

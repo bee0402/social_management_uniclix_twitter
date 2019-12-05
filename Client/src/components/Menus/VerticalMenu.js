@@ -6,11 +6,15 @@ import { ToastContainer } from "react-toastr";
 
 let toastContainer;
 
-const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel }) => {
+const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel, trialEnded }) => {
     return (
         <aside className="vertical-menu scrollbar">
 
-            <ProfileInfo selectedChannel={selectedChannel} channels={channels} selectChannel={selectChannel} />
+            <ProfileInfo
+                selectedChannel={selectedChannel}
+                channels={channels}
+                trialEnded={trialEnded}
+                selectChannel={selectChannel} />
 
             <MenuItems menuItems={menuItems} />
             <SupportSection />
@@ -35,6 +39,10 @@ class ProfileInfo extends React.Component {
     }
 
     activeChannels = (channels) => {
+        let msDiff = new Date(this.props.trialEnded).getTime() - new Date().getTime();
+        if (Math.floor(msDiff / (1000 * 60 * 60 * 24)) > 0)
+            return channels
+
         let activeChannels = channels.filter(channel => {
             if (channel.details.paid == 1)
                 return channel;
@@ -130,22 +138,18 @@ class SupportSection extends React.Component {
     }
     onSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state.name)
         supportEmail({
             ...this.state
         }).then((response) => {
-            console.log(response, 'response')
             this.resetState();
             this.closeModal();
             toastContainer.success('', "Success", { closeButton: true });
         }).catch((error) => {
-            console.log(error);
             this.setState(() => ({
                 error: "Something went wrong.",
                 loading: false
             }));
         });
-        console.log(this.state, 'modeal')
     }
 
     onFieldChange = (e) => {
@@ -170,7 +174,7 @@ class SupportSection extends React.Component {
                     className="toast-top-right"
                 />
                 <button className="button" onClick={this.openModal}>
-                <i className="fa fa-comment"></i> Support
+                    <i className="fa fa-comment"></i> Support
                 </button>
                 <Popup
                     open={this.state.open}
