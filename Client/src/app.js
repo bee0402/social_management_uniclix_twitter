@@ -15,7 +15,7 @@ import { setMiddleware } from "./actions/middleware";
 const store = configStore();
 
 const trackingId = "UA-139556974-3"; // Replace with your Google Analytics tracking ID
-ReactGA.initialize(trackingId);
+
 
 
 const Root = () => (
@@ -31,6 +31,8 @@ let hasRendered = false;
 
 const renderApp = () => {
     if (!hasRendered) {
+        ReactGA.initialize(trackingId);
+        ReactGA.pageview(window.location.pathname + window.location.search);
         ReactDOM.render(<Root />, document.getElementById("app"));
         hasRendered = true;
     }
@@ -51,7 +53,7 @@ const setAuthentication = () => {
 
         let profile = localStorage.getItem("profile");
         profile = profile ? JSON.parse(profile) : "";
-       
+
         ReactGA.set({
             userId: profile.user.id,
         })
