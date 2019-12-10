@@ -5,6 +5,7 @@ import { startSetChannels } from "../actions/channels";
 import { startSetProfile } from "../actions/profile";
 import { backendUrl } from "../config/api";
 import { registerUser } from '../requests/auth';
+import ReactGA from 'react-ga';
 
 export class RegisterPage extends React.Component {
 
@@ -38,10 +39,6 @@ export class RegisterPage extends React.Component {
             password_confirmation: this.state.confirmPassword
         };
 
-        ReactGA.event({
-            category: "Register ",
-            action: "User pressed the login button",
-        });
         registerUser(data).then(response => {
             if (typeof response.accessToken !== "undefined") {
                 this.performLogin(response.accessToken);
