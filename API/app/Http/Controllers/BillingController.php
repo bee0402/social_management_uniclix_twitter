@@ -128,7 +128,7 @@ class BillingController extends Controller
             $user = $this->user;
 
             $user->subscription('main')->cancel();
-            Channel::where('user_id', $user->id)->update(["paid"=> false]);
+            Channel::where('user_id', $user->id)->update(["paid" => false]);
 
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
@@ -142,7 +142,7 @@ class BillingController extends Controller
             $user = $this->user;
 
             $user->subscription('main')->resume();
-            Channel::where('user_id', $user->id)->update(["paid"=> true]);
+            Channel::where('user_id', $user->id)->update(["paid" => true]);
 
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
@@ -211,6 +211,19 @@ class BillingController extends Controller
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => "Something went wrong!"], 500);
+        }
+    }
+
+    public function editCard(Request $request)
+    {
+        $token = $request->input('token');
+        $id = $token['id'];
+        $user = $this->user;
+        try {
+            $user->subscription('main')->updateCard($id);
+            return response()->json(["success" => true], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 500);
         }
     }
 }

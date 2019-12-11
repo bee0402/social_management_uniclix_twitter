@@ -56,6 +56,9 @@ a:link {
 .mb20 {
   margin-bottom: 20px;
 }
+.mb-3 {
+  margin-bottom: 3rem !important;
+}
 
 .mb15 {
   margin-bottom: 15px;
@@ -4736,5 +4739,28 @@ table.compare-plans-table {
       padding: 1rem 1.4rem;
       border-bottom: 1px solid $gray;
     }
+  }
+}
+.card-info {
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    li {
+      font-weight: bold;
+    }
+  }
+  .magento-btn2 {
+    border: none;
+    border-radius: 22px;
+    color: #ffffff !important;
+    background: #2d86da;
+    padding: 6px 26px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    font-size: 1em;
+    max-width: 262px;
+    margin: 0 auto;
+    outline: none;
   }
 }

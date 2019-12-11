@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/billing/subscription/update', 'BillingController@updateSubscription');
     Route::post('/billing/subscription/cancel', 'BillingController@cancelSubscription');
     Route::post('/billing/subscription/resume', 'BillingController@resumeSubscription');
+    Route::post('/billing/card/edit', 'BillingController@editCard');
 
     Route::get('/channels', 'ChannelController@channels');
     Route::patch('/channels/select/{id}', 'ChannelController@select');

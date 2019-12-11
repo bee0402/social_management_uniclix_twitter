@@ -184,6 +184,13 @@ class Twitter extends React.Component {
 
     }
 
+    editCreditCard = () => {
+        this.setState({ shouldBlockNavigation: false })
+        setTimeout(() => {
+            this.props.history.push('/twitter-booster/CardEdit')
+        }, 0)
+    }
+
     cancelSubscription = () => {
         this.setState({
             loading: true
@@ -343,6 +350,13 @@ class Twitter extends React.Component {
                                 :
                                 <div className="col-md-5">
                                     <div className=" plan-info-container">
+                                        <div className="card-info mb-3">
+                                            <ul>
+                                                <li >{profile.user.card_brand}</li>
+                                                <li>**** {profile.user.card_last_four}</li>
+                                                <li><button className="magento-btn2" onClick={() => this.editCreditCard()} > Edit</button></li>
+                                            </ul>
+                                        </div>
                                         <h3>My Plan
                                             {!profile.subscription.onGracePeriod &&
                                                 <button
@@ -397,6 +411,8 @@ class Twitter extends React.Component {
                                 </div>
                             ) : ""
                         }
+
+
                     </div>
                 </div>
             </React.Fragment>
