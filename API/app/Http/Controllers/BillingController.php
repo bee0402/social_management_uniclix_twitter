@@ -220,7 +220,7 @@ class BillingController extends Controller
         $id = $token['id'];
         $user = $this->user;
         try {
-            $user->subscription('main')->updateCard($id);
+            $user->updateCard($id);
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 500);
