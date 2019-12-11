@@ -63,3 +63,10 @@ export const resumeSubscription = (type) => {
             return response.data;
         });
 }
+
+export const updateCard = (token) => {
+    return axios.post(`${apiUrl}/billing/card/edit`, { token })
+        .then((response) => {
+            return response.data;
+        });
+}

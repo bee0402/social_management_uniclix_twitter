@@ -14,6 +14,7 @@ import BlackList from '../components/TwitterBooster/Sections/BlackList';
 import AutoDM from '../components/TwitterBooster/Sections/AutoDM';
 import Accounts from '../components/Accounts/Twitter';
 import Checkout from '../components/Accounts/Checkout';
+import CardEdit from '../components/Accounts/CardEdit';
 
 const ManageRouter = () => (
     <div>
@@ -23,6 +24,7 @@ const ManageRouter = () => (
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/manage-accounts`} component={Accounts} />
             <Route path={`/twitter-booster/checkout`} component={Checkout} />
+            <Route path={`/twitter-booster/CardEdit`} component={CardEdit} />
             <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
             <Route path={`/twitter-booster/auto-dm`} component={AutoDM} />
             <Route path={`/twitter-booster/followers`} component={Followers} />
