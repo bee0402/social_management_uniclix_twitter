@@ -15,6 +15,7 @@ import { cancelSubscription, resumeSubscription } from "../../requests/billing";
 import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import { updateSubscription } from '../../requests/billing';
+import Swal from 'sweetalert2';
 
 class Twitter extends React.Component {
     constructor(props) {
@@ -191,6 +192,21 @@ class Twitter extends React.Component {
         }, 0)
     }
 
+    cancelSubscriptionAlert = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085D6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                this.cancelSubscription();
+            }
+        })
+    }
+
     cancelSubscription = () => {
         this.setState({
             loading: true
@@ -250,7 +266,7 @@ class Twitter extends React.Component {
     calcTrialDays = (user) => {
         let msDiff = new Date(user.trial_ends_at).getTime() - new Date().getTime();    //Future date - current date
         var daysToTheEnd = Math.floor(msDiff / (1000 * 60 * 60 * 24));
-        return daysToTheEnd >= 0 ? daysToTheEnd  + 1 : 0
+        return daysToTheEnd >= 0 ? daysToTheEnd + 1 : 0
     }
 
     render() {
@@ -361,7 +377,7 @@ class Twitter extends React.Component {
                                             {!profile.subscription.onGracePeriod &&
                                                 <button
                                                     className="btn-text-pink"
-                                                    onClick={() => this.cancelSubscription()}
+                                                    onClick={() => this.cancelSubscriptionAlert()}
                                                 >Cancel subscription</button>
                                             }</h3>
 
