@@ -105,7 +105,8 @@ class Checkout extends React.Component {
 
     filterCountry = (e) => {
         let val = e.target.value;
-        let countries = Countries.filter(item => item.includes(val))
+        let countries = Countries.filter(item => item.toLowerCase().includes(val.toLowerCase()))
+
         this.setState({
             countries: countries,
             location: val
@@ -234,7 +235,6 @@ class Checkout extends React.Component {
             if (status === 200) {
                 this.onToken(response)
             } else {
-                console.log(response)
                 this.setState({
                     loading: true,
                     message: ""
@@ -244,7 +244,7 @@ class Checkout extends React.Component {
     }
 
     onToken = (token) => {
-        token.plan = "twitter-booster"
+        token.plan = "twitter_growth"
         token.trialDays = 0
         token.created = new Date().getTime();
         token.subType = "main"

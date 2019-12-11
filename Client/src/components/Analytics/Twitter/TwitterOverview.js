@@ -110,56 +110,6 @@ class TwitterOverview extends React.Component {
                             {...propData}/>
                     </div>
                 </div>
-                {/* <div className="row mb20">
-                    <div className="col-md-3 col-xs-12">
-                        <TwiterPageOverviewCard 
-                            name="Tweets by Account"  
-                            type='tweetsCount'
-                            description="Uniclix"
-                            tooltipDesc='Number of your posts on your Twitter account'
-                            {...propData}/>
-                    </div>
-                    <div className="col-md-9 col-xs-12">
-                        <TweetsChart 
-                            name="Tweets" 
-                            type='tweetsChartData'
-                            tooltipDesc='The number of tweets published from your Twitter accounts'
-                            {...propData}/>
-                    </div>
-                </div>
-                <div className="row mb20">
-                    <div className="col-md-3 col-xs-12">
-                        <TwiterPageOverviewCard 
-                            name="Followers by Account"  
-                            type='followersCount'
-                            description="Uniclix"
-                            tooltipDesc='Number of followers on your Twitter account'
-                            {...propData}/>
-                    </div>
-                    <div className="col-md-9 col-xs-12">
-                        <TweetsChart 
-                            name="Followers" 
-                            type='followersChartData'
-                            tooltipDesc='The number of people who are following your Twitter accounts'
-                            {...propData}/>
-                    </div>
-                </div>
-                <div className="row mb20">
-                    <div className="col-md-3 col-xs-12">
-                        <TwitterEngagementCard 
-                            name="Engagement by Type" 
-                            type='engagementsByType'
-                            tooltipDesc='The number of interactions received for the tweets published in the selected timeframe, broken down by retweets, replies and likes'
-                            {...propData}/>
-                    </div>
-                    <div className="col-md-9 col-xs-12">
-                        <TwitterEngagementChart 
-                            name="Engagement by Type" 
-                            type='engagementByTypeData'
-                            tooltipDesc='The sum of interactions received for the tweets published in the selected timeframe: retweets, replies and likes'
-                            {...propData}/>
-                    </div>
-                </div> */}
                 <div className="row mb20">
                     <div className="col-xs-12">
                         <TweetsTable 

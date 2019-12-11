@@ -8,6 +8,10 @@ use Thujohn\Twitter\Facades\Twitter;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
+use App\Models\User;
+
+use function Opis\Closure\serialize;
+use function Opis\Closure\unserialize;
 
 set_time_limit(0);
 
@@ -200,16 +204,6 @@ trait Tweetable
 
     public function DM($userId, $text)
     {
-        $dm = [
-            "event" => [
-                "type" => "message_create",
-                "message_create" => [
-                    "target" => ["recipient_id" => $userId],
-                    "message_data" => ["text" => $text]
-                ]
-            ]
-        ];
-
         $stack = HandlerStack::create();
         $tokens = $this->getTokens();
 
@@ -228,11 +222,30 @@ trait Tweetable
             'handler' => $stack
         ]);
 
+        if (strpos($text, '@username') !== false) {
+            $res = $client->get('users/show.json?user_id=' . $userId, ['auth' => 'oauth', 'decode_content' => false]);
+            $unserialize = json_decode($res->getBody()->getContents());
+            
+            $text = str_replace('@username', $unserialize->screen_name, $text);
+        }
+
+        $dm = [
+            "event" => [
+                "type" => "message_create",
+                "message_create" => [
+                    "target" => ["recipient_id" => $userId],
+                    "message_data" => ["text" => $text]
+                ]
+            ]
+        ];
+
+
         // Set the "auth" request option to "oauth" to sign using oauth
         $res = $client->post('direct_messages/events/new.json', ['auth' => 'oauth', 'json' => $dm]);
         $this->followerIds()
             ->where("user_id", $userId)
             ->update(['send_message' => true]);
+
         return json_decode($res->getBody()->getContents());
     }
 
@@ -886,7 +899,7 @@ trait Tweetable
         $text = \DB::table('twitter_direct_messages')
             ->select("message", "active")
             ->where("active", true)
-            ->where('channel_id',  $this->id)
+            ->where('channel_id',  $this->channel_id)
             ->first();
 
         /*
@@ -896,10 +909,17 @@ trait Tweetable
             ->followerIds()
             ->where('send_message', false)
             ->pluck('user_id');
-            
+
         if ($text) {
+            $activeSubscription = $this->paid;
+            if ($activeSubscription) {
+                $text = $text->message;
+            } else {
+                $text = $text->message . "\n\r (Send DM's to new followers via https://uniclixapp.com/twitter-booster-app )  ";
+            }
+
             foreach ($followerIds as $followers) {
-                $this->DM($followers, $text->message);
+                $this->DM($followers, $text);
             }
         }
     }

@@ -22,7 +22,8 @@ class UserList extends React.Component {
                 statusText: "",
                 message: ""
             },
-            userItems: props.userItem
+            userItems: props.userItem,
+            loading: true
         };
     }
 
@@ -119,7 +120,6 @@ class UserList extends React.Component {
                 />
             )
         );
-
         return (
             <div>
                 <ToastContainer

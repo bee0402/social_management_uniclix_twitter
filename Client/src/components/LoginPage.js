@@ -7,6 +7,7 @@ import { startSetProfile } from "../actions/profile";
 import { backendUrl } from "../config/api";
 import { loginUser } from '../requests/auth';
 import { LoaderWithOverlay } from "./Loader";
+import ReactGA from 'react-ga';
 
 export class LoginPage extends React.Component {
 
@@ -77,6 +78,11 @@ export class LoginPage extends React.Component {
             if (typeof response.accessToken !== "undefined") {
                 this.performLogin(response.accessToken);
             }
+            ReactGA.event({
+                category: "Login ",
+                action: "User pressed the login button",
+            });
+
         }).catch(e => {
             this.setState(() => ({ loading: false }));
             if (typeof e.response !== "undefined" && typeof e.response.data.error !== "undefined") {
@@ -100,7 +106,7 @@ export class LoginPage extends React.Component {
             console.log(e);
         });
     };
-    
+
     render() {
 
         return (

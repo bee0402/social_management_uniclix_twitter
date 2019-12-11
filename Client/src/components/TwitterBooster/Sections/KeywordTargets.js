@@ -15,6 +15,7 @@ class KeywordTargets extends React.Component {
         actions: 0,
         targets: [],
         loading: this.props.channelsLoading,
+        loadingUsers: true,
         searchView: false,
         forbidden: false,
         showTargetLink: false,
@@ -92,6 +93,7 @@ class KeywordTargets extends React.Component {
                     this.setState(() => ({
                         searchView: true,
                         loading: false,
+                        loadingUsers: false,
                         showTargetLink: true
                     }));
 
@@ -104,6 +106,7 @@ class KeywordTargets extends React.Component {
                     actions: response.actions,
                     targets: response.targets,
                     loading: false,
+                    loadingUsers: false,
                     searchView: false,
                     forbidden: false,
                     page: 1
@@ -160,7 +163,7 @@ class KeywordTargets extends React.Component {
     };
 
     render() {
-        const { forbidden, searchView, targets, loading, userItems, showTargetLink } = this.state;
+        const { forbidden, searchView, targets, loading, userItems,loadingUsers, showTargetLink } = this.state;
         return (
             !loading ?
                 <div>
@@ -209,7 +212,7 @@ class KeywordTargets extends React.Component {
                                 targetType="keyword"
                                 targets={targets}
                                 actions={this.state.actions}
-                                loading={loading}
+                                loading={loadingUsers}
                                 perform={this.perform}
                                 page="keyword-targets"
                                 noData={{ title: "No Users", description: "Change hashtags" }}

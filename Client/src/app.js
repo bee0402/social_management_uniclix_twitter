@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import ReactGA from 'react-ga';
 import { Provider } from "react-redux";
 import configStore from "./store/configStore";
 import AppRouter from "./routes/AppRouter";
@@ -12,6 +13,10 @@ import { setChannels, startSetChannels } from "./actions/channels";
 import { setMiddleware } from "./actions/middleware";
 
 const store = configStore();
+
+const trackingId = "UA-139556974-3"; // Replace with your Google Analytics tracking ID
+
+
 
 const Root = () => (
     <div>
@@ -26,6 +31,8 @@ let hasRendered = false;
 
 const renderApp = () => {
     if (!hasRendered) {
+        ReactGA.initialize(trackingId);
+        ReactGA.pageview(window.location.pathname + window.location.search);
         ReactDOM.render(<Root />, document.getElementById("app"));
         hasRendered = true;
     }
@@ -46,6 +53,10 @@ const setAuthentication = () => {
 
         let profile = localStorage.getItem("profile");
         profile = profile ? JSON.parse(profile) : "";
+
+        ReactGA.set({
+            userId: profile.user.id,
+        })
 
         if (!profile) {
             localStorage.setItem("token", undefined);

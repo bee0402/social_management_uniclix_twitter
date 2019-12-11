@@ -4,30 +4,28 @@ import BottomScrollListener from 'react-bottom-scroll-listener';
 import UserList from "../../UserList";
 import UpgradeAlert from '../../UpgradeAlert';
 import { getAccountTargets, follow } from '../../../requests/twitter/channels';
-import {startSetChannels} from "../../../actions/channels";
+import { startSetChannels } from "../../../actions/channels";
 import channelSelector from '../../../selectors/channels';
 import Loader from '../../Loader';
 
-class AccountTargets extends React.Component{
+class AccountTargets extends React.Component {
     state = {
         userItems: [],
         actions: 0,
         targets: [],
-        loading: this.props.channelsLoading,
+        loading: true,
         searchView: false,
         page: 1,
-        forbidden: false
+        forbidden: false,
+        tryFetch: 0
     }
 
     componentDidMount() {
-        
-        if(!this.props.channelsLoading){
-            this.fetchTargets();
-        }
+        this.fetchTargets();
     }
 
     componentDidUpdate(prevProps) {
-        if((this.props.selectedChannel !== prevProps.selectedChannel)){
+        if ((this.props.selectedChannel !== prevProps.selectedChannel)) {
             this.fetchTargets();
         }
     }
@@ -37,7 +35,7 @@ class AccountTargets extends React.Component{
             searchView
         }));
 
-        if(!searchView){
+        if (!searchView) {
             this.fetchTargets();
         }
     };
@@ -54,10 +52,10 @@ class AccountTargets extends React.Component{
                     actions: prevState.actions - 1
                 }));
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
@@ -81,25 +79,30 @@ class AccountTargets extends React.Component{
         this.setLoading(true);
         getAccountTargets()
             .then((response) => {
-                this.setState(() => ({
-                    userItems: response.items,
-                    actions: response.actions,
-                    targets: response.targets,
-                    loading: false,
-                    forbidden: false,
-                    page: 1
-                }));
+                if (response.items.length < 1 && this.state.tryFetch > 0) {
+                    this.fetchTargets();
+                    this.setState({ tryFetch: this.state.tryFetch + 1 })
+                } else {
+                    this.setState({
+                        userItems: response.items,
+                        actions: response.actions,
+                        targets: response.targets,
+                        forbidden: false,
+                        loading: false ,
+                        page: 1
+                    });
+                }
             }).catch((error) => {
                 this.setLoading(false);
-                
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
-                if(error.response.status === 403){
+                if (error.response.status === 403) {
                     this.setForbidden(true);
                 }
 
@@ -121,10 +124,10 @@ class AccountTargets extends React.Component{
             }).catch((error) => {
                 this.setLoading(false);
 
-                if(error.response.status === 401){
-                    
-                    if(this.props.selectedChannel.active){
-                       this.props.startSetChannels();
+                if (error.response.status === 401) {
+
+                    if (this.props.selectedChannel.active) {
+                        this.props.startSetChannels();
                     }
                 }
 
@@ -132,19 +135,19 @@ class AccountTargets extends React.Component{
             });
     };
 
-    reloadTargets = (targets) =>{
+    reloadTargets = (targets) => {
         this.setState(() => ({
             targets
         }));
     };
-
-    render(){
+    render() {
+        console.log(this.state.loading)
         return (
             <div>
                 <h2>ACCOUNT TARGETS</h2>
-                <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
-                <UserList 
-                    userItems={ this.state.userItems }
+                <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
+                <UserList
+                    userItems={this.state.userItems}
                     actionType="follow"
                     showTargetLink={true}
                     searchView={this.state.searchView}
@@ -165,7 +168,7 @@ class AccountTargets extends React.Component{
 }
 
 const mapStateToProps = (state) => {
-    const selectedTwitterChannel = {selected: 1, provider: "twitter"};
+    const selectedTwitterChannel = { selected: 1, provider: "twitter" };
     const selectedChannel = channelSelector(state.channels.list, selectedTwitterChannel);
 
     return {
