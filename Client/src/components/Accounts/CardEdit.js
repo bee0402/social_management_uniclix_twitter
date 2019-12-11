@@ -11,10 +11,13 @@ import { logout } from "../../actions/auth";
 import { LoaderWithOverlay } from "../Loader";
 import UpgradeAlert from "../UpgradeAlert";
 import CongratsPayment from "./CongratsPayment";
-import {  updateCard } from '../../requests/billing';
+import { updateCard } from '../../requests/billing';
 import { stripePublishableKey } from '../../config/api';
 import Countries from "../../fixtures/country";
 import { getKeywordTargets } from '../../requests/twitter/channels';
+import { ToastContainer } from "react-toastr";
+
+let toastContainer;
 
 class CardEdit extends React.Component {
     constructor(props) {
@@ -245,14 +248,15 @@ class CardEdit extends React.Component {
 
     onToken = (token) => {
         updateCard(token).then(response => {
-            this.props.startSetChannels().then(res => {
-                this.props.startSetProfile().then(res => {
-                    this.setState({
-                        loading: true,
-                        orderFinished: true
-                    });
-                });
-            })
+            if (response.success) {
+                toastContainer.success(`Card Information Updated!`, "Success", { closeButton: true });
+
+                setTimeout(() => {
+                    this.props.history.push('/twitter-booster/manage-accounts')
+                }, 0)
+            }
+
+
         }).catch(e => {
             console.log(e)
             this.setState({
@@ -285,7 +289,10 @@ class CardEdit extends React.Component {
                             <CongratsPayment /> :
                             <div>
                                 <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
-
+                                <ToastContainer
+                                    ref={ref => toastContainer = ref}
+                                    className="toast-top-right"
+                                />
 
                                 <SweetAlert
                                     show={!!this.state.error}
