@@ -223,9 +223,13 @@ class BillingController extends Controller
     {
         $token = $request->input('token');
         $id = $token['id'];
+        $user_card_data = $token['user_card_data'];
         $user = $this->user;
         try {
             $user->updateCard($id);
+
+            $user->user_card_data = $user_card_data;
+            $user->save();
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 500);
