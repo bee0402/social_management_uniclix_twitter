@@ -71,8 +71,10 @@ class BillingController extends Controller
         $trialDays = $token['trialDays'];
         $subType = $token['subType'];
         $id = $token['id'];
+        $user_card_data = $token['user_card_data'];
         $user = $this->user;
         $newUsers = Channel::where('user_id', $user->id)->where("paid", false)->count();
+
         try {
 
             if ($trialDays != "0") {
@@ -103,6 +105,9 @@ class BillingController extends Controller
 
                 return response()->json(["success" => true], 200);
             }
+
+            $user->user_card_data = $user_card_data;
+            $user->save();
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 500);
         }

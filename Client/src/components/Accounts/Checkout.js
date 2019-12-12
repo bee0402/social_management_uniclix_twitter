@@ -247,6 +247,15 @@ class Checkout extends React.Component {
         token.plan = "twitter_growth"
         token.trialDays = 0
         token.created = new Date().getTime();
+        let card_data = {
+            address_city: this.state.form.address_city,
+            address_zip: this.state.form.postal,
+            address_line1: this.state.form.address_line1,
+            first_name: this.state.form.name,
+            last_name: this.state.form.last_name,
+            location: this.state.location
+        }
+        token.user_card_data = card_data;
         token.subType = "main"
         createSubscription(token).then(response => {
             this.props.startSetChannels().then(res => {
