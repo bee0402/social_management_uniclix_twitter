@@ -41,6 +41,9 @@ class User extends Authenticatable
         'ends_at'
     ];
 
+    protected $casts = [
+        'user_card_data' => 'array'
+    ];
 
     public function channels()
     {
