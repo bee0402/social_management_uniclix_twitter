@@ -47,12 +47,12 @@ class CardEdit extends React.Component {
             exp_month: '',
             exp_year: '',
             exp_date: '',
-            name: '',
+            first_name: '',
             last_name: '',
             address_line1: '',
             address_city: '',
             location: '',
-            postal: ''
+            address_zip: ''
         }
     }
 
@@ -79,6 +79,21 @@ class CardEdit extends React.Component {
             });
     };
 
+    initializeCardData = () => {
+        if (this.props.profile) {
+            const user = this.props.profile.user.user_card_data;
+            if (user) {
+                let stateCopy = Object.assign({}, this.state);
+                stateCopy["location"] = user.location ? user.location : "";
+                stateCopy["form"]["address_city"] = user.address_city ? user.address_city : "";
+                stateCopy["form"]["address_line1"] = user.address_line1 ? user.address_line1 : "";
+                stateCopy["form"]["address_zip"] = user.address_zip ? user.address_zip : "";
+                stateCopy["form"]["first_name"] = user.first_name ? user.first_name : "";
+                stateCopy["form"]["last_name"] = user.last_name ? user.last_name : "";
+                this.setState(() => (stateCopy));
+            }
+        }
+    };
     handleAMonthChange = (value, text) => {
         let valueTxt = text + " / " + value
 
@@ -93,13 +108,13 @@ class CardEdit extends React.Component {
     }
 
     componentDidMount() {
+        this.initializeCardData();
         this.activeYears();
         this.loadStripe();
-        this.accountsBilling();
+        // this.accountsBilling();
         this.fetchTargets();
     }
     setLocation = (val) => {
-        console.log(val)
         this.setState({ location: val, openCountry: false })
     }
 
@@ -164,10 +179,6 @@ class CardEdit extends React.Component {
         }
     }
 
-    onDateChange = (e) => {
-
-    }
-
     ValidateCvv = (e) => {
         let value = e.target.value;
         let cvv = value * 1;
@@ -228,7 +239,7 @@ class CardEdit extends React.Component {
             exp_year: this.state.form.exp_year,
             cvc: this.state.form.cvc,
             address_city: this.state.form.address_city,
-            address_zip: this.state.form.postal,
+            address_zip: this.state.form.address_zip,
             address_line1: this.state.form.address_line1
         }, (status, response) => {
 
@@ -244,6 +255,15 @@ class CardEdit extends React.Component {
     }
 
     onToken = (token) => {
+        let card_data = {
+            address_city: this.state.form.address_city,
+            address_zip: this.state.form.address_zip,
+            address_line1: this.state.form.address_line1,
+            first_name: this.state.form.first_name,
+            last_name: this.state.form.last_name,
+            location: this.state.location
+        }
+        token.user_card_data = card_data;
         updateCard(token).then(response => {
             if (response.success) {
                 this.props.startSetChannels().then(res => {
@@ -269,9 +289,8 @@ class CardEdit extends React.Component {
 
     render() {
         const { validClaas, form, years, loading, orderFinished, countries, newAccounts, actualUsers, openCountry, location } = this.state
-        // const location = form.location;
-        const items = countries.map((item) => {
-            return <li onClick={() => this.setLocation(item)}> {item} </li>;
+        const items = countries.map((item,index) => {
+            return <li key={index} onClick={() => this.setLocation(item)}> {item} </li>;
         });
         const todayDate = new Date();
         const minumumYear = todayDate.getFullYear();
@@ -357,8 +376,8 @@ class CardEdit extends React.Component {
                                             <div className="form-field col-12 col-md-6 mb1">
                                                 <input className={'form-control whiteBg '}
                                                     onChange={(e) => this.onFieldChange(e)}
-                                                    value={form.name}
-                                                    name="name"
+                                                    value={form.first_name}
+                                                    name="first_name"
                                                     placeholder="Name" />
                                             </div>
                                             <div className="form-field col-12 col-md-6 mb1">
@@ -404,8 +423,8 @@ class CardEdit extends React.Component {
                                             <div className="form-field col-12 col-md-6 mb1">
                                                 <input className={'form-control whiteBg '}
                                                     onChange={(e) => this.onFieldChange(e)}
-                                                    value={form.postal}
-                                                    name="postal"
+                                                    value={form.address_zip}
+                                                    name="address_zip"
                                                     placeholder="Zipp Code" />
                                             </div>
                                         </div>
