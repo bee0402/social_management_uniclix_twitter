@@ -244,7 +244,7 @@ class Checkout extends React.Component {
     }
 
     onToken = (token) => {
-        token.plan = "twitter_growth"
+        token.plan = "twitter-booster"
         token.trialDays = 0
         token.created = new Date().getTime();
         let card_data = {
@@ -267,7 +267,6 @@ class Checkout extends React.Component {
                 });
             })
         }).catch(e => {
-            console.log(e)
             this.setState({
                 loading: true,
                 message: ""

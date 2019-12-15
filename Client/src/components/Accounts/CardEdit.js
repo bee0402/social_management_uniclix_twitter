@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { isValid } from 'cc-validate';
 import Picker from 'react-month-picker'
-import GeoSuggest from "react-geosuggest";
 import SweetAlert from "sweetalert2-react";
 import { startSetProfile } from "../../actions/profile";
 import { startAddTwitterChannel, startSetChannels } from "../../actions/channels";
