@@ -103,7 +103,6 @@ export class LoginPage extends React.Component {
             this.props.startSetChannels();
         }).catch(e => {
             this.setState(() => ({ loading: false }));
-            console.log(e);
         });
     };
 

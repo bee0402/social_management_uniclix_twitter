@@ -16,6 +16,7 @@ import { logout } from "../../actions/auth";
 import Loader from "../../components/Loader";
 import { updateSubscription } from '../../requests/billing';
 import Swal from 'sweetalert2';
+import ReactGA from 'react-ga';
 
 class Twitter extends React.Component {
     constructor(props) {
@@ -173,6 +174,10 @@ class Twitter extends React.Component {
                             newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
                             actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
                         });
+                        ReactGA.event({
+                            category: "Checkout ",
+                            action: "User updates the checkout",
+                        });
                     });
                 })
         }).catch(e => {
@@ -190,6 +195,10 @@ class Twitter extends React.Component {
         setTimeout(() => {
             this.props.history.push('/twitter-booster/CardEdit')
         }, 0)
+        ReactGA.event({
+            category: "Checkout",
+            action: "User edits the credit card",
+        });
     }
 
     cancelSubscriptionAlert = () => {
@@ -204,7 +213,7 @@ class Twitter extends React.Component {
             if (result.value) {
                 this.cancelSubscription();
             }
-        })
+                })
     }
 
     cancelSubscription = () => {
@@ -221,6 +230,10 @@ class Twitter extends React.Component {
                                 action: this.defaultAction,
                                 newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
                                 actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                            });
+                            ReactGA.event({
+                                category: "Checkout",
+                                action: "User pressed the cancel subscription button",
                             });
                         });
                     });
@@ -246,9 +259,11 @@ class Twitter extends React.Component {
                         this.setState({
                             loading: false,
                             action: this.defaultAction,
-
                             newAccounts: (this.props.channels).filter(channel => channel.details.paid == 0).length,
                             actualUsers: (this.props.channels).filter(channel => channel.details.paid == 1).length
+                        }); ReactGA.event({
+                            category: "Checkout",
+                            action: "User resumes the checkout",
                         });
                     });
                 });
@@ -258,6 +273,10 @@ class Twitter extends React.Component {
                         error: e.response.data.error,
                         loading: false,
                     }));
+                    ReactGA.event({
+                        category: "Checkout error",
+                        action: "User resumes the checkout" + response,
+                    });
                     return;
                 }
             });

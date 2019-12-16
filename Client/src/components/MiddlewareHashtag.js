@@ -8,6 +8,7 @@ import { startSetChannels } from "../actions/channels";
 import { getKeywordTargets } from '../requests/twitter/channels';
 import channelSelector from '../selectors/channels';
 import Loader from './Loader';
+import ReactGA from 'react-ga';
 
 class MiddlewareHashtag extends React.Component {
     constructor(props) {
@@ -75,6 +76,11 @@ class MiddlewareHashtag extends React.Component {
                         targets: response,
                         loading: false
                     });
+                    ReactGA.event({
+                        category: "Hashtag ",
+                        action: "User pressed the add button",
+                    });
+        
                 }).catch((error) => {
                     this.setLoading(false);
 

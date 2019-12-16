@@ -14,7 +14,7 @@ import { setMiddleware } from "./actions/middleware";
 
 const store = configStore();
 
-const trackingId = "UA-139556974-3"; // Replace with your Google Analytics tracking ID
+const trackingId =  process.env.LINKEDIN_APP_ID ? process.env.LINKEDIN_APP_ID : 'UA-139556974-3'; // Replace with your Google Analytics tracking ID
 
 
 

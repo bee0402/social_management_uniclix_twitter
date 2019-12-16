@@ -15,6 +15,7 @@ import { createSubscription } from '../../requests/billing';
 import { stripePublishableKey } from '../../config/api';
 import Countries from "../../fixtures/country";
 import { getKeywordTargets } from '../../requests/twitter/channels';
+import ReactGA from 'react-ga';
 
 class Checkout extends React.Component {
     constructor(props) {
@@ -233,11 +234,20 @@ class Checkout extends React.Component {
         }, (status, response) => {
 
             if (status === 200) {
-                this.onToken(response)
+                this.onToken(response);
+
+                ReactGA.event({
+                    category: "Checkout ",
+                    action: "User started the checkout",
+                });
             } else {
                 this.setState({
                     loading: true,
                     message: ""
+                });
+                ReactGA.event({
+                    category: "Checkout error",
+                    action: "User started the checkout" + response,
                 });
             }
         });

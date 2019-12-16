@@ -48,19 +48,19 @@ export class RegisterPage extends React.Component {
                 action: "User pressed the login button",
             });
         }).catch(e => {
-            ReactGA.event({
-                category: "Register Error",
-                action: "User pressed the login button",
-            });
             this.setState({ loading: false });
             if (typeof e.response !== "undefined" && typeof e.response.data.errors !== "undefined") {
+
+                ReactGA.event({
+                    category: "Register Error " + Object.values(e.response.data.errors)[0][0],
+                    action: "User pressed the login button",
+                });
                 this.setState(() => ({
                     error: Object.values(e.response.data.errors)[0][0]
                 }));
                 return;
             }
 
-            console.log(e);
         });
     };
     onInputChange = (e) => {
@@ -71,6 +71,7 @@ export class RegisterPage extends React.Component {
             ...input
         });
     };
+    
     render() {
 
         return (
