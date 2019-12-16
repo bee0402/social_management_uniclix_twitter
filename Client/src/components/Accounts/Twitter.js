@@ -193,7 +193,7 @@ class Twitter extends React.Component {
     editCreditCard = () => {
         this.setState({ shouldBlockNavigation: false })
         setTimeout(() => {
-            this.props.history.push('/twitter-booster/CardEdit')
+            this.props.history.push('/twitter-booster/card-edit')
         }, 0)
         ReactGA.event({
             category: "Checkout",

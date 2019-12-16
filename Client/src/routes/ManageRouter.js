@@ -24,7 +24,7 @@ const ManageRouter = () => (
             <Route path={`/twitter-booster/account-targets`} component={AccountTargets} />
             <Route path={`/twitter-booster/manage-accounts`} component={Accounts} />
             <Route path={`/twitter-booster/checkout`} component={Checkout} />
-            <Route path={`/twitter-booster/CardEdit`} component={CardEdit} />
+            <Route path={`/twitter-booster/card-edit`} component={CardEdit} />
             <Route path={`/twitter-booster/keyword-targets`} component={KeywordTargets} />
             <Route path={`/twitter-booster/auto-dm`} component={AutoDM} />
             <Route path={`/twitter-booster/followers`} component={Followers} />
