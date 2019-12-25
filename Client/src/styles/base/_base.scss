@@ -209,6 +209,38 @@
     }
   }
 }
+@media only screen and (max-width: 600px) {
+  .navbar-wrap {
+    .navbar-uniclix {
+      display: flex;
+      .brand {
+        margin-left: 40px;
+      }
+      .top-menu {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        li {
+          a {
+            margin: 0 10px;
+            font-size: 1.2rem;
+            font-weight: normal;
+            padding-bottom: 0;
+            display: flex !important;
+          }
+        }
+      }
+      .right-top-nav {
+        .current-profile {
+          min-width: auto;
+          .current-profile-info {
+            display: none!important;
+          }
+        }
+      }
+    }
+  }
+}
 
 /* TOp ALert =============*/
 .top-alert {
@@ -329,12 +361,9 @@
   -ms-transform: translateZ(0);
   -o-transform: translateZ(0);
   transform: translateZ(0);
-  -webkit-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms,
-    opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  -moz-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms,
-    opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms,
-    opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -webkit-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -moz-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
 }
 
 @media screen and (max-width: 767px) {
@@ -514,8 +543,7 @@
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-transition: background-color 200ms ease-in-out,
-    color 200ms ease-in-out;
+  -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
   -moz-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
   transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
 }

@@ -5,6 +5,7 @@ import MenuItems from "../TwitterBooster/Fixtures/MenuItems";
 import VerticalMenu from "../Menus/VerticalMenu";
 import channelSelector from "../../selectors/channels";
 import SettingsRouter from '../../routes/SettingsRouter';
+import { render } from 'react-dom';
 
 // const menuItems = [
 //     {
@@ -30,25 +31,42 @@ import SettingsRouter from '../../routes/SettingsRouter';
 //     }
 // ];
 
-const Settings = ({ channels, selectedChannel, selectChannel }) => {
-    const hasChannel = typeof (selectedChannel.username) !== "undefined";
-    return (
-        <div className="body-wrap">
-            <div>
-                <VerticalMenu
-                    menuItems={MenuItems}
-                    channels={channels}
-                    selectedChannel={selectedChannel}
-                    selectChannel={selectChannel}
-                />
-                <div className="body-container">
-                    <div className="main-section">
-                        <SettingsRouter />
+class Settings extends React.Component {
+    state = {
+        isBoxVisible: false
+    }
+
+    toggleBox = () => {
+        console.log(this.state.isBoxVisible)
+        this.setState({
+            isBoxVisible: !this.state.isBoxVisible
+        })
+    }
+
+    render() {
+        const { channels, selectedChannel, selectChannel } = this.props
+
+        const hasChannel = typeof (selectedChannel.username) !== "undefined";
+        return (
+            <div className="body-wrap">
+                <div>
+                    <VerticalMenu
+                        menuItems={MenuItems}
+                        channels={channels}
+                        selectedChannel={selectedChannel}
+                        selectChannel={selectChannel}
+                        toggleBox={this.toggleBox}
+                        isBoxVisible={this.state.isBoxVisible}
+                    />
+                    <div className="body-container">
+                        <div className="main-section">
+                            <SettingsRouter />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 const mapStateToProps = (state) => {

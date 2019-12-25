@@ -4764,3 +4764,12 @@ table.compare-plans-table {
     outline: none;
   }
 }
+@media only screen and (max-width: 600px) {
+  .login-container {
+    display: block;
+    overflow: scroll;
+  }
+  .login-side , .register-side{
+    height: auto;
+  }
+}

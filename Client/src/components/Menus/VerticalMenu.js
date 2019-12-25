@@ -6,19 +6,32 @@ import { ToastContainer } from "react-toastr";
 
 let toastContainer;
 
-const VerticalMenu = ({ menuItems, channels, selectedChannel, selectChannel, trialEnded }) => {
+
+
+const VerticalMenu = ({
+    menuItems,
+    channels,
+    selectedChannel,
+    selectChannel,
+    trialEnded,
+    toggleBox,
+    isBoxVisible }) => {
+console.log(isBoxVisible)
     return (
-        <aside className="vertical-menu scrollbar">
+        <div>
+            <button className="top-bar-trigger" onClick={() => toggleBox()}><i className="fa fa-bars"></i></button>
+            <aside className={`vertical-menu scrollbar ${isBoxVisible ? 'open-sidebar' : ''}`}>
+                <ProfileInfo
+                    selectedChannel={selectedChannel}
+                    channels={channels}
+                    trialEnded={trialEnded}
+                    selectChannel={selectChannel} />
 
-            <ProfileInfo
-                selectedChannel={selectedChannel}
-                channels={channels}
-                trialEnded={trialEnded}
-                selectChannel={selectChannel} />
+                <MenuItems menuItems={menuItems} />
+                <SupportSection />
+            </aside>
+        </div>
 
-            <MenuItems menuItems={menuItems} />
-            <SupportSection />
-        </aside>
     );
 };
 
