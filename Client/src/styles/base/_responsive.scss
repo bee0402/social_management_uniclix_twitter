@@ -33,7 +33,11 @@
     }
 
     .body-container {
-        margin-left: 0px;
+        padding: 5px!important;
+    }
+    .steps-cnt {
+        max-width: 100%;
+        margin-top: 10rem;
     }
 
     .dashboard-info li {

@@ -16,9 +16,8 @@ const VerticalMenu = ({
     trialEnded,
     toggleBox,
     isBoxVisible }) => {
-console.log(isBoxVisible)
     return (
-        <div>
+        <div className="w-0">
             <button className="top-bar-trigger" onClick={() => toggleBox()}><i className="fa fa-bars"></i></button>
             <aside className={`vertical-menu scrollbar ${isBoxVisible ? 'open-sidebar' : ''}`}>
                 <ProfileInfo

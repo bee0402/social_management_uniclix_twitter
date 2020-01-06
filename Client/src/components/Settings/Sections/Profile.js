@@ -224,7 +224,7 @@ class Profile extends React.Component {
                     <div className="alert alert-success">{success}</div>
                 }
                 <div className="tab-cnt">
-                    <div className="tab-head">
+                    <div className="tab-head tab-res">
                         <div className={`tab-nav-item ${isTabActive == 'personal-info' ? 'active' : ''}`}>
                             <button href="#personal-info" onClick={() => this.ChangeTab('personal-info')}>Personal information</button>
                         </div>

@@ -44,15 +44,14 @@ export const PrivateRoute = ({
                             <ActiveChecker />
                         </BrowserView>
 
-                        <MobileView>
-                            <div className="p20">
-                                <SocialAccountsPrompt
-                                    image="/images/hello_bubble_smiley.svg"
-                                    title="Please switch to desktop version!"
-                                    description="We support only the desktop version at the moment. Please hang in there, our mobile app is coming soon."
-                                />
+                        <MobileView viewClassName="app-wrap">
+                            <div className="">
+                                <TopMenu />
+                                <Component {...props} />
+                                <Composer />
+                                <EmailChecker />
+                                <ActiveChecker />
                             </div>
-
                         </MobileView>
 
                     </div>
