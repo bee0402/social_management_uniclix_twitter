@@ -181,7 +181,7 @@ class CleanupList extends React.Component {
                                 <h2>Clean up list</h2>
                             </div>
 
-                            <div className="section-header__second-row">
+                            <div className="section-header__second-row d-sm-block">
                                 <div></div>
                                 <div className="section-header__select-menu">
                                     <label htmlFor="sortBy">Category</label>

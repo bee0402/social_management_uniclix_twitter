@@ -31,10 +31,6 @@
     .vertical-menu {
         margin-left: -212px;
     }
-
-    .body-container {
-        padding: 5px!important;
-    }
     .steps-cnt {
         max-width: 100%;
         margin-top: 10rem;
@@ -70,5 +66,17 @@
 
     .box-container {
         padding: 25px 25px;
+    }
+    .d-sm-block {
+        display: block!important;
+    }
+    .mt-2-sm {
+        margin-top: 2rem;
+    }
+    .mt-1-sm {
+        margin-top: 1rem;
+    }
+    .section-header__select-menu {
+        width: auto;
     }
 }

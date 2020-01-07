@@ -172,9 +172,9 @@ class Followers extends React.Component {
                                     <NavLink to="/twitter-booster/auto-dm" className="btn-text-blue">Set up auto DM</NavLink>
                                 </div>
 
-                                <div className="section-header__second-row">
+                                <div className="section-header__second-row d-sm-block">
                                     <p>This is a list of your active and recent followers</p>
-                                    <div className="section-header__select-menu">
+                                    <div className="section-header__select-menu mt-2-sm">
                                         <label htmlFor="sortBy">Category</label>
                                         <select id="sortBy" onChange={(e) => this.setCategory(e)} value={this.state.category}>
                                             <option value="getRecentFollowers">Recent</option>
