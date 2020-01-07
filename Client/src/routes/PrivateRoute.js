@@ -36,15 +36,14 @@ export const PrivateRoute = ({
                     </div>
                     :
                     <div>
-                        <BrowserView viewClassName="app-wrap">
+                        <div className="app-wrap">
                             <TopMenu />
                             <Component {...props} />
                             <Composer />
                             <EmailChecker />
                             <ActiveChecker />
-                        </BrowserView>
-
-                        <MobileView viewClassName="app-wrap">
+                        </div>
+                        {/* <MobileView viewClassName="app-wrap">
                             <div className="">
                                 <TopMenu />
                                 <Component {...props} />
@@ -52,8 +51,7 @@ export const PrivateRoute = ({
                                 <EmailChecker />
                                 <ActiveChecker />
                             </div>
-                        </MobileView>
-
+                        </MobileView> */}
                     </div>
                 ) : (
                     <Redirect to="/" />

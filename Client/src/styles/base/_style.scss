@@ -4778,6 +4778,10 @@ table.compare-plans-table {
     display: flex;
     justify-content: center;
   }
+  .main-content-style {
+    padding: 0 !important;
+    width: 100% !important;
+  }
 }
 //phone
 @media only screen and (max-width: 600px) {
