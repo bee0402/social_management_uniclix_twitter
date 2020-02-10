@@ -4764,12 +4764,78 @@ table.compare-plans-table {
     outline: none;
   }
 }
+//tablet
+@media screen and (max-width: 800px) {
+  .login-side,
+  .register-side {
+    background: none;
+  }
+  .auth-switch-container {
+    width: 200px;
+    text-align: right;
+  }
+  .form-container {
+    display: flex;
+    justify-content: center;
+  }
+  .main-content-style {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}
+//phone
 @media only screen and (max-width: 600px) {
   .login-container {
     display: block;
     overflow: scroll;
+    .channels-box {
+      margin-top: 9rem;
+    }
   }
-  .login-side , .register-side{
+  .login-side,
+  .register-side {
     height: auto;
+  }
+  .middleware-side {
+    display: none;
+  }
+  .main-content-style {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  .upgrade-intro {
+    .heading-group {
+      h1 {
+        font-size: 2rem;
+      }
+    }
+    .body-group {
+      margin-top: 30px;
+      .image {
+        display: none;
+      }
+    }
+  }
+  .profile-form {
+    .form-field {
+      padding: 10px!important;
+      margin: 0;
+    }
+  }
+  .w-0 {
+    width: 0;  
+  }
+  .section-header {
+    padding: 0 10px;
+  }
+  .tab-res {
+    justify-content: space-around;
+    align-items: center;
+    .tab-nav-item  {
+      max-width: 50%;
+      button {
+        line-height: 15px!important;
+      }
+    }
   }
 }

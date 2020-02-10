@@ -213,7 +213,7 @@ class Twitter extends React.Component {
             if (result.value) {
                 this.cancelSubscription();
             }
-                })
+        })
     }
 
     cancelSubscription = () => {
@@ -371,15 +371,15 @@ class Twitter extends React.Component {
                         {!!profile.subscription ?
                             (!profile.subscription.activeSubscription ?
                                 <div className="col-md-5">
-                                    <div className="col-md-12 plan-info-container">
-                                        <h3>Trial</h3>
-
-                                        <div className="plan-content">
-                                            <p className="plan-content-description">{this.calcTrialDays(profile.user)} days left trial</p>
-                                            <p className="plan-content-accounts">x{channels.length} accounts</p>
+                                    <div className="col-md-12">
+                                        <div className="plan-info-container mt-1-sm">
+                                            <h3>Trial</h3>
+                                            <div className="plan-content">
+                                                <p className="plan-content-description">{this.calcTrialDays(profile.user)} days left trial</p>
+                                                <p className="plan-content-accounts">x{channels.length} accounts</p>
+                                            </div>
+                                            <button className="btn-blue" onClick={() => { this.startCheckout() }}>Start subscription</button>
                                         </div>
-
-                                        <button className="btn-blue" onClick={() => { this.startCheckout() }}>Start subscription</button>
                                     </div>
                                 </div>
                                 :

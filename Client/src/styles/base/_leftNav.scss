@@ -135,6 +135,7 @@
 .top-bar-trigger {
   display: none;
 }
+
 @media only screen and (max-width: 600px) {
   .top-bar-trigger {
     display: block;
@@ -157,3 +158,4 @@
     transition: 1s;
   }
 }
+

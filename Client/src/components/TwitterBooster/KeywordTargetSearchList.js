@@ -302,7 +302,7 @@ class KeywordTargetSearchList extends React.Component {
                                 </div>
                             </div>
 
-                            {this.props.targets.length >= 3 && <button onClick={() => this.props.showSearchView(false)} className="btn-blue">Show me accounts to follow</button>}
+                            {this.props.targets.length >= 3 && <button onClick={() => this.props.showSearchView(false)} className="btn-blue mb-3">Show me accounts to follow</button>}
                             {this.state.loading && <Loader />}
 
                         </div>

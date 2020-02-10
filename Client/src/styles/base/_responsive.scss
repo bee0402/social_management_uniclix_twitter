@@ -23,6 +23,18 @@
         font-size: 3rem;
         margin-top: 20px;
     }
+    .d-sm-block {
+        display: block!important;
+    }
+    .d-sm-block {
+        display: block!important;
+    }
+    .mt-2-sm {
+        margin-top: 2rem;
+    }
+    .mt-1-sm {
+        margin-top: 1rem;
+    }
 }
 
 
@@ -31,9 +43,9 @@
     .vertical-menu {
         margin-left: -212px;
     }
-
-    .body-container {
-        margin-left: 0px;
+    .steps-cnt {
+        max-width: 100%;
+        margin-top: 10rem;
     }
 
     .dashboard-info li {
@@ -66,5 +78,9 @@
 
     .box-container {
         padding: 25px 25px;
+    }
+    
+    .section-header__select-menu {
+        width: auto;
     }
 }
