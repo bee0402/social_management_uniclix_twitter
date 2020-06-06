@@ -74,20 +74,21 @@ class BillingController extends Controller
         $user_card_data = $token['user_card_data'];
         $user = $this->user;
         $newUsers = Channel::where('user_id', $user->id)->where("paid", false)->count();
-
+        
         try {
-
-            if ($trialDays != "0") {
-                $user->newSubscription($subType, $plan)->trialDays($trialDays)->create($id);
-            } else {
-                $user->newSubscription($subType, $plan)->create($id);
-            }
             if ($newUsers > 0) {
-                $user->subscription('main')->incrementQuantity($newUsers);
+                if ($trialDays != "0") {
+                    $user->newSubscription($subType, $plan)->trialDays($trialDays)->quantity($newUsers)->create($id);
+                } else {
+                    $user->newSubscription($subType, $plan)->quantity($newUsers)->create($id);
+                }
             }
+            // if ($newUsers > 0) {
+            //     $user->subscription('main')->incrementQuantity($newUsers);
+            // }
 
             $roleName = $plan;
-
+            
             if ($subType == "main") {
                 $role = Role::where("name", $roleName)->first();
                 if (!$role) {
