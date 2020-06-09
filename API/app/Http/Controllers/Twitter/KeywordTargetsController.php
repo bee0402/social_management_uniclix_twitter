@@ -35,10 +35,10 @@ class KeywordTargetsController extends Controller
             if ($target = $targets->whereNotIn("id", $currentTargetIds)->latest()->first()) {
 
                 if(!$target->location){
-                    $tweets = $this->selectedChannel->getSearch(["q" => $target->keyword, "count" => 100]);
+                    $tweets = $this->selectedChannel->getSearch(["q" => $target->keyword, "count" => 30]);
                 }else{
                     $location = json_decode($target->location);
-                    $tweets = $this->selectedChannel->getSearch(["q" => $target->keyword, "geocode" => "$location->lat,$location->lng,50mi", "count" => 100]);
+                    $tweets = $this->selectedChannel->getSearch(["q" => $target->keyword, "geocode" => "$location->lat,$location->lng,50mi", "count" => 30]);
                 }
 
                 // return response()->json($tweets);
@@ -77,7 +77,7 @@ class KeywordTargetsController extends Controller
             $items = $this->filterFollowing($items);
 
             return response()->json([
-                "items" => $this->filterFollowing($items),
+                "items" => $items,
                 "targets" => $this->getKeywords(),
                 "actions" => $actionsToday
             ]);
