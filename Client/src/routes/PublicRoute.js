@@ -7,7 +7,7 @@ export const PublicRoute = ({
     component: Component, 
     ...rest}) => (
     <Route {...rest} component={(props) => {
-        let redirect = '/twitter-booster/dashboard';
+        let redirect = '/twitter-booster/keyword-targets';
         
         return (
             !isAuthenticated ? 
@@ -15,7 +15,7 @@ export const PublicRoute = ({
                     <Component {...props} />
                 </div>
             ) : (
-                <Redirect to={`${redirect}`} />
+                <Redirect to={`${redirect+props.location.search}`} />
             )
         )}
     } />
