@@ -29,7 +29,7 @@ class KeywordTargets extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if ((this.props.selectedChannel !== prevProps.selectedChannel)) {
+        if ((this.props.selectedChannel !== prevProps.selectedChannel) || (this.props.channelsLoading !== prevProps.channelsLoading && prevProps.channelsLoading)) {
             this.fetchTargets();
         }
 
