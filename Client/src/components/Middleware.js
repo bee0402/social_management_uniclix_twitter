@@ -12,6 +12,7 @@ import { destroyChannel } from "../requests/channels";
 import Loader, { LoaderWithOverlay } from './Loader';
 import { getParameterByName } from "../utils/helpers";
 import Checkout from "./Settings/Sections/Checkout";
+import SweetAlert from "sweetalert2-react";
 
 class Middleware extends React.Component {
 
@@ -24,7 +25,8 @@ class Middleware extends React.Component {
         addonTrial: getParameterByName("addontrial", this.props.location.search),
         allPlans: [],
         loading: false,
-        forbidden: false
+        forbidden: false,
+        error:""
     }
 
     twitterRef = React.createRef();
@@ -74,6 +76,12 @@ class Middleware extends React.Component {
 
     onFailure = (response) => {
         this.setState(() => ({ loading: false }));
+    };
+
+    setError = (error) => {
+        this.setState(() => ({
+            error
+        }));
     };
 
     setForbidden = (forbidden = false) => {
@@ -139,6 +147,7 @@ class Middleware extends React.Component {
                         this.setState(() => ({ loading: false }));
                     })
                     .catch(error => {
+                        this.setState(() => ({ loading: false }));
                         if (error.response.status === 403) {
                             this.setForbidden(true);
                             return;
@@ -181,7 +190,7 @@ class Middleware extends React.Component {
 
     render() {
         const { middleware, channels, middlewareHashtags } = this.props;
-        const { continueBtn, loading, twitterBooster, allPlans, addon, addonTrial } = this.state;
+        const { continueBtn, loading, twitterBooster, allPlans, addon, addonTrial, error } = this.state;
         let planParam = getParameterByName("plan", this.props.location.search);
         let planData = allPlans.filter(plan => plan["Name"].toLowerCase() === planParam);
         planData = planData.length > 0 ? planData[0] : false;
@@ -196,6 +205,17 @@ class Middleware extends React.Component {
                     <img src="/images/uniclix.png" />
                 </div>
 
+                <SweetAlert
+                    show={!!error}
+                    title={`Error`}
+                    text={error}
+                    type="error"
+                    confirmButtonText="Ok"
+                    cancelButtonText="No"
+                    onConfirm={() => {
+                        this.setError("");
+                    }}
+                />
                 {middleware !== "channels" && middleware !== "billing" && <Loader />}
                 {loading && <LoaderWithOverlay />}
 

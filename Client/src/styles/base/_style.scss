@@ -4839,3 +4839,37 @@ table.compare-plans-table {
     }
   }
 }
+
+
+.ReactModalPortal .ReactModal__Content {
+  position: static !important;
+}
+.custom-modal {
+	width: 407px !important;
+  margin: 10px;
+  background: #F5F7FB;
+  outline: none;
+  overflow: auto;
+  max-height: 95vh;
+	border-radius: 8px;
+  padding: 15px;
+
+  .modalBtn {
+    font-weight: 700;
+    color : #2D86DA;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+  }
+}
+
+.modal-content1{
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  letter-spacing: 0.130517px;
+  color: #363636;
+  margin: 0px 0px 20px 24px;
+}

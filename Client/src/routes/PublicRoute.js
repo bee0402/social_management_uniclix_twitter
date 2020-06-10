@@ -8,6 +8,7 @@ export const PublicRoute = ({
     ...rest}) => (
     <Route {...rest} component={(props) => {
         let redirect = '/twitter-booster/keyword-targets';
+        
         return (
             !isAuthenticated ? 
             (   <div>

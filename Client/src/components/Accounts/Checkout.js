@@ -10,6 +10,7 @@ import channelSelector from "../../selectors/channels";
 import { logout } from "../../actions/auth";
 import { LoaderWithOverlay } from "../Loader";
 import UpgradeAlert from "../UpgradeAlert";
+import { Modal as OurModal } from '../Modal';
 import CongratsPayment from "./CongratsPayment";
 import { createSubscription } from '../../requests/billing';
 import { stripePublishableKey } from '../../config/api';
@@ -100,7 +101,7 @@ class Checkout extends React.Component {
         this.fetchTargets();
     }
     setLocation = (val) => {
-        console.log(val)
+        
         this.setState({ location: val, openCountry: false })
     }
 
@@ -235,12 +236,22 @@ class Checkout extends React.Component {
 
             if (status === 200) {
                 this.onToken(response);
-
+                console.log(response)
                 ReactGA.event({
                     category: "Checkout ",
                     action: "User started the checkout",
                 });
-            } else {
+            }else if (status === 402) {
+                this.setState({
+                  stripeError: 'The card number is incorrect. Please change it and try again.',
+                  loading: true
+                });
+            }else if (response.error.code == 'balance_insufficient') {
+                this.setState({
+                  stripeError: 'The transfer or payout could not be completed because the associated account does not have a sufficient balance available.',
+                  loading: true
+                });
+            }else {
                 this.setState({
                     loading: true,
                     message: ""
@@ -285,7 +296,7 @@ class Checkout extends React.Component {
     }
 
     render() {
-        const { validClaas, form, years, loading, orderFinished, countries, newAccounts, actualUsers, openCountry, location } = this.state
+        const { validClaas, form, years, loading, orderFinished, countries, newAccounts, actualUsers, openCountry, location, stripeError     } = this.state
         // const location = form.location;
         const items = countries.map((item) => {
             return <li onClick={() => this.setLocation(item)}> {item} </li>;
@@ -307,7 +318,13 @@ class Checkout extends React.Component {
                             <CongratsPayment /> :
                             <div>
                                 <UpgradeAlert isOpen={this.state.forbidden} text={"Your current plan does not support more accounts."} setForbidden={this.setForbidden} />
-
+                                <OurModal
+                                    title="Error"
+                                    message={stripeError}
+                                    isOpen={!!stripeError}
+                                    onOk={() => this.setState({ stripeError: '' })}
+                                    okText="Ok"
+                                />
 
                                 <SweetAlert
                                     show={!!this.state.error}
