@@ -224,8 +224,6 @@ class Middleware extends React.Component {
                         {middleware == "channels" &&
                             <div className="box channels-box">
                                 {middleware !== "loading" && <h2>Connect your Twitter account</h2>}
-                                <h5>Cats who destroy birds. Eat an easter feather as if it were a bird then burp victoriously</h5>
-
                                 <div className="channel-buttons">
 
                                     {channels.length > 0 ?
@@ -262,9 +260,9 @@ class Middleware extends React.Component {
 
                                 {
                                     continueBtn ?
-                                        <button className="magento-btn w100" onClick={this.setRole}>Continue to Uniclix</button>
+                                        <button className="magento-btn w100" onClick={this.setRole}>Continue</button>
                                         :
-                                        <button className="magento-btn w100 disabled-btn">Continue to Uniclix</button>
+                                        <button className="magento-btn w100 disabled-btn">Continue</button>
                                 }
                             </div>
                         }
