@@ -24,6 +24,12 @@ const MenuItems = [
         icon: "broom" 
     },
     {   
+        id: "twitter-booster_non_followers",
+        displayName: "Set up auto DM",
+        uri: "/twitter-booster/auto-dm",
+        icon: "envelope" 
+    },
+    {   
         id: "twitter-booster_recent_unfollowers",
         displayName: "Manage Accounts",
         uri: "/twitter-booster/manage-accounts",
