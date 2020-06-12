@@ -65,8 +65,7 @@ const setAuthentication = () => {
         } else {
             if (profile.user.on_board_step == 0) store.dispatch(setMiddleware("channels"));
             if (profile.user.on_board_step == 1) store.dispatch(setMiddleware("hashtag"));
-            if (profile.user.on_board_step == 2) store.dispatch(setMiddleware("connections"));
-            if (profile.user.on_board_step > 2) store.dispatch(setMiddleware(false));
+            if (profile.user.on_board_step == 2) store.dispatch(setMiddleware(false));
         }
 
         new Promise(function (resolve, reject) {

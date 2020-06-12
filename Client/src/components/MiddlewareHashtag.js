@@ -148,8 +148,7 @@ class MiddlewareHashtag extends React.Component {
 
         onBoard(2).then((response) => {
             this.setState(() => ({ loading: false }));
-            this.props.setMiddleware('connections');
-
+            this.props.setMiddleware(false);
         }).catch(error => {
             this.setLoading(false);
             console.log(error)
@@ -158,7 +157,7 @@ class MiddlewareHashtag extends React.Component {
         });
         this.props.startSetProfile().then(() => {
             this.setState(() => ({ loading: false }));
-            this.props.setMiddleware('connections');
+            this.props.setMiddleware(false);
         });
     }
     fetchTargets = () => {
@@ -189,6 +188,7 @@ class MiddlewareHashtag extends React.Component {
                 </div>
                 <div className="col-md-7 col-xs-12">
                     <div className="steps-cnt">
+                    <div>Selecting at least 3 hasthtags and interests will help Uniclix to suggest relevant accounts to follow.</div>
                         <div className="scrollableY-cnt">
                             <div className="item-list">
                                 <div className="search-bar mt20">
