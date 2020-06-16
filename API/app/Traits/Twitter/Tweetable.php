@@ -860,7 +860,7 @@ trait Tweetable
              * To prevent the insert batch from running out of memory,
              * we chunk them into smaller parts
              */
-            foreach (array_chunk($insert, 100000) as $chunk) {
+            foreach (array_chunk($insert, 1000) as $chunk) {
                 $this->followerIds()->insert($chunk);
             }
 
@@ -1018,7 +1018,7 @@ trait Tweetable
             * To prevent the insert batch from running out of memory,
             * we chunk them into smaller parts
             */
-            foreach (array_chunk($insert, 100000) as $chunk) {
+            foreach (array_chunk($insert, 1000) as $chunk) {
                 $this->followingIds()->insert($chunk);
             }
 
