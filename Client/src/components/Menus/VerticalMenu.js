@@ -186,9 +186,13 @@ class SupportSection extends React.Component {
                     ref={ref => toastContainer = ref}
                     className="toast-top-right"
                 />
-                <button className="button" onClick={this.openModal}>
+                <a
+                    className="button"
+                    href="mailto:info@uniclixapp.com?Subject=Help Desk"
+                    target="_blank"
+                >
                     <i className="fa fa-comment"></i> Support
-                </button>
+                </a>
                 <Popup
                     open={this.state.open}
                     closeOnDocumentClick

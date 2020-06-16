@@ -20,7 +20,7 @@ const TopMenu = ({ logout, profile, props }) => (
                 <li>
                     <NavLink to="/twitter-booster" activeClassName="active" className="first-nav-item">Twitter Booster</NavLink>
                 </li>
-                <li><a href="#">Social media manager</a></li>
+                <li><a href="https://web.uniclixapp.com/" target="_blank">Social media manager</a></li>
             </ul>
 
             <div className="right-top-nav">

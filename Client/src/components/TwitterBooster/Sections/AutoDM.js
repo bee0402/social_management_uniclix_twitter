@@ -210,65 +210,63 @@ class AutoDM extends React.Component {
                             </div>
                         </div>
                         {loading && <LoaderWithOverlay />}
-                        {!!isADMactive &&
-                            <div className="aadm-cnt">
-                                <div className="form-row">
-                                    <div className="relative-pos add-dm-message">
-                                        <DraftEditor
-                                            onChange={this.updateDMState}
-                                            content={keyword}
-                                            disabled={isADMactive != 0}
-                                            pictures={[]}
-                                            ChangeAllContent={replaceKeyword}
-                                            textBtn={true}
-                                            showImagesIcon={false}
-                                            showHashtagsIcon={false}
-                                            inclusive={false}
-                                            sendAction={this.saveMessage}
-                                        />
+                        <div className="aadm-cnt">
+                            <div className="form-row">
+                                <div className="relative-pos add-dm-message">
+                                    <DraftEditor
+                                        onChange={this.updateDMState}
+                                        content={keyword}
+                                        disabled={isADMactive != 0}
+                                        pictures={[]}
+                                        ChangeAllContent={replaceKeyword}
+                                        textBtn={true}
+                                        showImagesIcon={false}
+                                        showHashtagsIcon={false}
+                                        inclusive={false}
+                                        sendAction={this.saveMessage}
+                                    />
+                                </div>
+                            </div>
+                            <div className="tab-cnt">
+                                <h3 className="subsection-header">Predefined Messages</h3>
+                                <div className="tab-head">
+                                    <div className={`tab-nav-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
+                                        <button href="#personal-info" onClick={() => this.ChangeTab('predefined')}>Predefined</button>
+                                    </div>
+                                    <div className={`tab-nav-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
+                                        <button href="#company-info" onClick={() => this.ChangeTab('created-by-me')}>Created by me</button>
                                     </div>
                                 </div>
-                                <div className="tab-cnt">
-                                    <h3 className="subsection-header">Predefined Messages</h3>
-                                    <div className="tab-head">
-                                        <div className={`tab-nav-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
-                                            <button href="#personal-info" onClick={() => this.ChangeTab('predefined')}>Predefined</button>
-                                        </div>
-                                        <div className={`tab-nav-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
-                                            <button href="#company-info" onClick={() => this.ChangeTab('created-by-me')}>Created by me</button>
-                                        </div>
-                                    </div>
-                                    <div className="tab-body">
-                                        <div className={`cnt-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
-                                            <ul className="list-items">
-                                                {
-                                                    predefinedMessages.map((predMessage, index) => (
-                                                        <li className="list-item" key={index}>{predMessage}
-                                                            <button className="blue-txt-btn add-message"
-                                                                onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
-                                                        </li>
-                                                    ))
-                                                }
-                                            </ul>
-                                        </div >
-                                        <div className={`cnt-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
-                                            <ul className="list-items">
-                                                {
-                                                    activeKeywords.map((item, index) => (
-                                                        predefinedMessages.includes(item) ? '' :
-                                                            <li className="list-item" key={index}>{item}
-                                                                <button className={`blue-txt-btn add-message  ${isADMactive != 0 ? "" : "disabled"}`}
-                                                                    onClick={() => this.selectMessage(`${item}`)}>Select</button>
-                                                            </li>
-                                                    ))
-                                                }
-
-                                            </ul>
-                                        </div>
+                                <div className="tab-body">
+                                    <div className={`cnt-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
+                                        <ul className="list-items">
+                                            {
+                                                predefinedMessages.map((predMessage, index) => (
+                                                    <li className="list-item" key={index}>{predMessage}
+                                                        <button className="blue-txt-btn add-message"
+                                                            onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
                                     </div >
+                                    <div className={`cnt-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
+                                        <ul className="list-items">
+                                            {
+                                                activeKeywords.map((item, index) => (
+                                                    predefinedMessages.includes(item) ? '' :
+                                                        <li className="list-item" key={index}>{item}
+                                                            <button className={`blue-txt-btn add-message  ${isADMactive != 0 ? "" : "disabled"}`}
+                                                                onClick={() => this.selectMessage(`${item}`)}>Select</button>
+                                                        </li>
+                                                ))
+                                            }
+
+                                        </ul>
+                                    </div>
                                 </div >
-                            </div>
-                        }
+                            </div >
+                        </div>
                     </div>
                 </React.Fragment>
         );
