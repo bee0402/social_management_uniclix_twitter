@@ -812,6 +812,7 @@ trait Tweetable
              * Search for duplicate ids to prevent storing them twice
              */
             $followerIds = $this->followerIds()->whereIn("user_id", $ids);
+            $isActvieADM = $this->auto_dm;
 
             /*
              * In case we are not keeping track for cursor and are fetching all data at once
@@ -829,7 +830,7 @@ trait Tweetable
 
                 $this->followerIds()
                     ->whereNotIn("user_id", $ids)
-                    ->update(["unfollowed_you_at" => Carbon::now(), "updated_at" => Carbon::now()]);
+                    ->update(["send_message" => !$isActvieADM, "unfollowed_you_at" => Carbon::now(), "updated_at" => Carbon::now()]);
             }
 
             /*
@@ -844,7 +845,6 @@ trait Tweetable
              * Prepare insert parameters for bulk inserting
              */
             $insert = [];
-            $isActvieADM = $this->auto_dm;
 
             foreach ($ids as $id) {
                 $insert[] = [
