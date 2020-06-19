@@ -38,6 +38,7 @@ class ProfileController extends Controller
         $addonTrial = $this->user->roleAddons()->where("trial_ends_at", ">", Carbon::now())->whereNotNull("trial_ends_at")->exists();
         $activeAddon = $this->user->subscribed('addon') || $addonTrial;
         $addonOnGracePeriod = $this->user->subscribed('addon') ? $this->user->subscription('addon')->onGracePeriod() : false;
+        $this->user->cur_date = Carbon::now()->toDateTimeString();
 
         $subscription = [
             "currentPlan" => $currentPLan,
