@@ -25,9 +25,7 @@ class RecentUnfollowersController extends Controller
         $perPage = 100;
         $order = $request->input('order') ? $request->input('order') : 'desc';
         $items = [];
-        $followingIds = $this->selectedChannel->followingIds()->whereNotNull("unfollowed_at")->pluck("user_id");
         $followerIds = $this->selectedChannel->followerIds()
-            ->whereNotIn("user_id", $followingIds)
             ->whereNotNull("unfollowed_you_at")
             ->whereNull("unfollowed_at")
             ->orderBy("unfollowed_at", $order)
