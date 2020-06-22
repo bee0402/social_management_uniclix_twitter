@@ -18,7 +18,8 @@ class Followers extends React.Component {
         order: "desc",
         forbidden: false,
         category: "",
-        loading: this.props.channelsLoading
+        loading: this.props.channelsLoading,
+        trialLimit: false
     }
 
     componentDidMount() {
@@ -65,7 +66,13 @@ class Followers extends React.Component {
         }));
 
         return follow(userId)
-            .then((response) => response)
+            .then((response) => {
+                if (response.trialLimit == true) {
+                    this.setState({
+                        trialLimit: response.trialLimit
+                    });
+                }
+            })
             .catch((error) => {
                 this.setState((prevState) => ({
                     actions: prevState.actions - 1
@@ -193,7 +200,7 @@ class Followers extends React.Component {
                                 </div>
                             </div>
 
-                            <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
+                            <UpgradeAlert isOpen={this.state.trialLimit || (this.state.forbidden && !this.state.loading)} goBack={true} setForbidden={this.setForbidden} />
 
                             <UserList
                                 userItems={this.state.userItems}

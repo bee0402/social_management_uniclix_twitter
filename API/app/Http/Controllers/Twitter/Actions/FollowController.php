@@ -38,6 +38,19 @@ class FollowController extends Controller
 
                 if($this->user->getLimit("twitter_daily_follows") > $this->selectedChannel->getDailyStatisticsFor("follows")){
 
+                    $userCreatedAt = $this->selectedChannel->user()
+                        ->pluck("created_at")
+                        ->toArray();
+                    $trialTimeLimit = $userCreatedAt[0]->addDays(1);
+
+                    if ($this->selectedChannel->paid == 0 && Carbon::now()->greaterThan($trialTimeLimit)) {
+                        return response()->json(["success" => false, "message" => "You exceeded the time limit.", "trialLimit" => true], 200);
+                    }
+
+                    if ($this->selectedChannel->paid == 0 && $this->selectedChannel->following_count == 10) {
+                        return response()->json(["success" => false, "message" => "You exceeded the following limit.", "trialLimit" => true], 200);
+                    }
+
                     $twitterUser = $this->selectedChannel->followByName($userId);
 
                     $this->selectedChannel->followingIds()
@@ -52,18 +65,24 @@ class FollowController extends Controller
                                 "updated_at" => Carbon::now()
                             ]);
 
+                    if ($this->selectedChannel->paid == 0 && $this->selectedChannel->following_count < 10) {
+                        $this->selectedChannel
+                            ->where("channel_id", $this->selectedChannel->channel_id)
+                            ->update(["following_count" => $this->selectedChannel->following_count + 1]);
+                    }
+
                     $this->selectedChannel->updateStatistics("follows");
                     $follows = $this->selectedChannel->getDailyStatisticsFor("follows");
 
-                    return response()->json(["success" => true, "message" => "You followed $twitterUser->screen_name.", "dailyActions" => $follows], 200);
+                    return response()->json(["success" => true, "message" => "You followed $twitterUser->screen_name.", "dailyActions" => $follows, "trialLimit" => false], 200);
                 }
 
-                return response()->json(["success" => false, "message" => "You exceeded the daily limit."], 403);
+                return response()->json(["success" => false, "message" => "You exceeded the daily limit.", "trialLimit" => false], 403);
             }
         }catch(\Exception $e){
-            return response()->json(["success" => false, "message" => $e->getMessage()], 500);
+            return response()->json(["success" => false, "message" => $e->getMessage(), "trialLimit" => false], 500);
         }
 
-        return response()->json(["success" => false, "message" => "Unknown user id"], 304);
+        return response()->json(["success" => false, "message" => "Unknown user id", "trialLimit" => false], 304);
     }
 }
