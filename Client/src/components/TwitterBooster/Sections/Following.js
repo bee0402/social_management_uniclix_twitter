@@ -15,7 +15,8 @@ class Following extends React.Component{
         actions: 0,
         loading: this.props.channelsLoading,
         page: 1,
-        order: "desc"
+        order: "desc",
+        trialLimit: false
     }
 
     componentDidMount() {
@@ -49,7 +50,13 @@ class Following extends React.Component{
         }));
 
         return unfollow(userId)
-            .then((response) => response)
+            .then((response) => {
+                if (response.trialLimit == true) {
+                    this.setState({
+                        trialLimit: response.trialLimit
+                    });
+                }
+            })
             .catch((error) => {
                 this.setState((prevState) => ({
                     actions: prevState.actions - 1
@@ -164,7 +171,8 @@ class Following extends React.Component{
                             </div>
                         </div>
                     </div>
-                    
+
+                    <UpgradeAlert isOpen={this.state.trialLimit} cancelBtn="Skip now" text="You have passed you daily follow/unfollow limit." goBack={true} setForbidden={this.setForbidden} />
                     <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
 
                     <UserList 

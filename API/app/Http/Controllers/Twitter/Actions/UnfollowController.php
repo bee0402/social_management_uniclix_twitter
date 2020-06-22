@@ -34,32 +34,61 @@ class UnfollowController extends Controller
 
                 if($this->user->getLimit("twitter_daily_unfollows") > $this->selectedChannel->getDailyStatisticsFor("unfollows")){
 
-                    $twitterUser = $this->selectedChannel->unfollowByName($userId);
+                    $count = count($this->selectedChannel->followingIds()
+                        ->whereNotNull("unfollowed_at")
+                        ->where("trial_status", true)
+                        ->where( 'created_at', '>', Carbon::now()->subDays(1))
+                        ->get());
+                    \Log::info(print_r(Carbon::now(), true));
+\Log::info(print_r(Carbon::now()->subDays(1), true));
+                    if ($this->selectedChannel->paid == 0 && $count == 10) {
+                        return response()->json(["success" => false, "message" => "You exceeded the unfollowing limit.", "trialLimit" => true], 200);
+                    }
 
-                    $this->selectedChannel->followingIds()
-                        ->updateOrCreate(
-                            [
-                                "channel_id" => $this->selectedChannel->id,
-                                "user_id" => $twitterUser->id
-                            ],
-                            [
-                                "unfollowed_at" => Carbon::now(),
-                                "created_at" => Carbon::now(),
-                                "updated_at" => Carbon::now()
-                            ]);
+                    $userTrialEndsAt = $this->selectedChannel->user()
+                        ->pluck("trial_ends_at")
+                        ->toArray();
+
+                    $twitterUser = $this->selectedChannel->unfollowByName($userId);
+                    if ($this->selectedChannel->paid == 0 && $userTrialEndsAt[0]->greaterThan(Carbon::now())) {
+                        $this->selectedChannel->followingIds()
+                            ->updateOrCreate(
+                                [
+                                    "channel_id" => $this->selectedChannel->id,
+                                    "user_id" => $twitterUser->id
+                                ],
+                                [
+                                    "unfollowed_at" => Carbon::now(),
+                                    "created_at" => Carbon::now(),
+                                    "updated_at" => Carbon::now(),
+                                    "trial_status" => true
+                                ]);
+                    } else {
+                        $this->selectedChannel->followingIds()
+                            ->updateOrCreate(
+                                [
+                                    "channel_id" => $this->selectedChannel->id,
+                                    "user_id" => $twitterUser->id
+                                ],
+                                [
+                                    "unfollowed_at" => Carbon::now(),
+                                    "created_at" => Carbon::now(),
+                                    "updated_at" => Carbon::now()
+                                ]);
+                    }
 
                     $this->selectedChannel->updateStatistics("unfollows");
                     $dailyActions = $this->selectedChannel->getDailyStatisticsFor("unfollows");
-                    return response()->json(["success" => true, "message" => "You unfollowed $twitterUser->screen_name.", "dailyActions" => $dailyActions], 200);
+                    return response()->json(["success" => true, "message" => "You unfollowed $twitterUser->screen_name.", "dailyActions" => $dailyActions, "trialLimit" => false], 200);
                 }
 
-                return response()->json(["success" => false, "message" => "You exceeded the daily limit."], 403);
+                return response()->json(["success" => false, "message" => "You exceeded the daily limit.", "trialLimit" => false], 403);
             }
         }catch(\Exception $e){
-            return response()->json(["success" => false, "message" => $e->getMessage()], 500);
+            return response()->json(["success" => false, "message" => $e->getMessage(), "trialLimit" => false], 500);
         }
 
-        return response()->json(["success" => false, "message" => "Something went wrong"], 304);
+        return response()->json(["success" => false, "message" => "Something went wrong", "trialLimit" => false], 304);
     }
 
 }

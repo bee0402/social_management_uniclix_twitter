@@ -38,37 +38,46 @@ class FollowController extends Controller
 
                 if($this->user->getLimit("twitter_daily_follows") > $this->selectedChannel->getDailyStatisticsFor("follows")){
 
-                    $userCreatedAt = $this->selectedChannel->user()
-                        ->pluck("created_at")
-                        ->toArray();
-                    $trialTimeLimit = $userCreatedAt[0]->addDays(1);
+                    $count = count($this->selectedChannel->followingIds()
+                        ->whereNull("unfollowed_at")
+                        ->where("trial_status", true)
+                        ->where( 'created_at', '>', Carbon::now()->subDays(1))
+                        ->get());
 
-                    if ($this->selectedChannel->paid == 0 && Carbon::now()->greaterThan($trialTimeLimit)) {
-                        return response()->json(["success" => false, "message" => "You exceeded the time limit.", "trialLimit" => true], 200);
-                    }
-
-                    if ($this->selectedChannel->paid == 0 && $this->selectedChannel->following_count == 10) {
+                    if ($this->selectedChannel->paid == 0 && $count == 10) {
                         return response()->json(["success" => false, "message" => "You exceeded the following limit.", "trialLimit" => true], 200);
                     }
 
+                    $userTrialEndsAt = $this->selectedChannel->user()
+                        ->pluck("trial_ends_at")
+                        ->toArray();
+
                     $twitterUser = $this->selectedChannel->followByName($userId);
-
-                    $this->selectedChannel->followingIds()
-                        ->updateOrCreate(
-                            [
-                                "channel_id" => $this->selectedChannel->id,
-                                "user_id" => $twitterUser->id
-                            ],
-                            [
-                                "unfollowed_at" => null,
-                                "created_at" => Carbon::now(),
-                                "updated_at" => Carbon::now()
-                            ]);
-
-                    if ($this->selectedChannel->paid == 0 && $this->selectedChannel->following_count < 10) {
-                        $this->selectedChannel
-                            ->where("channel_id", $this->selectedChannel->channel_id)
-                            ->update(["following_count" => $this->selectedChannel->following_count + 1]);
+                    if ($this->selectedChannel->paid == 0 && $userTrialEndsAt[0]->greaterThan(Carbon::now())) {
+                        $this->selectedChannel->followingIds()
+                            ->updateOrCreate(
+                                [
+                                    "channel_id" => $this->selectedChannel->id,
+                                    "user_id" => $twitterUser->id
+                                ],
+                                [
+                                    "unfollowed_at" => null,
+                                    "created_at" => Carbon::now(),
+                                    "updated_at" => Carbon::now(),
+                                    "trial_status" => true
+                                ]);
+                    } else {
+                        $this->selectedChannel->followingIds()
+                            ->updateOrCreate(
+                                [
+                                    "channel_id" => $this->selectedChannel->id,
+                                    "user_id" => $twitterUser->id
+                                ],
+                                [
+                                    "unfollowed_at" => null,
+                                    "created_at" => Carbon::now(),
+                                    "updated_at" => Carbon::now(),
+                                ]);
                     }
 
                     $this->selectedChannel->updateStatistics("follows");
