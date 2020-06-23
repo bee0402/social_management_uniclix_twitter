@@ -36,6 +36,7 @@ class UnfollowController extends Controller
 
                     $count = count($this->selectedChannel->followingIds()
                         ->whereNotNull("unfollowed_at")
+                        ->where("channel_id", $this->selectedChannel->id)
                         ->where("trial_status", true)
                         ->where( 'created_at', '>', Carbon::now()->subDays(1))
                         ->get());
