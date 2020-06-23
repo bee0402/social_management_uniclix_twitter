@@ -172,7 +172,7 @@ class Following extends React.Component{
                         </div>
                     </div>
 
-                    <UpgradeAlert isOpen={this.state.trialLimit} cancelBtn="Skip now" text="You have passed you daily follow/unfollow limit." goBack={true} setForbidden={this.setForbidden} />
+                    <UpgradeAlert isOpen={this.state.trialLimit} cancelBtn="Skip now" text="You have passed you daily follow/unfollow limit." goBack={false} redirectBack="/twitter-booster/clean-up-list" setForbidden={this.setForbidden} />
                     <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
 
                     <UserList 
