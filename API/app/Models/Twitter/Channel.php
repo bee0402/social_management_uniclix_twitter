@@ -88,6 +88,11 @@ class Channel extends Model
         return $this->hasMany(AutoDM::class);
     }
 
+    public function autoDMsSend()
+    {
+        return $this->hasMany(AutoDMSend::class);
+    }
+
     public function likes()
     {
         return $this->hasMany(Like::class);

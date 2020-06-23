@@ -919,6 +919,15 @@ trait Tweetable
             }
 
             foreach ($followerIds as $followers) {
+                $this->autoDMsSend()
+                    ->insert([
+                        "channel_id" => $this->id,
+                        "user_id" => $followers,
+                        "send_message" => $text,
+                        "created_at" => Carbon::now(),
+                        "updated_at" => Carbon::now()
+                    ]);
+
                 $this->DM($followers, $text);
             }
         }
