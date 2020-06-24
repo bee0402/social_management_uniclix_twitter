@@ -41,7 +41,7 @@ class UnfollowController extends Controller
                         ->where( 'created_at', '>', Carbon::now()->subDays(1))
                         ->get());
 
-                    if ($this->selectedChannel->paid == 0 && $count == 10) {
+                    if ($this->selectedChannel->paid == 0 && $count >= 10) {
                         return response()->json(["success" => false, "message" => "You exceeded the unfollowing limit.", "trialLimit" => true], 200);
                     }
 
