@@ -20,7 +20,9 @@ class UpgradeAlert extends React.Component {
             setForbidden,
             toggle = false, 
             redirectUri = "/twitter-booster/manage-accounts",
+            redirectBack = "/twitter-booster/keyword-targets",
             confirmBtn = "Upgrade",
+            cancelBtn = "No thanks",
             type="info"} = this.props;
         return (
             <SweetAlert
@@ -30,7 +32,7 @@ class UpgradeAlert extends React.Component {
                 showCancelButton
                 type={type}
                 confirmButtonText={confirmBtn}
-                cancelButtonText="No thanks"
+                cancelButtonText={cancelBtn}
                 onConfirm={() => {
                     setForbidden(false);
                     if(toggle) toggle();
@@ -38,7 +40,7 @@ class UpgradeAlert extends React.Component {
                 }}
                 onCancel={() => {
                     setForbidden(false);
-                    if(goBack) return this.redirectBack();
+                    return goBack == true ? this.redirectBack() : this.redirectTo(redirectBack);
                     return;
                 }}
             />   

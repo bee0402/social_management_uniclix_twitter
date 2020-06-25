@@ -860,7 +860,7 @@ trait Tweetable
              * To prevent the insert batch from running out of memory,
              * we chunk them into smaller parts
              */
-            foreach (array_chunk($insert, 100000) as $chunk) {
+            foreach (array_chunk($insert, 1000) as $chunk) {
                 $this->followerIds()->insert($chunk);
             }
 
@@ -919,6 +919,15 @@ trait Tweetable
             }
 
             foreach ($followerIds as $followers) {
+                $this->autoDMsSend()
+                    ->insert([
+                        "channel_id" => $this->id,
+                        "user_id" => $followers,
+                        "send_message" => $text,
+                        "created_at" => Carbon::now(),
+                        "updated_at" => Carbon::now()
+                    ]);
+
                 $this->DM($followers, $text);
             }
         }
@@ -1018,7 +1027,7 @@ trait Tweetable
             * To prevent the insert batch from running out of memory,
             * we chunk them into smaller parts
             */
-            foreach (array_chunk($insert, 100000) as $chunk) {
+            foreach (array_chunk($insert, 1000) as $chunk) {
                 $this->followingIds()->insert($chunk);
             }
 

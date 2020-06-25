@@ -13,6 +13,7 @@ class FollowingId extends Model
         "unfollowed_at",
         "unfollowed_you_at",
         "created_at",
-        "updated_at"
+        "updated_at",
+        "trial_status"
     ];
 }

@@ -16,7 +16,8 @@ class RecentUnfollowers extends React.Component{
         forbidden: false,
         loading: this.props.channelsLoading,
         page: 1,
-        order: "desc"
+        order: "desc",
+        trialLimit: false
     }
 
     componentDidMount() {
@@ -50,7 +51,13 @@ class RecentUnfollowers extends React.Component{
         }));
 
         return unfollow(userId)
-            .then((response) => response)
+            .then((response) => {
+                if (response.trialLimit == true) {
+                    this.setState({
+                        trialLimit: response.trialLimit
+                    });
+                }
+            })
             .catch((error) => {
                 this.setState((prevState) => ({
                     actions: prevState.actions - 1
@@ -149,6 +156,7 @@ class RecentUnfollowers extends React.Component{
                 <div>
                     <h2>RECENT UNFOLLOWERS</h2>
 
+                    <UpgradeAlert isOpen={this.state.trialLimit} cancelBtn="Skip now" text="You have passed you daily follow/unfollow limit." goBack={false} redirectBack="/twitter-booster/clean-up-list" setForbidden={this.setForbidden} />
                     <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden}/>
 
                     <UserList 

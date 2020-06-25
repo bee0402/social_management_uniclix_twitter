@@ -7,7 +7,7 @@ import { startLogout } from "../../actions/auth";
 import { withRouter } from "react-router";
 
 const calcTrialDays = (user) => {
-    let msDiff = new Date(user.trial_ends_at).getTime() - new Date().getTime();    //Future date - current date
+    let msDiff = new Date(user.trial_ends_at).getTime() - new Date(user.cur_date).getTime();    //Future date - current date
     var daysToTheEnd = Math.floor(msDiff / (1000 * 60 * 60 * 24));
     return daysToTheEnd >= 0 ? daysToTheEnd + 1 : 0
 }
