@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Mail;
+use App\Mail\UserFirstSignUp;
 
 class OAuthController extends Controller
 {
@@ -50,7 +52,11 @@ class OAuthController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
+        $email = $request->input('email');
+
         // $user->notify(new \App\Notifications\User\UserSignUp());
+
+        Mail::to($email)->send(new UserFirstSignUp($user));
 
         return response()->json($user->createToken("Password Token"));
     }
