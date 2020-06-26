@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Mail;
 use App\Mail\UserFirstSignUp;
 use App\Mail\OneDayForTrialAfterSignUp;
+use App\Mail\OneDayForAutoDMAfterSignUp;
 
 class OAuthController extends Controller
 {
@@ -59,6 +60,7 @@ class OAuthController extends Controller
 
         Mail::to($email)->send(new UserFirstSignUp($user));
         Mail::to($email)->send(new OneDayForTrialAfterSignUp($user));
+        Mail::to($email)->send(new OneDayForAutoDMAfterSignUp($user));
 
         return response()->json($user->createToken("Password Token"));
     }
