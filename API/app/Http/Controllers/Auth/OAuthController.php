@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Mail;
 use App\Mail\UserFirstSignUp;
+use App\Mail\OneDayForTrialAfterSignUp;
 
 class OAuthController extends Controller
 {
@@ -57,6 +58,7 @@ class OAuthController extends Controller
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
         Mail::to($email)->send(new UserFirstSignUp($user));
+        Mail::to($email)->send(new OneDayForTrialAfterSignUp($user));
 
         return response()->json($user->createToken("Password Token"));
     }
