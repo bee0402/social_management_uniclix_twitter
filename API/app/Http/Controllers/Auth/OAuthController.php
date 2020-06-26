@@ -13,6 +13,7 @@ use Mail;
 use App\Mail\UserFirstSignUp;
 use App\Mail\OneDayForTrialAfterSignUp;
 use App\Mail\OneDayForAutoDMAfterSignUp;
+use App\Mail\ThreeDaysForTrialAfterSignUp;
 
 class OAuthController extends Controller
 {
@@ -61,6 +62,7 @@ class OAuthController extends Controller
         Mail::to($email)->send(new UserFirstSignUp($user));
         Mail::to($email)->send(new OneDayForTrialAfterSignUp($user));
         Mail::to($email)->send(new OneDayForAutoDMAfterSignUp($user));
+        Mail::to($email)->send(new ThreeDaysForTrialAfterSignUp($user));
 
         return response()->json($user->createToken("Password Token"));
     }
