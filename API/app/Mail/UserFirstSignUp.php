@@ -16,9 +16,10 @@ class UserFirstSignUp extends Mailable
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $username)
     {
         $this->user = $user;
+        $this->username = $username;
     }
 
     /**
@@ -29,8 +30,9 @@ class UserFirstSignUp extends Mailable
     public function build()
     {
         $user = $this->user->name;
-        $delivery_time = $this->user->created_at->addMinutes(5);
-        return $this->view('emails.user.signupfirst', [ 'user' => $user ])
+        $username = $this->username;
+        $delivery_time = $this->user->created_at->addMinutes(1);
+        return $this->view('emails.user.signupfirst', [ 'user' => $user, 'username' => $username ])
             ->subject('Welcome to Uniclix!')
             ->withSwiftMessage(function ($message) use ($delivery_time) {
                 $message->getHeaders()->addTextHeader('X-Mailgun-Deliver-By', $delivery_time->toRfc2822String());

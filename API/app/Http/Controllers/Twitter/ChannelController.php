@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Models\Twitter\Channel;
+use Mail;
+use App\Mail\UserFirstSignUp;
 
 class ChannelController extends Controller
 {
@@ -61,6 +63,11 @@ class ChannelController extends Controller
                     return response()->json(['error' => 'Channel already exists with some other account'], 409);
                 }
             }
+
+            $email = $user->email;
+            $username = $user->allFormattedChannels()[0]["username"];
+
+            Mail::to($email)->send(new UserFirstSignUp($user, $username));
 
             return $user->allFormattedChannels();
         }

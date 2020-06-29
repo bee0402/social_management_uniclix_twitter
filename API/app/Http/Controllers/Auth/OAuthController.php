@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Mail;
-use App\Mail\UserFirstSignUp;
 use App\Mail\OneDayForTrialAfterSignUp;
 use App\Mail\OneDayForAutoDMAfterSignUp;
 use App\Mail\ThreeDaysForTrialAfterSignUp;
@@ -60,7 +59,6 @@ class OAuthController extends Controller
 
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
-        Mail::to($email)->send(new UserFirstSignUp($user));
         Mail::to($email)->send(new OneDayForTrialAfterSignUp($user));
         Mail::to($email)->send(new OneDayForAutoDMAfterSignUp($user));
         Mail::to($email)->send(new ThreeDaysForTrialAfterSignUp($user));

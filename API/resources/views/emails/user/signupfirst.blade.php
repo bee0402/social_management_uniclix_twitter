@@ -140,7 +140,7 @@
                                     <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
                                     <div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                         <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 12px;"><strong>Message:</strong> @Twitter channel - Your Twitter Account Has Been Activated on Uniclix </span></p>
+                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 12px;"><strong>Message:</strong> &#64{{$username}} - Your Twitter Account Has Been Activated on Uniclix </span></p>
                                             <p></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi, {{$user}}</span></p>
                                             <p style="font-size: 20px; line-height: 16px; text-align:center; color:red;"><strong>Let’s go through the basics</strong></span></p>
