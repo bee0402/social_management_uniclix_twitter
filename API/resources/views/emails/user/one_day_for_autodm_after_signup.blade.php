@@ -154,7 +154,7 @@
                                             <p style="margin-bottom: 50px;"></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Good Luck. </span></p>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 13px;">Looking for more Help? <a href="https://calendly.com/uniclix/30min" target="_blank" style="color:blue;"><strong>Schedule a live walk through</strong></a> with the Uniclix Team. </span></p>
+                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 13px;">Looking for more Help? <a href="https://twitter.uniclixapp.com/twitter-booster/auto-dm" target="_blank" style="color:blue;"><strong>Schedule a live walk through</strong></a> with the Uniclix Team. </span></p>
                                             <div style="margin-top: 30px; border-bottom: 1px solid darkgray;"></div>
                                         </div>
                                         <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 2px;"><span style="font-size: 13px; color: #2882c5;"><strong>Uniclix  Support Team </strong></span></p>

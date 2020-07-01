@@ -149,7 +149,7 @@
                                             <p style="margin-bottom: 30px;"></p>
                                             <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px;">SIGN UP FOR AS LOW AS $10</span></p>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px;"><a href="http://instamigos.net/" target="_blank" style="color: red;"><strong>Upgrade Account</strong></a></span></p>
+                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px;"><a href="https://twitter.uniclixapp.com/" target="_blank" style="color: red;"><strong>Upgrade Account</strong></a></span></p>
                                             <p style="margin-bottom: 60px;"></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Thanks, </span></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Noli </span></p>
