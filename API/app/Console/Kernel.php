@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         Commands\Twitter\SyncTweets::class,
         Commands\Twitter\SyncRetweets::class,
         Commands\Twitter\SyncLikes::class,
+        Commands\Twitter\SyncEmails::class,
         Commands\Facebook\SyncPosts::class,
         Commands\RunScheduledPosts::class,
         Commands\SyncArticles::class
@@ -55,6 +56,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('sync:articles')
             ->twiceDaily(1, 13);
+
+        $schedule->command('sync:emails')
+            ->daily();
     }
 
     /**
