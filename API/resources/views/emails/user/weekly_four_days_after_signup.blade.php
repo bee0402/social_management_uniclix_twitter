@@ -224,8 +224,6 @@
                                         <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi there, </span></p>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">I know.  We all are busy but we noticed your Free Uniclix trial expired 6 days ago so we are checking in to see if you are ready to Start Growing your Twitter numbers.</span></p>
-                                            <p></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Here is your Twitter weekly report, take actions and clean up your Followers list with UniClix. </span></p>
                                             <p></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 16px;"><a href="https://twitter.uniclixapp.com/twitter-booster/clean-up-list?inactive" target="_blank" style="color: #d874c3;"><strong>16 inactive users to Unfollow </strong></a></span></p>
