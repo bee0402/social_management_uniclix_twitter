@@ -236,7 +236,7 @@
                                                                 <td><img style="width: 60px; height: 60px;" src={{$item->profile_image_url_https}}></td>
                                                                 <td>
                                                                     <p style="margin: 5px; font-weight: bold; text-transform: capitalize; font-size: 13px; color: #363636;"><strong>{{$item->name}}  </strong></p>
-                                                                    <p style="margin: 5px; color: #909090; font-weight: normal; font-size: 12px;">&#64{{$item->screen_name}}</p>
+                                                                    <p style="margin: 5px; color: #909090; font-weight: normal; font-size: 12px;">@ {{$item->screen_name}}</p>
                                                                     <p style="margin: 5px; font-size: 12px; max-width: 200px !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 5px;" title={{$item->description}}>{{$item->description}}</p>
                                                                 </td>
                                                                 <td style="text-align: center;">
