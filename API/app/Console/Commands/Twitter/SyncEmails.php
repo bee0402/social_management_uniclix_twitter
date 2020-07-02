@@ -7,6 +7,7 @@ use App\Models\Twitter\Channel;
 use Illuminate\Support\Facades\DB;
 use Mail;
 use App\Mail\WeeklyFourDaysAfterSignUp;
+use App\Mail\WeeklySevenDaysAfterSignUp;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -73,6 +74,36 @@ class SyncEmails extends Command
             }
 
             Mail::to($email)->send(new WeeklyFourDaysAfterSignUp($user, $items));
+        }
+
+        // start ad day 7 ,then send it Every week
+        $today = Carbon::now();
+        $dayOfTheWeek = $today->dayOfWeek;
+        $weeklyUsers = User::query()
+            ->whereRaw("DAYOFWEEK(created_at)=?", [$dayOfTheWeek + 1])
+            ->get();
+
+        foreach ($weeklyUsers as $user) {
+            $email = $user->email;
+            $selectedChannel = $user->selectedTwitterChannel();
+
+            $perPage = 3;
+            $feedIds = $selectedChannel->keywordTargetsFeed()
+                ->inRandomOrder('123')
+                ->paginate($perPage)
+                ->pluck("user_id")
+                ->toArray();
+
+            $items = [];
+            if (count($feedIds)) {
+                try{
+                    $items = $selectedChannel->getUsersLookup($feedIds);
+                }catch(\Exception $e){
+                    return getErrorResponse($e, $selectedChannel->global);
+                }
+            }
+
+            Mail::to($email)->send(new WeeklySevenDaysAfterSignUp($user, $items));
         }
     }
 }

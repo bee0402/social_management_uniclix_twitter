@@ -224,40 +224,40 @@
                                         <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hi there, </span></p>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Here is your Twitter weekly report, take actions and clean up your Followers list with UniClix. </span></p>
+                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Here is your Twitter weekly report, take actions and expand your audience. We have generated a list of suggested account for you to follow based on you targeted keywords. </span></p>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 16px;"><a href="https://twitter.uniclixapp.com/twitter-booster/clean-up-list?inactive" target="_blank" style="color: #d874c3;"><strong>16 inactive users to Unfollow </strong></a></span></p>
+                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 16px;"><a href="https://twitter.uniclixapp.com/twitter-booster/keyword-targets" target="_blank" style="color: #d874c3;"><strong>Recommended twitter accounts to follow</strong></a></span></p>
                                             <p></p>
                                             <div>
                                                 <table style="width:100%; background: #f5f7fb;">
                                                     <tbody>
-                                                        @foreach($items as $item)
-                                                            <tr>
-                                                                <td><img style="width: 60px; height: 60px;" src={{$item->profile_image_url_https}}></td>
-                                                                <td>
-                                                                    <p style="margin: 5px; font-weight: bold; text-transform: capitalize; font-size: 13px; color: #363636;"><strong>{{$item->name}}  </strong></p>
-                                                                    <p style="margin: 5px; color: #909090; font-weight: normal; font-size: 12px;">@ {{$item->screen_name}}</p>
-                                                                    <p style="margin: 5px; font-size: 12px; max-width: 200px !important; height: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 5px;" title={{$item->description}}>{{$item->description}}</p>
-                                                                </td>
-                                                                <td style="text-align: center;">
-                                                                    <p style="font-size: 13px; font-weight: bold;">{{$item->statuses_count}}</p>
-                                                                    <p style="font-size: 12px; color: #909090;">Tweets</p>
-                                                                </td>
-                                                                <td style="text-align: center;">
-                                                                    <p style="font-size: 13px; font-weight: bold;">{{$item->followers_count}}</p>
-                                                                    <p style="font-size: 12px; color: #909090;">Followers</p>
-                                                                </td>
-                                                                <td style="text-align: center;">
-                                                                    <p style="font-size: 13px; font-weight: bold;">{{$item->friends_count}}</p>
-                                                                    <p style="font-size: 12px; color: #909090;">Following</p>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                    @foreach($items as $item)
+                                                        <tr>
+                                                            <td><img style="width: 60px; height: 60px;" src={{$item->profile_image_url_https}}></td>
+                                                            <td>
+                                                                <p style="margin: 5px; font-weight: bold; text-transform: capitalize; font-size: 13px; color: #363636;"><strong>{{$item->name}}  </strong></p>
+                                                                <p style="margin: 5px; color: #909090; font-weight: normal; font-size: 12px;">@ {{$item->screen_name}}</p>
+                                                                <p style="margin: 5px; font-size: 12px; max-width: 200px !important; height: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 5px;" title={{$item->description}}>{{$item->description}}</p>
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <p style="font-size: 13px; font-weight: bold;">{{$item->statuses_count}}</p>
+                                                                <p style="font-size: 12px; color: #909090;">Tweets</p>
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <p style="font-size: 13px; font-weight: bold;">{{$item->followers_count}}</p>
+                                                                <p style="font-size: 12px; color: #909090;">Followers</p>
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <p style="font-size: 13px; font-weight: bold;">{{$item->friends_count}}</p>
+                                                                <p style="font-size: 12px; color: #909090;">Following</p>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 16px;"><a href="https://twitter.uniclixapp.com/twitter-booster/clean-up-list?inactive" target="_blank" style="color: #d874c3;"><strong>see more in Uniclix </strong></a></span></p>
+                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 16px;"><a href="https://twitter.uniclixapp.com/twitter-booster/keyword-targets" target="_blank" style="color: #d874c3;"><strong>see more in Uniclix </strong></a></span></p>
                                             <p style="margin-bottom: 60px;"></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Thank You,</span></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">The Uniclix Team </span></p>
