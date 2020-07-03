@@ -16,9 +16,10 @@ class ThreeDaysForTrialAfterSignUp extends Mailable
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $username)
     {
         $this->user = $user;
+        $this->username = $username;
     }
 
     /**
@@ -29,8 +30,9 @@ class ThreeDaysForTrialAfterSignUp extends Mailable
     public function build()
     {
         $user = $this->user->name;
+        $username = $this->username;
         $delivery_time = $this->user->created_at->addHours(3 * 24 - 1);
-        return $this->view('emails.user.three_days_for_trial_after_signup', [ 'user' => $user ])
+        return $this->view('emails.user.three_days_for_trial_after_signup', [ 'user' => $user, 'username' => $username ])
             ->subject('Your FREE Trial ends today')
             ->withSwiftMessage(function ($message) use ($delivery_time) {
                 $message->getHeaders()->addTextHeader('X-Mailgun-Deliver-By', $delivery_time->toRfc2822String());

@@ -150,11 +150,11 @@
                                             <p></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 13px;">This is where you set up messages to be sent to your new followers. This is an area that will help you increase engagement via automate messaging. <strong>Nice! </strong></span></p>
                                             <p style="margin-bottom: 50px;"></p>
-                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px; color: #ff9900;"><strong>Log In - setup DM </strong></span></p>
+                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px;"><a href="https://twitter.uniclixapp.com/twitter-booster/auto-dm" target="_blank" style="color: #ff9900;"><strong>Log In - setup DM </strong></a></span></p>
                                             <p style="margin-bottom: 50px;"></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Good Luck. </span></p>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 13px;">Looking for more Help? <a href="https://twitter.uniclixapp.com/twitter-booster/auto-dm" target="_blank" style="color:blue;"><strong>Schedule a live walk through</strong></a> with the Uniclix Team. </span></p>
+                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 13px;">Looking for more Help? <a href="https://calendly.com/uniclix/30min" target="_blank" style="color:blue;"><strong>Schedule a live walk through</strong></a> with the Uniclix Team. </span></p>
                                             <div style="margin-top: 30px; border-bottom: 1px solid darkgray;"></div>
                                         </div>
                                         <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 2px;"><span style="font-size: 13px; color: #2882c5;"><strong>Uniclix  Support Team </strong></span></p>

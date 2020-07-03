@@ -144,7 +144,7 @@
                                             <p></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">I hope this email finds you well!</span></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 13px; color: red;"><strong>NOW THAT YOU HAVE TRIED UNICLIX, READY TO TAKE THE NEXT STEPS? </strong></span></p>
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 13px;">UPGRADE @TwitterAccountName CHANNEL AND START THE NEXT STEP TOWARDS HITTING YOUR TWITTER FOLLOWERS GOAL </span></p>
+                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 13px;">UPGRADE {{'@' . $username}} CHANNEL AND START THE NEXT STEP TOWARDS HITTING YOUR TWITTER FOLLOWERS GOAL </span></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><br /><span style="font-size: 13px;">Grow your <strong>AUDIENCE</strong> and expand your <strong>INFLUENCE. Save Time and Work Smarter, not harder. </strong></span></p>
                                             <p style="margin-bottom: 30px;"></p>
                                             <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px;">SIGN UP FOR AS LOW AS $10</span></p>
