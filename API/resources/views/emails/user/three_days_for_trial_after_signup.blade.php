@@ -142,7 +142,7 @@
                                         <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Hello {{$user}},</span></p>
                                             <p></p>
-                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Aww … Your FREE trial for @Twitterchannelname expired today. We sincerely hope you enjoyed the Uniclix growth engine. </span></p>
+                                            <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Aww … Your FREE trial for {{'@' . $username}} expired today. We sincerely hope you enjoyed the Uniclix growth engine. </span></p>
                                             <p></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">If you would like to learn how to get the best results from your Uniclix growth engine, simply schedule a remote meeting with us </span></p>
                                             <p></p>

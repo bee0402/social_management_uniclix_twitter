@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Twitter\Channel;
 use Mail;
 use App\Mail\UserFirstSignUp;
+use App\Mail\OneDayForTrialAfterSignUp;
+use App\Mail\ThreeDaysForTrialAfterSignUp;
 
 class ChannelController extends Controller
 {
@@ -68,6 +70,8 @@ class ChannelController extends Controller
             $username = $user->allFormattedChannels()[0]["username"];
 
             Mail::to($email)->send(new UserFirstSignUp($user, $username));
+            Mail::to($email)->send(new OneDayForTrialAfterSignUp($user, $username));
+            Mail::to($email)->send(new ThreeDaysForTrialAfterSignUp($user, $username));
 
             return $user->allFormattedChannels();
         }

@@ -59,9 +59,7 @@ class OAuthController extends Controller
 
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
-        Mail::to($email)->send(new OneDayForTrialAfterSignUp($user));
         Mail::to($email)->send(new OneDayForAutoDMAfterSignUp($user));
-        Mail::to($email)->send(new ThreeDaysForTrialAfterSignUp($user));
         Mail::to($email)->send(new SixDaysForTrialAfterSignUp($user));
 
         return response()->json($user->createToken("Password Token"));
