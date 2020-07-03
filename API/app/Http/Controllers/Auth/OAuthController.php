@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Mail;
+use App\Mail\OneDayForTrialAfterSignUp;
+use App\Mail\OneDayForAutoDMAfterSignUp;
+use App\Mail\ThreeDaysForTrialAfterSignUp;
+use App\Mail\SixDaysForTrialAfterSignUp;
 
 class OAuthController extends Controller
 {
@@ -50,7 +55,14 @@ class OAuthController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
+        $email = $request->input('email');
+
         // $user->notify(new \App\Notifications\User\UserSignUp());
+
+        Mail::to($email)->send(new OneDayForTrialAfterSignUp($user));
+        Mail::to($email)->send(new OneDayForAutoDMAfterSignUp($user));
+        Mail::to($email)->send(new ThreeDaysForTrialAfterSignUp($user));
+        Mail::to($email)->send(new SixDaysForTrialAfterSignUp($user));
 
         return response()->json($user->createToken("Password Token"));
     }
