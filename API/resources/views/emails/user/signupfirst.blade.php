@@ -158,6 +158,8 @@
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Thanks, </span></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Noli </span></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;"><a href="https://uniclixapp.com/twitter-booster-app" target="_blank" style="color:blue;">https://uniclixapp.com/twitter-booster-app</a></span></p>
+                                            <p></p>
+                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px;"><a href="%unsubscribe_url%" style="color: blue;">Unsubscribe</a></span></p>
                                         </div>
                                     </div>
                                 </div>

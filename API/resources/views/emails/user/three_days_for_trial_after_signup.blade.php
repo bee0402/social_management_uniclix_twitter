@@ -156,6 +156,8 @@
                                             <p style="margin-bottom: 60px;"></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">Thank You,</span></p>
                                             <p style="font-size: 12px; line-height: 16px; margin: 0;"><span style="font-size: 14px;">The Uniclix Team </span></p>
+                                            <p></p>
+                                            <p style="font-size: 12px; line-height: 16px; text-align: center; margin: 0;"><span style="font-size: 13px;"><a href="%unsubscribe_url%" style="color: blue;">Unsubscribe</a></span></p>
                                         </div>
                                     </div>
                                 </div>
