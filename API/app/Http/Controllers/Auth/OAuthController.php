@@ -14,7 +14,7 @@ use App\Mail\OneDayForTrialAfterSignUp;
 use App\Mail\OneDayForAutoDMAfterSignUp;
 use App\Mail\ThreeDaysForTrialAfterSignUp;
 use App\Mail\SixDaysForTrialAfterSignUp;
-use App\models\ScheduledEmail;
+use App\Models\ScheduledEmail;
 
 class OAuthController extends Controller
 {
