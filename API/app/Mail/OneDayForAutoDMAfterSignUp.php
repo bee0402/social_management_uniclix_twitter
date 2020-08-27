@@ -29,11 +29,7 @@ class OneDayForAutoDMAfterSignUp extends Mailable
     public function build()
     {
         $user = $this->user->name;
-        $delivery_time = $this->user->created_at->addDays(1);
         return $this->view('emails.user.one_day_for_autodm_after_signup', [ 'user' => $user ])
-            ->subject('Lets get started by setting up your Twitter Auto DM')
-            ->withSwiftMessage(function ($message) use ($delivery_time) {
-                $message->getHeaders()->addTextHeader('X-Mailgun-Deliver-By', $delivery_time->toRfc2822String());
-            });;
+            ->subject('Lets get started by setting up your Twitter Auto DM');
     }
 }

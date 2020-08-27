@@ -14,9 +14,11 @@ use App\Mail\OneDayForTrialAfterSignUp;
 use App\Mail\OneDayForAutoDMAfterSignUp;
 use App\Mail\ThreeDaysForTrialAfterSignUp;
 use App\Mail\SixDaysForTrialAfterSignUp;
+use App\models\ScheduledEmail;
 
 class OAuthController extends Controller
 {
+    private $emailTypes;
 
     /**
      * Create a new controller instance.
@@ -26,6 +28,13 @@ class OAuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->emailTypes = array(
+            "SignUpFirst",
+            "OneDayTrial",
+            "OneDayAutoDM",
+            "ThreeDaysTrial",
+            "SixDaysTrial",
+        );
     }
 
     /**
@@ -56,11 +65,23 @@ class OAuthController extends Controller
         ]);
 
         $email = $request->input('email');
+        $user_register = User::where('email', $email)->first();
+
+        $created_at = strtotime($user_register['created_at']);
 
         // $user->notify(new \App\Notifications\User\UserSignUp());
 
-        Mail::to($email)->send(new OneDayForAutoDMAfterSignUp($user));
-        Mail::to($email)->send(new SixDaysForTrialAfterSignUp($user));
+        foreach ($this->emailTypes as $emailType) {
+            $send_at = $this->getSendTime($created_at, $emailType);
+
+            ScheduledEmail::create([
+                'user_id' => $user->id,
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'email_type' => $emailType,
+                'send_at' => $send_at,
+            ]);
+        }
 
         return response()->json($user->createToken("Password Token"));
     }
@@ -75,5 +96,26 @@ class OAuthController extends Controller
         if(!$user || !Hash::check($password, $user->password)) return response()->json(["error" => "Incorrect email or password."], 404);
 
         return response()->json($user->createToken("Password Token"));
+    }
+
+    private function getSendTime($created_at, $emailType) {
+        switch ($emailType) {
+            case 'SignUpFirst':
+                $result = date("Y-m-d H:i:s", $created_at);
+                break;
+            case 'OneDayTrial':
+                $result = date("Y-m-d H:i:s", $created_at + 24 * 3600);
+                break;
+            case 'OneDayAutoDM':
+                $result = date("Y-m-d H:i:s", $created_at + 1 * 24 * 3600);
+                break;
+            case 'ThreeDaysTrial':
+                $result = date("Y-m-d H:i:s", $created_at + 3 * 24 * 3600);
+                break;
+            case 'SixDaysTrial':
+                $result = date("Y-m-d H:i:s", $created_at + 6 * 24 * 3600);
+        }
+
+        return $result;
     }
 }

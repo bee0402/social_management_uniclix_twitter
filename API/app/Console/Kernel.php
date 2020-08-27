@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         Commands\Twitter\SyncEmails::class,
         Commands\Facebook\SyncPosts::class,
         Commands\RunScheduledPosts::class,
+        Commands\RunScheduledEmails::class,
         Commands\SyncArticles::class
     ];
 
@@ -52,6 +53,9 @@ class Kernel extends ConsoleKernel
             ->everyThirtyMinutes();
 
         $schedule->command('run:scheduled')
+            ->everyMinute();
+
+        $schedule->command('run:emails')
             ->everyMinute();
 
         $schedule->command('sync:articles')

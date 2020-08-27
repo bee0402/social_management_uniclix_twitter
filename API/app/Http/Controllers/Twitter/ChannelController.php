@@ -66,13 +66,6 @@ class ChannelController extends Controller
                 }
             }
 
-            $email = $user->email;
-            $username = $user->allFormattedChannels()[0]["username"];
-
-            Mail::to($email)->send(new UserFirstSignUp($user, $username));
-            Mail::to($email)->send(new OneDayForTrialAfterSignUp($user, $username));
-            Mail::to($email)->send(new ThreeDaysForTrialAfterSignUp($user, $username));
-
             return $user->allFormattedChannels();
         }
 
