@@ -18,7 +18,7 @@ class CreateScheduledEmailsTable extends Migration
             $table->integer("user_id")->unsigned();
             $table->string('name');
             $table->string('email');
-            $table->text("email_type")->default("");
+            $table->text("email_type")->default(null);
             $table->timestamp("send_at")->nullable();
             $table->timestamps();
 
