@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Twitter;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Twitter\Channel;
 
 set_time_limit(0);
 
@@ -18,7 +19,9 @@ class BackgroundController extends Controller
 
         $sleep = isset($params['sleep']) ? $params['sleep'] : 60;
 
-        $channel = unserialize($item);
+        $channelId = unserialize($item);
+
+        $channel = Channel::where('id', $channelId)->first();
 
         $channel->startProcess("syncTwitterFollowerIds");
 
@@ -39,7 +42,10 @@ class BackgroundController extends Controller
 
         $sleep = isset($params['sleep']) ? $params['sleep'] : 60;
 
-        $channel = unserialize($item);
+        $channelId = unserialize($item);
+
+        $channel = Channel::where('id', $channelId)->first();
+
         $channel->startProcess("syncTwitterFollowerIds");
 
         try {
@@ -61,7 +67,9 @@ class BackgroundController extends Controller
 
         $sleep = isset($params['sleep']) ? $params['sleep'] : 60;
 
-        $channel = unserialize($item);
+        $channelId = unserialize($item);
+
+        $channel = Channel::where('id', $channelId)->first();
 
         $channel->startProcess("syncTwitterFollowingIds");
 
@@ -78,7 +86,9 @@ class BackgroundController extends Controller
     {
         if (!($item = $request->input('item'))) return;
 
-        $channel = unserialize($item);
+        $channelId = unserialize($item);
+
+        $channel = Channel::where('id', $channelId)->first();
 
         $channel->startProcess("syncTweets");
 
@@ -95,7 +105,9 @@ class BackgroundController extends Controller
     {
         if (!($item = $request->input('item'))) return;
 
-        $channel = unserialize($item);
+        $channelId = unserialize($item);
+
+        $channel = Channel::where('id', $channelId)->first();
 
         $channel->startProcess("syncRetweets");
 
@@ -112,7 +124,9 @@ class BackgroundController extends Controller
     {
         if (!($item = $request->input('item'))) return;
 
-        $channel = unserialize($item);
+        $channelId = unserialize($item);
+
+        $channel = Channel::where('id', $channelId)->first();
 
         $channel->startProcess("syncLikes");
 
