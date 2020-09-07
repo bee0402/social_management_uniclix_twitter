@@ -39,7 +39,8 @@ class ChannelController extends Controller
                     "user_id" => $user->id,
                     "username" => $credentials->nickname,
                     "payload" => serialize($credentials),
-                    "access_token" => json_encode($token)
+                    "access_token" => json_encode($token),
+                    "auto_dm" => 1
                 ]);
 
                 $channel->select();
