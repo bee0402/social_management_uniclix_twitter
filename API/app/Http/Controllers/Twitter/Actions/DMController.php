@@ -69,7 +69,7 @@ class DMController extends Controller
             $status = $request->input('status');
 
             if ($channel) {
-                $channel->auto_dm = $status;
+                $channel->auto_dm = 1;
                 $channel->save();
                 return response()->json(["success" => true, "message" => "Auto DM activated successfully"]);
             }

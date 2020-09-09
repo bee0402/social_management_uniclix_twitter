@@ -61,6 +61,7 @@ class ChannelController extends Controller
                     $global->save();
                     $twitterChannel = $existingChannel;
                     $twitterChannel->access_token = json_encode($token);
+                    $twitterChannel->auto_dm = 1;
                     $twitterChannel->save();
                 } else {
                     return response()->json(['error' => 'Channel already exists with some other account'], 409);
