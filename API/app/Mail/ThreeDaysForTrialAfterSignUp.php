@@ -31,11 +31,7 @@ class ThreeDaysForTrialAfterSignUp extends Mailable
     {
         $user = $this->user->name;
         $username = $this->username;
-        $delivery_time = $this->user->created_at->addHours(3 * 24 - 1);
         return $this->view('emails.user.three_days_for_trial_after_signup', [ 'user' => $user, 'username' => $username ])
-            ->subject('Your FREE Trial ends today')
-            ->withSwiftMessage(function ($message) use ($delivery_time) {
-                $message->getHeaders()->addTextHeader('X-Mailgun-Deliver-By', $delivery_time->toRfc2822String());
-            });;
+            ->subject('Your FREE Trial ends today');
     }
 }

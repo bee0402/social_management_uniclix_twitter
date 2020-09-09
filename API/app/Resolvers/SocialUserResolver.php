@@ -24,7 +24,7 @@ class SocialUserResolver implements SocialUserResolverInterface
      * @return \Illuminate\Contracts\Auth\Authenticatable
      */
     public function resolve($network, $accessToken, $accessTokenSecret = null)
-    {   
+    {
         switch ($network) {
             case 'facebook':
                 return $this->authWithFacebook($accessToken);
@@ -43,8 +43,8 @@ class SocialUserResolver implements SocialUserResolverInterface
                 break;
         }
     }
-    
-    
+
+
     /**
      * Resolves user by facebook access token.
      *
@@ -59,7 +59,7 @@ class SocialUserResolver implements SocialUserResolverInterface
             return $this->resolveFacebookUser($credentials);
 
         }catch(\Exception $e){
-            
+
             return response()->json($e->getMessage());
         }
     }
@@ -72,20 +72,20 @@ class SocialUserResolver implements SocialUserResolverInterface
      * @return \App\Models\User
      */
     protected function authWithTwitter($accessToken, $accessTokenSecret)
-    {   
+    {
         try{
-            
+
             $credentials = Socialite::driver("twitter")->userFromTokenAndSecret($accessToken, $accessTokenSecret);
             return $this->resolveTwitterUser($credentials);
 
         }catch(\Exception $e){
-            
+
             return response()->json($e->getMessage());
         }
     }
 
 
-    
+
     /**
      * Resolves user by linkedin access token.
      *
@@ -93,14 +93,14 @@ class SocialUserResolver implements SocialUserResolverInterface
      * @return \App\Models\User
      */
     protected function authWithLinkedin($accessToken)
-    {   
+    {
         try{
-            
+
             $credentials = Socialite::driver("linkedin")->userFromToken($accessToken);
             return $this->resolveLinkedinUser($credentials);
 
         }catch(\Exception $e){
-            
+
             return response()->json($e->getMessage());
         }
     }
@@ -113,9 +113,9 @@ class SocialUserResolver implements SocialUserResolverInterface
      * @return \App\Models\User
      */
     protected function authWithPinterest($accessToken)
-    {   
+    {
         try{
-            
+
             $pinterest = new Pinterest(config("services.pinterest.client_id"), config("services.pinterest.client_secret"));
             $pinterest->auth->setOAuthToken($accessToken);
             $user = $pinterest->users->me(["fields" => "username,first_name,last_name,image[small,large]"]);
@@ -127,35 +127,35 @@ class SocialUserResolver implements SocialUserResolverInterface
                 $credentials->nickname = $user->username;
                 $credentials->name = $user->first_name." ".$user->last_name;
                 $credentials->avatar = $user->image["large"]["url"];
-                $credentials->token = $accessToken; 
+                $credentials->token = $accessToken;
             }
 
             return $this->resolvePinterestUser($credentials);
 
         }catch(\Exception $e){
-            
+
             return response()->json($e->getMessage());
         }
     }
 
 
-       /** 
+       /**
     * Creates a new user or channel, or uses existing data if tokens are correct
     * @param object $credentials
     * @return \App\Models\User
     */
     protected function resolveFacebookUser($credentials)
-    {                   
+    {
         if(is_object($credentials) && !isset($credentials->error)){
 
             $facebookChannel = FacebookChannel::where("email", $credentials->email)->first();
             if(!$facebookChannel){
 
                 $user = User::updateOrCreate(
-                    ["email" => $credentials->email], 
+                    ["email" => $credentials->email],
                     [
-                        "name" => $credentials->name, 
-                        "email" => $credentials->email, 
+                        "name" => $credentials->name,
+                        "email" => $credentials->email,
                         "role_id" => Role::first()->id
                     ]
                 );
@@ -165,10 +165,10 @@ class SocialUserResolver implements SocialUserResolverInterface
                 $channel = $user->channels()->create(["type" => "facebook"]);
                 $facebookChannel = $channel->details()->create(
                     [
-                    "user_id" => $user->id, 
+                    "user_id" => $user->id,
                     "email" => $credentials->email,
-                    "name" => $credentials->name, 
-                    "payload" => serialize($credentials), 
+                    "name" => $credentials->name,
+                    "payload" => serialize($credentials),
                     "access_token" => $credentials->token,
                     "account_type" => "profile"
                     ]
@@ -192,13 +192,13 @@ class SocialUserResolver implements SocialUserResolverInterface
         return null;
     }
 
-   /** 
+   /**
     * Creates a new user or channel, or uses existing data if tokens are correct
     * @param object $credentials
     * @return \App\Models\User
     */
     protected function resolveTwitterUser($credentials)
-    {   
+    {
         if(is_object($credentials) && !isset($credentials->error)){
             $token = [
                 "oauth_token" => $credentials->token,
@@ -210,10 +210,10 @@ class SocialUserResolver implements SocialUserResolverInterface
             if(!$twitterChannel){
 
                 $user = User::updateOrCreate(
-                    ["username" => $credentials->nickname], 
+                    ["username" => $credentials->nickname],
                     [
-                        "name" => $credentials->name, 
-                        "username" => $credentials->nickname, 
+                        "name" => $credentials->name,
+                        "username" => $credentials->nickname,
                         "role_id" => Role::first()->id
                     ]
                 );
@@ -223,10 +223,11 @@ class SocialUserResolver implements SocialUserResolverInterface
                 $channel = $user->channels()->create(["type" => "twitter"]);
                 $twitterChannel = $channel->details()->create(
                     [
-                    "user_id" => $user->id, 
-                    "username" => $credentials->nickname, 
-                    "payload" => serialize($credentials), 
-                    "access_token" => json_encode($token)
+                        "user_id" => $user->id,
+                        "username" => $credentials->nickname,
+                        "payload" => serialize($credentials),
+                        "access_token" => json_encode($token),
+                        "auto_dm" => 1
                     ]
                 );
 
@@ -239,6 +240,7 @@ class SocialUserResolver implements SocialUserResolverInterface
             $channel->active=1;
             $channel->save();
             $twitterChannel->access_token = json_encode($token);
+            $twitterChannel->auto_dm = 1;
             $twitterChannel->save();
             $twitterChannel->select();
 
@@ -246,8 +248,8 @@ class SocialUserResolver implements SocialUserResolverInterface
             * Sync following and followers in the background
             */
 
-            multiRequest(route("sync.follower.ids"), [$twitterChannel], ["sleep" => 0]);
-            multiRequest(route("sync.following.ids"), [$twitterChannel], ["sleep" => 0]);
+            multiRequest(route("sync.follower.ids"), [$twitterChannel->id], ["sleep" => 0]);
+            multiRequest(route("sync.following.ids"), [$twitterChannel->id], ["sleep" => 0]);
 
             return $user;
         }
@@ -255,23 +257,23 @@ class SocialUserResolver implements SocialUserResolverInterface
         return null;
     }
 
-    /** 
+    /**
     * Creates a new user or channel, or uses existing data if tokens are correct
     * @param object $credentials
     * @return \App\Models\User
     */
     protected function resolveLinkedinUser($credentials)
-    {                   
+    {
         if(is_object($credentials) && !isset($credentials->error)){
 
             $linkedinChannel = LinkedinChannel::where("email", $credentials->email)->first();
             if(!$linkedinChannel){
 
                 $user = User::updateOrCreate(
-                    ["email" => $credentials->email], 
+                    ["email" => $credentials->email],
                     [
-                        "name" => $credentials->name, 
-                        "email" => $credentials->email, 
+                        "name" => $credentials->name,
+                        "email" => $credentials->email,
                         "role_id" => Role::first()->id
                     ]
                 );
@@ -281,10 +283,10 @@ class SocialUserResolver implements SocialUserResolverInterface
                 $channel = $user->channels()->create(["type" => "linkedin"]);
                 $linkedinChannel = $channel->details()->create(
                     [
-                    "user_id" => $user->id, 
+                    "user_id" => $user->id,
                     "email" => $credentials->email,
-                    "name" => $credentials->name, 
-                    "payload" => serialize($credentials), 
+                    "name" => $credentials->name,
+                    "payload" => serialize($credentials),
                     "account_type" => "profile",
                     "access_token" => $credentials->token
                     ]
@@ -308,24 +310,24 @@ class SocialUserResolver implements SocialUserResolverInterface
         return null;
     }
 
-               /** 
+               /**
     * Creates a new user or channel, or uses existing data if tokens are correct
     * @param object $credentials
     * @return \App\Models\User
     */
     protected function resolvePinterestUser($credentials)
-    {                   
+    {
         if(is_object($credentials) && !isset($credentials->error)){
 
             $pinterestChannel = PinterestChannel::where("username", $credentials->nickname)->first();
-            
+
             if(!$pinterestChannel){
 
                 $user = User::updateOrCreate(
-                    ["username" => $credentials->nickname], 
+                    ["username" => $credentials->nickname],
                     [
-                        "name" => $credentials->name, 
-                        "username" => $credentials->nickname, 
+                        "name" => $credentials->name,
+                        "username" => $credentials->nickname,
                         "role_id" => Role::first()->id
                     ]
                 );
@@ -335,10 +337,10 @@ class SocialUserResolver implements SocialUserResolverInterface
                 $channel = $user->channels()->create(["type" => "pinterest"]);
                 $pinterestChannel = $channel->details()->create(
                     [
-                    "user_id" => $user->id, 
+                    "user_id" => $user->id,
                     "username" => $credentials->nickname,
-                    "name" => $credentials->name, 
-                    "payload" => serialize($credentials), 
+                    "name" => $credentials->name,
+                    "payload" => serialize($credentials),
                     "access_token" => $credentials->token
                     ]
                 );

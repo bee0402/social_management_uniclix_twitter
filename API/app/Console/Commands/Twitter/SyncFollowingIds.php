@@ -44,6 +44,12 @@ class SyncFollowingIds extends Command
 
         $action = route('sync.following.ids');
 
-        multiRequest($action, $channels);
+        $channelIds = array();
+
+        foreach ($channels as $channel) {
+            $channelIds[] = $channel->id;
+        }
+
+        multiRequest($action, $channelIds);
     }
 }

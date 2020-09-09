@@ -43,6 +43,13 @@ class SyncLikes extends Command
         })->get();
 
         $action = route('sync.likes');
-        multiRequest($action, $channels);
+
+        $channelIds = array();
+
+        foreach ($channels as $channel) {
+            $channelIds[] = $channel->id;
+        }
+
+        multiRequest($action, $channelIds);
     }
 }

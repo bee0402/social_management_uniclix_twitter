@@ -39,7 +39,8 @@ class ChannelController extends Controller
                     "user_id" => $user->id,
                     "username" => $credentials->nickname,
                     "payload" => serialize($credentials),
-                    "access_token" => json_encode($token)
+                    "access_token" => json_encode($token),
+                    "auto_dm" => 1
                 ]);
 
                 $channel->select();
@@ -50,8 +51,8 @@ class ChannelController extends Controller
                 /*
                  * Sync following and followers in the background
                  */
-                multiRequest(route("sync.follower.ids"), [$twitterChannel], ["sleep" => 0]);
-                multiRequest(route("sync.following.ids"), [$twitterChannel], ["sleep" => 0]);
+                multiRequest(route("sync.follower.ids"), [$twitterChannel->id], ["sleep" => 0]);
+                multiRequest(route("sync.following.ids"), [$twitterChannel->id], ["sleep" => 0]);
             } else {
 
                 if ($existingChannel->user_id == $user->id) {
@@ -60,18 +61,12 @@ class ChannelController extends Controller
                     $global->save();
                     $twitterChannel = $existingChannel;
                     $twitterChannel->access_token = json_encode($token);
+                    $twitterChannel->auto_dm = 1;
                     $twitterChannel->save();
                 } else {
                     return response()->json(['error' => 'Channel already exists with some other account'], 409);
                 }
             }
-
-            $email = $user->email;
-            $username = $user->allFormattedChannels()[0]["username"];
-
-            Mail::to($email)->send(new UserFirstSignUp($user, $username));
-            Mail::to($email)->send(new OneDayForTrialAfterSignUp($user, $username));
-            Mail::to($email)->send(new ThreeDaysForTrialAfterSignUp($user, $username));
 
             return $user->allFormattedChannels();
         }

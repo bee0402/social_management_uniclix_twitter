@@ -194,14 +194,7 @@ class AutoDM extends React.Component {
 
                             <div className="section-header">
                                 <div className="section-header__first-row">
-                                    <h2>Auto DM
-                                    <label className={`switch round ${!!isADMactive ? 'checked' : ''}`}>
-                                            <input type="checkbox" defaultChecked={!!isADMactive ? 'checked' : ''} onChange={(e) => this.activateDm(e)} />
-                                            <span className="slider round"></span>
-                                            <p className={"off"}>Off</p>
-                                            <p className={"on"}>On</p>
-                                        </label>
-                                    </h2>
+                                    <h2>Auto DM</h2>
                                 </div>
 
                                 <div className="section-header__second-row">
@@ -227,45 +220,6 @@ class AutoDM extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <div className="tab-cnt">
-                                <h3 className="subsection-header">Predefined Messages</h3>
-                                <div className="tab-head">
-                                    <div className={`tab-nav-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
-                                        <button href="#personal-info" onClick={() => this.ChangeTab('predefined')}>Predefined</button>
-                                    </div>
-                                    <div className={`tab-nav-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
-                                        <button href="#company-info" onClick={() => this.ChangeTab('created-by-me')}>Created by me</button>
-                                    </div>
-                                </div>
-                                <div className="tab-body">
-                                    <div className={`cnt-item ${isTabActive == 'predefined' ? 'active' : ''}`}>
-                                        <ul className="list-items">
-                                            {
-                                                predefinedMessages.map((predMessage, index) => (
-                                                    <li className="list-item" key={index}>{predMessage}
-                                                        <button className="blue-txt-btn add-message"
-                                                            onClick={() => this.selectMessage(`${predMessage}`)}>Select</button>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
-                                    </div >
-                                    <div className={`cnt-item ${isTabActive == 'created-by-me' ? 'active' : ''}`}>
-                                        <ul className="list-items">
-                                            {
-                                                activeKeywords.map((item, index) => (
-                                                    predefinedMessages.includes(item) ? '' :
-                                                        <li className="list-item" key={index}>{item}
-                                                            <button className={`blue-txt-btn add-message  ${isADMactive != 0 ? "" : "disabled"}`}
-                                                                onClick={() => this.selectMessage(`${item}`)}>Select</button>
-                                                        </li>
-                                                ))
-                                            }
-
-                                        </ul>
-                                    </div>
-                                </div >
-                            </div >
                         </div>
                     </div>
                 </React.Fragment>

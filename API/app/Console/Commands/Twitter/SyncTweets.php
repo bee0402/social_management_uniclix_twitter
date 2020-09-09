@@ -43,6 +43,13 @@ class SyncTweets extends Command
         })->get();
 
         $action = route('sync.tweets');
-        multiRequest($action, $channels);
+
+        $channelIds = array();
+
+        foreach ($channels as $channel) {
+            $channelIds[] = $channel->id;
+        }
+
+        multiRequest($action, $channelIds);
     }
 }

@@ -31,11 +31,7 @@ class UserFirstSignUp extends Mailable
     {
         $user = $this->user->name;
         $username = $this->username;
-        $delivery_time = $this->user->created_at->addMinutes(1);
         return $this->view('emails.user.signupfirst', [ 'user' => $user ])
-            ->subject('@' . $username . ' - Your Twitter Account Has Been Activated on Uniclix')
-            ->withSwiftMessage(function ($message) use ($delivery_time) {
-                $message->getHeaders()->addTextHeader('X-Mailgun-Deliver-By', $delivery_time->toRfc2822String());
-            });;
+            ->subject('@' . $username . ' - Your Twitter Account Has Been Activated on Uniclix');
     }
 }
