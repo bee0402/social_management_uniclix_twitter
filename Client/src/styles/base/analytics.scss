@@ -50,6 +50,8 @@
     align-items: center;
 }
 .overview-cards-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
     margin-top:20px;
 }
 .overview-card {
@@ -57,6 +59,7 @@
     border-radius: 3px;
     -webkit-box-shadow: 0 2px 4px 0 rgba(47,53,56,.25);
     box-shadow: 0 2px 4px 0 rgba(47,53,56,.25);
+    height: 100%;
 }
 .card-img {
     width: 20px;
@@ -76,6 +79,9 @@
 }
 .mb20 {
     margin-bottom: 20px;
+}
+.mr20 {
+    margin-right: 20px;
 }
 .analytics-card {
     padding: 20px;

@@ -99,8 +99,8 @@ class Dashboard extends React.Component {
                 <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
                 {!this.state.forbidden &&
                     <div>
-                        <div className="row overview-cards-container mb20">
-                            <div className="col-md-4 col-xs-12">
+                        <div className="overview-cards-container mb20">
+                            <div className="mr20">
                                 <TwitterOverviewCard
                                     name='Tweets'
                                     type="tweetsCount"
@@ -111,7 +111,7 @@ class Dashboard extends React.Component {
                                     iconPath={`/images/twitter-blue-icon.svg`}
                                     {...propData} />
                             </div>
-                            <div className="col-md-4 col-xs-12">
+                            <div className="mr20">
                                 <TwitterOverviewCard
                                     name='Followers'
                                     type="followersCount"
@@ -121,7 +121,7 @@ class Dashboard extends React.Component {
                                     iconPath={`/images/followers-blue-icon.svg`}
                                     {...propData} />
                             </div>
-                            <div className="col-md-4 col-xs-12">
+                            <div>
                                 <TwitterOverviewCard
                                     name='Following'
                                     type="followingCount"
