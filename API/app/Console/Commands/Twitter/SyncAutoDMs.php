@@ -5,6 +5,8 @@ namespace App\Console\Commands\Twitter;
 use Illuminate\Console\Command;
 use App\Models\Twitter\Channel;
 
+use DB;
+
 class SyncAutoDMs extends Command
 {
     /**
@@ -43,6 +45,7 @@ class SyncAutoDMs extends Command
         })
             ->where("auto_dm", true)
             ->get();
+
         $action = route('sync.autodm.ids');
 
         $channelIds = array();

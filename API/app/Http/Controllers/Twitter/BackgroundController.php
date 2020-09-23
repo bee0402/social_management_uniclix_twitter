@@ -46,7 +46,7 @@ class BackgroundController extends Controller
 
         $channel = Channel::where('id', $channelId)->first();
 
-        $channel->startProcess("syncTwitterFollowerIds");
+        $channel->startProcess("syncAutoDMs");
 
         try {
             $channel->SyncAutoDMs($sleep);
@@ -55,7 +55,7 @@ class BackgroundController extends Controller
             getErrorResponse($e, $channel->global);
         }
 
-        $channel->stopProcess("syncTwitterFollowerIds");
+        $channel->stopProcess("syncAutoDMs");
     }
 
 
