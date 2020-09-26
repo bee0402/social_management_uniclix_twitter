@@ -65,7 +65,7 @@ class TweetsTable extends React.Component{
                     
                             <div>
                                 <div className="profile-info row">
-                                    <div className="user-info col-md-3 col-12">
+                                    <div className="user-info col-md-3 col-sm-3 col-xs-12">
                                         <img src={selectedChannel.avatar} />
                                         <div>
                                             <p className="profile-name">{ selectedChannel.name }  <span className="profile-state"></span></p>
@@ -73,11 +73,11 @@ class TweetsTable extends React.Component{
                                         </div>
                                     </div>
 
-                                    <div className="main-info col-md-6 col-12">
+                                    <div className="main-info col-md-6 col-sm-6 col-xs-12">
                                         <ReadMore characters={400}>{tweet.text ? tweet.text : ''}</ReadMore>
                                     </div>
                                     
-                                    <ul className="stats-info show-flex col-md-3 col-12">
+                                    <ul className="stats-info show-flex col-md-3 col-sm-3 col-xs-12">
                                         <li><p className="stat-count">{ abbrNum(tweet.retweet_count, 1) }</p> <p className="stat-name">Retweets</p></li>
                                         <li><p className="stat-count">{ 0 }</p><p className="stat-name">Replies</p></li>
                                         <li><p className="stat-count">{ abbrNum(tweet.favorite_count, 1) }</p><p className="stat-name">Likes</p></li>

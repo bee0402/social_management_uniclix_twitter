@@ -225,7 +225,7 @@ trait Tweetable
         if (strpos($text, '@username') !== false) {
             $res = $client->get('users/show.json?user_id=' . $userId, ['auth' => 'oauth', 'decode_content' => false]);
             $unserialize = json_decode($res->getBody()->getContents());
-            
+
             $text = str_replace('@username', $unserialize->screen_name, $text);
         }
 
@@ -241,12 +241,18 @@ trait Tweetable
 
 
         // Set the "auth" request option to "oauth" to sign using oauth
-        $res = $client->post('direct_messages/events/new.json', ['auth' => 'oauth', 'json' => $dm]);
-        $this->followerIds()
-            ->where("user_id", $userId)
-            ->update(['send_message' => true]);
+        $response = $client->post('direct_messages/events/new.json', ['auth' => 'oauth', 'json' => $dm]);
 
-        return json_decode($res->getBody()->getContents());
+        if ($response->getStatusCode() == 200) {
+
+            $this->followerIds()
+                ->where("user_id", $userId)
+                ->update(['send_message' => true]);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -840,6 +846,11 @@ trait Tweetable
             $dupIds = $followerIds->pluck("user_id")->toArray();
             $ids = array_diff($ids, $dupIds);
 
+            if(empty($dupIds)){
+
+                $isActvieADM = 0; //If nothing was loaded, I don't want it to autoDM users when first added.
+            }
+
 
             /*
              * Prepare insert parameters for bulk inserting
@@ -908,27 +919,32 @@ trait Tweetable
         $followerIds = $this
             ->followerIds()
             ->where('send_message', false)
+            ->whereNull('unfollowed_you_at')
             ->pluck('user_id');
 
         if ($text) {
+
             $activeSubscription = $this->paid;
+
             if ($activeSubscription) {
                 $text = $text->message;
             } else {
                 $text = $text->message . "\n\r (Send DM's to new followers via https://uniclixapp.com/twitter-booster-app )  ";
             }
 
-            foreach ($followerIds as $followers) {
-                $this->autoDMsSend()
-                    ->insert([
-                        "channel_id" => $this->id,
-                        "user_id" => $followers,
-                        "send_message" => $text,
-                        "created_at" => Carbon::now(),
-                        "updated_at" => Carbon::now()
-                    ]);
+            foreach ($followerIds as $followerId) {
 
-                $this->DM($followers, $text);
+                $sendMessage = $this->DM($followerId, $text);
+
+                if ($sendMessage) {
+
+                    $this->autoDMsSend()
+                        ->create([
+                            "channel_id" => $this->id,
+                            "user_id" => $followerId,
+                            "send_message" => $text
+                        ]);
+                }
             }
         }
     }
