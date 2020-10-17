@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Twitter\Actions;
 
+use App\Models\Twitter\Channel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -89,13 +90,12 @@ class DMController extends Controller
         $user = auth()->user();
         try {
             $channelId = $request->input('channelId');
-            $channel = $user->getChannel($channelId);
+            $channel   = Channel::where('channel_id', $channelId)->first();
+            $message   = $request->input('message');
 
-            $message = $request->input('message');
-
-            if ($channel) {
+            if ($channel && $channel->user_id = $user->id) {
                 try {
-                    AutoDM::where('channel_id', $channelId)->update(['active' => 0]);
+                    AutoDM::where('channel_id', $channelId)->delete();
                 } catch (\Exception $e) {
                     //throw $th;
                 }
@@ -117,7 +117,7 @@ class DMController extends Controller
     {
         try {
             $channel = $this->selectedChannel;
-            $date = AutoDM::where("channel_id", $channel->channel_id)
+            $date = AutoDM::where("channel_id", $channel->id)
                 ->select("message", "active", "id")
                 ->orderBy('id', 'desc')
                 ->get();
