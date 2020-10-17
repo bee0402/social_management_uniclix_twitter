@@ -30,6 +30,9 @@ class BackgroundController extends Controller
         try {
             $channel->syncFollowerIds($sleep);
         } catch (\Exception $e) {
+
+            \Log::info('ERROR WITH FOLLOWER IDS PROCESS: ' . $e->getMessage());
+
             getErrorResponse($e, $channel->global);
         }
 

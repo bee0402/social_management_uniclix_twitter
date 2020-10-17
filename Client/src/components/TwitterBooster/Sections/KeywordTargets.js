@@ -208,7 +208,7 @@ class KeywordTargets extends React.Component {
                             </div>
 
                             {!searchView && <button className="btn-text-blue pull-right mt20" onClick={() => this.showSearchView(true)}>Configure hashtags</button>}
-                            <UpgradeAlert isOpen={this.state.trialLimit} cancelBtn="Skip now" text="You have passed you daily follow/unfollow limit." goBack={false} redirectBack="/twitter-booster/keyword-targets" setForbidden={this.setForbidden} />
+                            <UpgradeAlert isOpen={this.state.trialLimit} cancelBtn="Skip now" text="You have exceeded your daily follow/unfollow limit." goBack={false} redirectBack="/twitter-booster/keyword-targets" setForbidden={this.setForbidden} />
                             <UpgradeAlert isOpen={this.state.forbidden && !this.state.loading} goBack={true} setForbidden={this.setForbidden} />
                             <UserList
                                 userItems={userItems}
