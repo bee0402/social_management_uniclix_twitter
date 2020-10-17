@@ -25,6 +25,8 @@ class BackgroundController extends Controller
 
         $channel->startProcess("syncTwitterFollowerIds");
 
+        \Log::info($channelId);
+
         try {
             $channel->syncFollowerIds($sleep);
         } catch (\Exception $e) {

@@ -40,19 +40,14 @@ class SyncAutoDMs extends Command
      */
     public function handle()
     {
-        $channels = Channel::whereDoesntHave("processes", function ($q) {
+        $channelIds = Channel::whereDoesntHave("processes", function ($q) {
             $q->where('process_name', 'SyncAutoDMs');
         })
             ->where("auto_dm", true)
-            ->get();
+            ->pluck("id")
+            ->toArray();
 
         $action = route('sync.autodm.ids');
-
-        $channelIds = array();
-
-        foreach ($channels as $channel) {
-            $channelIds[] = $channel->id;
-        }
 
         multiRequest($action, $channelIds);
     }
