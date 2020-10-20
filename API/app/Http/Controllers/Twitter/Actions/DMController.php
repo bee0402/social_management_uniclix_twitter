@@ -95,7 +95,7 @@ class DMController extends Controller
 
             if ($channel && $channel->user_id = $user->id) {
                 try {
-                    AutoDM::where('channel_id', $channelId)->delete();
+                    AutoDM::where('channel_id', $channel->id)->delete();
                 } catch (\Exception $e) {
                     //throw $th;
                 }
