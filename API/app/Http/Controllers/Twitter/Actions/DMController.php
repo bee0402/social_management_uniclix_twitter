@@ -100,7 +100,7 @@ class DMController extends Controller
                     //throw $th;
                 }
                 $autoDm = new AutoDM();
-                $autoDm->channel_id = $channelId;
+                $autoDm->channel_id = $channel->id;
                 $autoDm->active = true;
                 $autoDm->message = $message;
                 $autoDm->save();
