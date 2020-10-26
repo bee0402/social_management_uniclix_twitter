@@ -42,7 +42,7 @@ class SyncFollowingIds extends Command
     public function handle()
     {
         $channelIds = DB::table('twitter_channels')
-//            ->join('users', 'twitter_channels.user_id', '=', 'users.id')
+            ->join('users', 'twitter_channels.user_id', '=', 'users.id')
             ->join('channels', 'twitter_channels.channel_id', '=', 'channels.id')
             ->whereNotExists(function($query)
             {
@@ -51,7 +51,7 @@ class SyncFollowingIds extends Command
                     ->whereRaw('twitter_channels.id = twitter_processes.channel_id')
                     ->where('process_name', 'syncFollowingIds');
             })
-//            ->where('users.trial_ends_at', '>', Carbon::now())
+            ->where('users.active', true)
             ->where('channels.active', true)
             ->groupBy('twitter_channels.id')
             ->pluck('twitter_channels.id')

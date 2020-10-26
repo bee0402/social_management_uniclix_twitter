@@ -4,7 +4,6 @@ namespace App\Console\Commands\Twitter;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use App\Models\Twitter\Channel;
 
 use DB;
 
@@ -41,8 +40,8 @@ class SyncAutoDMs extends Command
      */
     public function handle()
     {
-        $channelIds = \DB::table('twitter_channels')
-//            ->join('users', 'twitter_channels.user_id', '=', 'users.id')
+        $channelIds = DB::table('twitter_channels')
+            ->join('users', 'twitter_channels.user_id', '=', 'users.id')
             ->join('channels', 'twitter_channels.channel_id', '=', 'channels.id')
             ->join('twitter_follower_ids', 'twitter_follower_ids.channel_id', '=', 'twitter_channels.id')
             ->join('twitter_direct_messages', 'twitter_direct_messages.channel_id', '=', 'twitter_channels.id')
@@ -53,7 +52,7 @@ class SyncAutoDMs extends Command
                     ->whereRaw('twitter_channels.id = twitter_processes.channel_id')
                     ->where('process_name', 'SyncAutoDMs');
             })
-//            ->where('users.trial_ends_at', '>', Carbon::now())
+            ->where('users.active', true)
             ->where('channels.active', true)
             ->where('twitter_channels.auto_dm', true)
             ->where('twitter_follower_ids.send_message', false)
