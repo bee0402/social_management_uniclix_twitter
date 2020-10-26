@@ -2,6 +2,10 @@
 
 namespace App\Console;
 
+use App\Models\Twitter\FollowerId;
+use App\Models\Twitter\FollowingId;
+use App\Models\Twitter\Process;
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -66,6 +70,25 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('sync:emails')
             ->daily();
+
+        //Erasing old data and updating users.
+
+        $schedule->call(function (){
+            User::updateActiveUsers();
+        })->hourlyAt(50);
+
+        $schedule->call(function (){
+            Process::clearOldProcesses();
+        })->weeklyOn(1, '3:00');
+
+        $schedule->call(function (){
+            FollowerId::deleteInactiveUsers();
+        })->weeklyOn(2, '3:00');
+
+        $schedule->call(function (){
+            FollowingId::deleteInactiveUsers();
+        })->weeklyOn(3, '3:00');
+
     }
 
     /**
