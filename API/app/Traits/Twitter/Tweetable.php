@@ -910,7 +910,7 @@ trait Tweetable
         $text = \DB::table('twitter_direct_messages')
             ->select("message", "active")
             ->where("active", true)
-            ->where('channel_id',  $this->channel_id)
+            ->where('channel_id',  $this->id)
             ->first();
 
         /*
