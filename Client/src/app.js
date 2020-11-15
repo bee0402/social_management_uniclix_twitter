@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactGA from 'react-ga';
 import { Provider } from "react-redux";
+import { Helmet } from 'react-helmet';
 import configStore from "./store/configStore";
 import AppRouter from "./routes/AppRouter";
 import "normalize.css/normalize.css";
@@ -11,6 +12,7 @@ import setAuthorizationHeader from "./utils/setAuthorizationHeader";
 import { setProfile, startSetProfile } from "./actions/profile";
 import { setChannels, startSetChannels } from "./actions/channels";
 import { setMiddleware } from "./actions/middleware";
+import { facebookPixelID } from './config/api';
 
 const store = configStore();
 
@@ -20,6 +22,26 @@ const trackingId =  process.env.LINKEDIN_APP_ID ? process.env.LINKEDIN_APP_ID : 
 
 const Root = () => (
     <div>
+        <Helmet>
+            {
+                facebookPixelID ? (
+                    <script>
+                        {`
+                            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init', '${facebookPixelID}');fbq('track', 'PageView');
+                        `}
+                    </script>
+                ) : null
+            }
+            {
+                facebookPixelID ? (
+                    <noscript>
+                        {`
+                            <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${facebookPixelID}&ev=PageView&noscript=1"/>                                
+                        `}
+                    </noscript>
+                ) : null
+            }
+        </Helmet>
         <Provider store={store}>
             <AppRouter />
         </Provider>

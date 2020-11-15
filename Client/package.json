@@ -61,6 +61,7 @@
     "react-facebook-login": "^4.1.1",
     "react-ga": "^2.7.0",
     "react-geosuggest": "^2.13.0",
+    "react-helmet": "^6.1.0",
     "react-images": "^0.5.19",
     "react-images-browse": "^0.2.4",
     "react-infinite-scroller": "^1.2.4",
