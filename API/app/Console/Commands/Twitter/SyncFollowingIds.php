@@ -51,7 +51,7 @@ class SyncFollowingIds extends Command
                     ->whereRaw('twitter_channels.id = twitter_processes.channel_id')
                     ->where('process_name', 'syncFollowingIds');
             })
-            ->where('users.trial_ends_at', '>', Carbon::now())
+            ->where('users.active', true)
             ->where('channels.active', true)
             ->groupBy('twitter_channels.id')
             ->pluck('twitter_channels.id')

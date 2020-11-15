@@ -28,6 +28,7 @@ class BackgroundController extends Controller
         try {
             $channel->syncFollowerIds($sleep);
         } catch (\Exception $e) {
+
             getErrorResponse($e, $channel->global);
         }
 

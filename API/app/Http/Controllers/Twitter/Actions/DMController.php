@@ -95,12 +95,12 @@ class DMController extends Controller
 
             if ($channel && $channel->user_id = $user->id) {
                 try {
-                    AutoDM::where('channel_id', $channelId)->delete();
+                    AutoDM::where('channel_id', $channel->id)->delete();
                 } catch (\Exception $e) {
                     //throw $th;
                 }
                 $autoDm = new AutoDM();
-                $autoDm->channel_id = $channelId;
+                $autoDm->channel_id = $channel->id;
                 $autoDm->active = true;
                 $autoDm->message = $message;
                 $autoDm->save();

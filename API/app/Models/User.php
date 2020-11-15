@@ -282,4 +282,37 @@ class User extends Authenticatable
     {
         return strtotime($this->created_at) <= strtotime(Carbon::now()->subHours($hours));
     }
+
+    public static function updateActiveUsers()
+    {
+        \DB::table('users')
+            ->leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->where(function ($q) {
+                $q->where('users.trial_ends_at', '<', Carbon::now())
+                    ->orWhere(function ($r){
+                        $r->whereNull('users.trial_ends_at')
+                            ->where(function ($s){
+                                $s->whereNull('subscriptions.id')
+                                    ->orWhere('subscriptions.ends_at', '<', Carbon::now());
+                            });
+                    });
+            })
+            ->update(['users.active' => 0]);
+
+        \DB::table('users')
+            ->leftJoin('subscriptions', 'subscriptions.user_id', '=', 'users.id')
+            ->where(function ($q) {
+                $q->where('users.trial_ends_at', '>', Carbon::now())
+                    ->orWhere(function ($r){
+                        $r->where(function ($s){
+                            $s->whereNull('subscriptions.ends_at')
+                                ->orWhere('subscriptions.ends_at', '>', Carbon::now());
+                        })->where(function ($s){
+                            $s->whereNotNull('subscriptions.id')
+                                ->where('subscriptions.stripe_plan', 'twitter-booster');
+                        });
+                    });
+            })
+            ->update(['users.active' => 1]);
+    }
 }
