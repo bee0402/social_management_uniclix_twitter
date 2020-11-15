@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use App\Models\Role;
 use App\Models\RoleAddon;
 use App\Models\Twitter\Channel;
@@ -251,6 +252,34 @@ class BillingController extends Controller
             return response()->json(["success" => true], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 500);
+        }
+    }
+
+    public function getCoupon(Request $request)
+    {
+        $client = new Client(['base_uri' => 'https://api.stripe.com']);
+
+        //We fetch that particular discount.
+        try{
+
+            $response = $client->request('GET', '/v1/coupons/' . $request->id, [
+                'headers' => ['Authorization' => 'Bearer ' . env('STRIPE_SECRET')]
+            ]);
+
+            if($response->getStatusCode() == 200){
+
+                $content = json_decode($response->getBody()->getContents());
+
+                //I return the discount, so we may properly add it to the payment
+                return response()->json(["discount" => $content->percent_off], 200);
+            }
+
+            return response()->json(["discount" => null], 200);
+
+        }catch (\Exception $e){
+            \Log::info('Coupon validation error: ' . $e->getMessage());
+
+            return response()->json(["discount" => null], 200);
         }
     }
 }

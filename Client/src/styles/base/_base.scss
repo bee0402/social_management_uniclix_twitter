@@ -300,6 +300,47 @@
     }
   }
 }
+.discount-cnt {
+  display: flex;
+
+  .discount {
+    margin-right: 10px;
+  }
+
+  .btn-blue {
+    margin: 0;
+    font-size: 12px;
+    padding: 0;
+    width: 200px;
+  }
+}
+
+.invalid-code {
+  color: rgb(255, 43, 61);
+  font-size: 15px;
+}
+
+.with-discount {
+  position: relative;
+  width: fit-content;
+}
+
+.with-discount:before {
+  content: '';
+  position: absolute;
+  width: calc(100% + 10px);
+  height: 20%;
+  background: #d83e7f;
+  top: 10px;
+  left: -5px;
+  border-radius: 30px;
+}
+
+.total-price {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .block-center {
   width: 100%;
   height: 100%;

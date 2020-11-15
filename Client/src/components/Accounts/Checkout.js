@@ -12,7 +12,7 @@ import { LoaderWithOverlay } from "../Loader";
 import UpgradeAlert from "../UpgradeAlert";
 import { Modal as OurModal } from '../Modal';
 import CongratsPayment from "./CongratsPayment";
-import { createSubscription } from '../../requests/billing';
+import { createSubscription, checkCoupon } from '../../requests/billing';
 import { stripePublishableKey } from '../../config/api';
 import Countries from "../../fixtures/country";
 import { getKeywordTargets } from '../../requests/twitter/channels';
@@ -55,7 +55,10 @@ class Checkout extends React.Component {
             address_city: '',
             location: '',
             postal: ''
-        }
+        },
+        discountPercentage: 0,
+        validatingCode: false,
+        couponCode: ''
     }
 
     fetchTargets = () => {
@@ -277,7 +280,8 @@ class Checkout extends React.Component {
             location: this.state.location
         }
         token.user_card_data = card_data;
-        token.subType = "main"
+        token.subType = "main";
+        token.couponCode = this.state.couponCode;
         createSubscription(token).then(response => {
             this.props.startSetChannels().then(res => {
                 this.props.startSetProfile().then(res => {
@@ -295,8 +299,46 @@ class Checkout extends React.Component {
         })
     }
 
+   CheckCoupon = () => {
+    this.setState({ validatingCode: true });
+    checkCoupon(this.state.couponCode).then(response => {
+ 
+      if (response.discount) {
+        this.setState({ discountPercentage: response.discount, validatingCode: false })
+      } else {
+        // -1 means that the discount code is invalid
+        this.setState({ discountPercentage: -1, validatingCode: false })
+      }
+
+    }).catch(e => {
+      this.setState({ discountPercentage: -1, validatingCode: false })
+    });
+  }
+
+  calculateDiscount = () => {
+    const { discountPercentage, newAccounts, actualUsers } = this.state;
+    const planValue = (newAccounts + actualUsers) * 10;
+
+    return (planValue - (planValue * discountPercentage * 0.01)).toFixed(2);
+  }
+
     render() {
-        const { validClaas, form, years, loading, orderFinished, countries, newAccounts, actualUsers, openCountry, location, stripeError     } = this.state
+        const {
+            validClaas,
+            form,
+            years,
+            loading,
+            orderFinished,
+            countries,
+            newAccounts,
+            actualUsers,
+            openCountry,
+            location,
+            stripeError,
+            couponCode,
+            discountPercentage,
+            validatingCode
+        } = this.state
         // const location = form.location;
         const items = countries.map((item) => {
             return <li onClick={() => this.setLocation(item)}> {item} </li>;
@@ -504,15 +546,50 @@ class Checkout extends React.Component {
                                                         <p className="plan-content-accounts">Monthly</p>
                                                     </div>
                                                     <div className="col-price">
-                                                        <p className="price">${(newAccounts + actualUsers) * 10}</p>
+                                                        <div className="total-price">
+                                                            <p
+                                                                className={`price ${discountPercentage > 0 ? 'with-discount' : ''}`}
+                                                            >
+                                                                ${(newAccounts + actualUsers) * 10}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                { discountPercentage > 0  && (
+                                                    <div className="row-price">
+                                                        <div className="col-price">
+                                                            <p className="plan-content-accounts">With discount</p>
+                                                        </div>
+                                                        <div className="col-price">
+                                                            <p className="price">${this.calculateDiscount()}</p>
+                                                        </div>
+                                                    </div>
+                                                    )
+                                                }
                                             </div>
                                             <div className="discount-cnt">
-                                                <input className="discount" placeholder="Add discount code" />
+                                                <input
+                                                    className="discount"
+                                                    placeholder="Add discount code"
+                                                    disabled={validatingCode}
+                                                    value={couponCode}
+                                                    onChange={(e) => this.setState({couponCode: e.currentTarget.value})}
+                                                />
+                                                <button
+                                                    className="btn-blue"
+                                                    onClick={this.CheckCoupon}
+                                                    disabled={validatingCode}
+                                                >
+                                                    Validate code
+                                                </button>
                                             </div>
-
-                                            <button className="btn-blue" onClick={(e) => this.ConfirmOrder(e)}>Confirm order</button>
+                                            { discountPercentage === -1 && <div className="invalid-code">The code is invalid</div> }
+                                            <button
+                                                className="btn-blue"
+                                                onClick={(e) => this.ConfirmOrder(e)}
+                                            >
+                                                Confirm order
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
