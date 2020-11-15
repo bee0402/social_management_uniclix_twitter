@@ -70,3 +70,10 @@ export const updateCard = (token) => {
             return response.data;
         });
 }
+
+export const checkCoupon = (coupon) => {
+    return axios.get(`${apiUrl}/billing/coupon?id=${coupon}`)
+        .then((response) => {
+            return response.data;
+        });
+}
