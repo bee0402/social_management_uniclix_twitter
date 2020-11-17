@@ -1,5 +1,5 @@
 import React from 'react';
-import Popup from "reactjs-popup";
+import Modal from 'react-modal';
 import SweetAlert from 'sweetalert2-react';
 import { ToastContainer } from "react-toastr";
 import Loader from '../components/Loader';
@@ -127,12 +127,24 @@ class UserList extends React.Component {
                     className="toast-top-right"
                 />
 
-                <SweetAlert
-                    show={!!this.state.error.message}
-                    title={this.state.error.statusText}
-                    text={this.state.error.message}
-                    onConfirm={() => this.setState({ error: { statusText: "", message: "" } })}
-                />
+                <Modal
+                    isOpen={!!this.state.error.message}
+                    className="error-modal"
+                >
+                    <div className="error-title">{this.state.error.statusText}</div>
+                    <div
+                        className="error-message"
+                        dangerouslySetInnerHTML={{
+                            __html: this.state.error.message.replace('a href', 'a target="_blank" href')
+                        }}
+                    ></div>
+                    <button
+                        className="cancelBtn"
+                        onClick={() => this.setState({ error: { statusText: "", message: "" }})}
+                    >
+                        Ok
+                    </button>
+                </Modal>
 
                 {userItems.length < 1 ?
                     (loading ? <Loader />

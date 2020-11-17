@@ -768,3 +768,17 @@
     color: #363636;
     margin: 0px 0px 20px 24px;
 }
+
+.error-modal {
+  width: 400px !important;
+  text-align: center;
+  color: #363636;
+  background: #F5F7FB;
+  padding: 20px;
+  border-radius: 8px;
+
+  .error-title,
+  .error-message {
+    margin-bottom: 20px;
+  }
+}
