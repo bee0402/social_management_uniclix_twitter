@@ -2177,6 +2177,16 @@ button.streammaker-btn:hover {
   }
 }
 
+.draft_editor_container {
+  height: 120px;
+}
+
+.public-DraftEditorPlaceholder-hasFocus {
+  .public-DraftEditorPlaceholder-inner {
+    display: none;
+  }
+}
+
 .item-row .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {
   background: transparent;
   color: #2d86da;
@@ -2603,6 +2613,9 @@ button.streammaker-btn:hover {
   color: #bbb;
   font-size: 18px;
   padding: 0 10px;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
 }
 
 .editor-icons i {
