@@ -60,15 +60,15 @@ class DraftEditor extends React.Component {
     };
 
     onChange = (editorState) => {
-
+        const { onChange } = this.props;
         const text = editorState.getCurrentContent().getPlainText();
 
         this.setState(() => ({
             editorState,
             letterCount: text.length
         }), () => {
-            if (typeof (this.props.onChange) !== "undefined") {
-                this.props.onChange(text);
+            if (typeof (onChange) !== "undefined") {
+                onChange(text);
             }
         });
     };
