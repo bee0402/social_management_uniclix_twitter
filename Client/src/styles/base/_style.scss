@@ -2618,6 +2618,14 @@ button.streammaker-btn:hover {
   bottom: 10px;
 }
 
+.max-chars {
+  color: rgb(29, 161, 242);
+}
+
+.max-chars.max-reached {
+  color: rgb(255, 69, 56);
+}
+
 .editor-icons i {
   cursor: pointer;
   margin: 5px;

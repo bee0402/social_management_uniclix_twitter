@@ -11,10 +11,9 @@ import LoaderWithOverlay from '../../Loader';
 import DraftEditor from "../../DraftEditor";
 
 let toastContainer;
-const predefinedMessages = [
-    "Welcome @username to my profile, thanks for follow me!",
-    "Add a new message, give warmth to your welcome and boost your account"
-]
+
+const MAX_CHARACTERS = 180;
+
 class AutoDM extends React.Component {
     state = {
         loading: true,
@@ -161,7 +160,7 @@ class AutoDM extends React.Component {
 
     updateDMState = (keyword = "") => {
         if (!!this.state.isADMactive) {
-            this.setState({ letterCount: 10000 - keyword.length, keyword })
+            this.setState({ keyword });
         } else {
             this.setState({ replaceKeyword: 0, keyword: "" })
         }
@@ -174,7 +173,7 @@ class AutoDM extends React.Component {
     };
 
     render() {
-        const { isTabActive, isADMactive, keyword, replaceKeyword, activeKeywords, loading, firstLoading, shouldBlockNavigation } = this.state
+        const { isADMactive, keyword, replaceKeyword, loading, firstLoading, shouldBlockNavigation } = this.state
         return (
             firstLoading ?
                 <LoaderWithOverlay />
@@ -198,7 +197,7 @@ class AutoDM extends React.Component {
                                 </div>
 
                                 <div className="section-header__second-row">
-                                    <p>This is your Auto direct message, you can choose and edit a predefined one or start writing your own.</p>
+                                    <p>Send automated welcome messages to your new Followers - compose the message below.</p>
                                 </div>
                             </div>
                         </div>
@@ -217,7 +216,11 @@ class AutoDM extends React.Component {
                                         showHashtagsIcon={false}
                                         inclusive={false}
                                         sendAction={this.saveMessage}
+                                        letterLimit={MAX_CHARACTERS}
                                     />
+                                    <div className={`max-chars ${keyword.length > MAX_CHARACTERS ? 'max-reached': ''}`}>
+                                        {`${keyword.length}/${MAX_CHARACTERS}`}
+                                    </div>
                                 </div>
                             </div>
                         </div>
