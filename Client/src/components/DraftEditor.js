@@ -208,18 +208,7 @@ class DraftEditor extends React.Component {
                     {this.state.showEmojiIcon && <EmojiSelect />}
                     {this.state.showHashtagsIcon && <i onClick={this.onHashIconClick} className="fa fa-hashtag add-hashtag"></i>}
 
-                    {this.state.showSendIcon &&
-                        this.state.letterCount > letterLimit || this.state.letterCount < 1 ?
-                        (textBtn ?
-                            <button className="default-button add-message disabled" disabled>Save</button>
-                            :
-                            <img className={`disabled-btn`} src={`/images/paper-plane.svg`} />)
-                        : (textBtn ?
-                            <button onClick={sendAction} className="default-button add-message">Save</button>
-                            :
-                            <img onClick={sendAction} src={`/images/paper-plane.svg`} />
-                        )
-                    }
+                    <button onClick={sendAction} className="default-button add-message">Save</button>
                 </div>
 
                 {inclusive &&
