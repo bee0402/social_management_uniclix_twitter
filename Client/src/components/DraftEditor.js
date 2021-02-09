@@ -143,7 +143,7 @@ class DraftEditor extends React.Component {
         const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
         const { MentionSuggestions: HashtagSuggestions } = hashtagMentionPlugin;
         const plugins = [emojiPlugin, hashtagMentionPlugin];
-        const { scheduledLabel, inclusive, toggle, network, sendAction, textBtn = false, letterLimit = 280 } = this.props;
+        const { scheduledLabel, inclusive, toggle, network, sendAction, textBtn = false, letterLimit = 500 } = this.props;
 
         return (
             <div className="draft_editor_container">
